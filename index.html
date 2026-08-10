@@ -3,443 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>स्मार्ट जीएसटी बिलिंग ऐप</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>प्रोफेशनल जीएसटी बिलिंग सॉफ्टवेयर</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #3730a3;
-            --bg-body: #0f172a;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --accent-green: #059669;
-            --accent-red: #dc2626;
-            --radius-box: 16px;
+            --pro-primary: #1e3a8a;
+            --pro-primary-light: #eff6ff;
+            --pro-accent: #2563eb;
+            --pro-bg: #f8fafc;
+            --pro-card: #ffffff;
+            --pro-text: #0f172a;
+            --pro-muted: #64748b;
+            --pro-border: #cbd5e1;
+            --pro-success: #059669;
+            --pro-danger: #dc2626;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: var(--bg-body);
-            color: var(--text-main);
-            padding: 10px;
+            background: #0f172a;
+            color: var(--pro-text);
+            padding: 12px;
             display: flex;
             justify-content: center;
             min-height: 100vh;
         }
 
-        .app-container {
-            background: var(--card-bg);
-            border-radius: var(--radius-box);
+        .billing-container {
+            background: var(--pro-card);
+            border-radius: 14px;
             width: 100%;
-            max-width: 500px;
-            padding: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
+            max-width: 520px;
+            padding: 18px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* App Header */
-        .app-header {
+        /* Top Header Bar */
+        .top-meta-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #f8fafc;
-            padding: 12px 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+            background: var(--pro-bg);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--pro-border);
             margin-bottom: 14px;
         }
 
-        .app-header input {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 6px 8px;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--primary-dark);
+        .top-meta-bar input {
+            border: 1px solid var(--pro-border);
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--pro-primary);
             outline: none;
-            width: 130px;
             background: #fff;
         }
 
         /* Business Section */
-        .biz-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+        .business-card {
+            background: var(--pro-primary-light);
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
             padding: 14px;
             margin-bottom: 14px;
         }
 
-        .biz-name {
+        .business-name {
             width: 100%;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px;
+            border: 1px solid var(--pro-border);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 16px;
             font-weight: 800;
-            color: var(--primary-dark);
+            color: var(--pro-primary);
             margin-bottom: 8px;
             background: #fff;
             outline: none;
         }
 
-        .biz-details {
+        .business-details {
             width: 100%;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 10px;
-            font-size: 12px;
-            color: var(--text-muted);
+            border: 1px solid var(--pro-border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 11px;
+            color: var(--pro-muted);
             resize: none;
             background: #fff;
             outline: none;
         }
 
-        .section-title {
+        .section-heading {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 11px;
-            font-weight: 800;
-            color: var(--primary);
+            font-weight: 700;
+            color: var(--pro-primary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin: 14px 0 8px 0;
+            margin: 14px 0 6px 0;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        /* Customer Grid */
-        .cust-grid {
+        /* Customer Info */
+        .customer-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
-            background: #f8fafc;
-            padding: 14px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
+            gap: 8px;
+            background: var(--pro-bg);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--pro-border);
             margin-bottom: 14px;
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 4px; }
-        .input-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-        .input-group input, .input-group select {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+        .form-group { display: flex; flex-direction: column; gap: 3px; }
+        .form-group label { font-size: 10px; font-weight: 700; color: var(--pro-muted); text-transform: uppercase; }
+        .form-group input, .form-group select {
+            padding: 8px 10px;
+            border: 1px solid var(--pro-border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            background: #fff;
+            outline: none;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--pro-accent); box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15); }
+
+        /* Item Card Style */
+        .item-row-card {
+            background: var(--pro-bg);
+            border: 1px solid var(--pro-border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .item-header-row {
+            display: grid;
+            grid-template-columns: 1fr 32px;
+            gap: 6px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .item-name-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--pro-border);
+            border-radius: 6px;
             font-size: 13px;
             font-weight: 600;
             background: #fff;
             outline: none;
         }
 
-        /* Item Row Style (Mobile Optimized) */
-        .item-card {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .item-top {
-            display: grid;
-            grid-template-columns: 1fr 36px;
-            gap: 8px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .item-name-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            background: #fff;
-            outline: none;
-        }
-
-        .btn-delete {
+        .btn-delete-item {
             background: #fee2e2;
-            color: var(--accent-red);
+            color: var(--pro-danger);
             border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
         }
 
-        .item-grid-bottom {
+        .item-grid-inputs {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .item-totals-bar {
+        .item-calculation-footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 10px;
-            padding-top: 8px;
-            border-top: 1px dashed var(--border-color);
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px dashed var(--pro-border);
             font-size: 11px;
-            font-weight: 700;
-            color: var(--text-muted);
+            font-weight: 600;
+            color: var(--pro-muted);
         }
 
-        .btn-add {
+        .btn-add-new-item {
             background: #fff;
-            border: 2px dashed var(--primary);
-            color: var(--primary);
+            border: 1px dashed var(--pro-accent);
+            color: var(--pro-accent);
             width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 13px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
             cursor: pointer;
             margin-bottom: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            transition: background 0.2s;
         }
+        .btn-add-new-item:hover { background: var(--pro-primary-light); }
 
-        /* Summary & Pay Box */
-        .summary-box {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
+        /* Summary & Payment Section */
+        .summary-box-pro {
+            background: var(--pro-bg);
+            border: 1px solid var(--pro-border);
+            border-radius: 10px;
+            padding: 12px;
             margin-bottom: 14px;
         }
 
-        .pay-options {
+        .payment-methods-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            margin-top: 6px;
-            margin-bottom: 14px;
+            margin-top: 4px;
+            margin-bottom: 12px;
         }
 
-        .pay-chip {
-            border: 1px solid var(--border-color);
+        .pay-radio-chip {
+            border: 1px solid var(--pro-border);
             background: #fff;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 6px 8px;
+            border-radius: 6px;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
         }
 
-        .calc-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
-        .calc-row.grand {
-            font-size: 16px;
-            color: var(--primary-dark);
-            border-top: 2px solid var(--border-color);
-            padding-top: 10px;
-            margin-top: 8px;
+        .summary-row-item { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--pro-muted); margin-bottom: 4px; }
+        .summary-row-item.grand-total-row {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            color: var(--pro-primary);
+            border-top: 1px solid var(--pro-border);
+            padding-top: 8px;
+            margin-top: 6px;
         }
-        .grand-val { color: var(--accent-green); font-size: 20px; font-weight: 800; }
+        .grand-total-value { color: var(--pro-success); font-size: 18px; font-weight: 800; }
 
-        /* Actions */
-        .action-buttons {
+        /* Action Footer Buttons */
+        .action-footer-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .btn-action {
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 800;
+        .pro-btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
             border: none;
             cursor: pointer;
             color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            gap: 6px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
-        .wa-btn { background: var(--accent-green); }
-        .print-btn { background: var(--primary); }
+        .btn-whatsapp-pro { background: var(--pro-success); }
+        .btn-whatsapp-pro:hover { background: #047857; }
+        .btn-print-pro { background: var(--pro-accent); }
+        .btn-print-pro:hover { background: #1d4ed8; }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="billing-container">
 
-    <!-- Top Header -->
-    <div class="app-header">
+    <!-- Top Metadata Bar -->
+    <div class="top-meta-bar">
         <div>
-            <label style="font-size:9px; font-weight:700; color:var(--text-muted); display:block;">दिनांक (DATE)</label>
+            <label style="font-size:8px; display:block; color:var(--pro-muted);">दिनांक (DATE)</label>
             <input type="date" id="invDate">
         </div>
         <div>
-            <label style="font-size:9px; font-weight:700; color:var(--text-muted); display:block; text-align:right;">बिल नंबर</label>
-            <input type="text" id="invNo" value="#INV-1001" style="text-align:right;">
+            <label style="font-size:8px; display:block; text-align:right; color:var(--pro-muted);">इनवॉइस नंबर</label>
+            <input type="text" id="invNo" value="INV-1001" style="text-align:right; width:90px;">
         </div>
     </div>
 
     <!-- Business Info -->
-    <div class="biz-card">
-        <input type="text" id="bizName" class="biz-name" value="श्री बालाजी गारमेंट्स & टेलीकॉम">
-        <textarea id="bizDetails" class="biz-details" rows="2">पता: मेन मार्केट, फतूहीवाला | मोबाइल: +91 9876543210 | GSTIN: 07AAAAA0000A1Z5</textarea>
+    <div class="business-card">
+        <input type="text" id="bizName" class="business-name" value="श्री बालाजी गारमेंट्स & टेलीकॉम">
+        <textarea id="bizDetails" class="business-details" rows="2">पता: मेन मार्केट, फतूहीवाला | मोबाइल: +91 9876543210 | GSTIN: 07AAAAA0000A1Z5</textarea>
     </div>
 
-    <!-- Customer Info -->
-    <div class="section-title"><i class="fa-solid fa-user"></i> ग्राहक विवरण (Customer)</div>
-    <div class="cust-grid">
-        <div class="input-group">
+    <!-- Customer Section -->
+    <div class="section-heading"><i class="fa-solid fa-user-shield"></i> ग्राहक विवरण (Customer Details)</div>
+    <div class="customer-grid">
+        <div class="form-group">
             <label>ग्राहक का नाम</label>
             <input type="text" id="custName" placeholder="उदा. राहुल कुमार">
         </div>
-        <div class="input-group">
+        <div class="form-group">
             <label>मोबाइल नंबर</label>
             <input type="tel" id="custMobile" placeholder="9876543210">
         </div>
-        <div class="input-group">
+        <div class="form-group">
             <label>पता (Address)</label>
-            <input type="text" id="custAddress" placeholder="शहर / पता">
+            <input type="text" id="custAddress" placeholder="शहर / क्षेत्र">
         </div>
     </div>
 
     <!-- Items Section -->
-    <div class="section-title"><i class="fa-solid fa-box"></i> उत्पाद और ऑटो-जीएसटी इंजन</div>
+    <div class="section-heading"><i class="fa-solid fa-calculator"></i> उत्पाद एवं स्मार्ट जीएसटी इंजन</div>
     <div id="itemsList">
-        <!-- Item 1 -->
-        <div class="item-card">
-            <div class="item-top">
-                <input type="text" class="item-name-input" placeholder="आइटम लिखें (उदा. Jeans, Mobile)" oninput="autoProcess(this)" onkeyup="autoProcess(this)">
-                <button class="btn-delete" onclick="removeItem(this)"><i class="fa-solid fa-trash"></i></button>
+        <div class="item-row-card">
+            <div class="item-header-row">
+                <input type="text" class="item-name-input" placeholder="आइटम लिखें (उदा. Jeans, Mobile)">
+                <button class="btn-delete-item" type="button"><i class="fa-solid fa-trash-can" style="font-size:12px;"></i></button>
             </div>
-            <div class="item-grid-bottom">
-                <div class="input-group">
+            <div class="item-grid-inputs">
+                <div class="form-group">
                     <label>मात्रा (Qty)</label>
-                    <input type="number" class="item-qty" value="1" min="1" oninput="calculateAll()">
+                    <input type="number" class="item-qty" value="1" min="1">
                 </div>
-                <div class="input-group">
+                <div class="form-group">
                     <label>मूल्य / MRP (₹)</label>
-                    <input type="number" class="item-price" placeholder="0.00" oninput="calculateAll()">
+                    <input type="number" class="item-price" placeholder="0.00">
                 </div>
-                <div class="input-group">
+                <div class="form-group">
                     <label>प्राइस टाइप</label>
-                    <select class="item-tax-type" onchange="calculateAll()">
-                        <option value="inclusive" selected>GST शामिल (MRP)</option>
-                        <option value="exclusive">GST एक्स्ट्रा (प्लस)</option>
+                    <select class="item-tax-type">
+                        <option value="inclusive">GST शामिल (MRP)</option>
+                        <option value="exclusive" selected>GST एक्स्ट्रा (प्लस)</option>
                     </select>
                 </div>
-                <div class="input-group">
+                <div class="form-group">
                     <label>GST दर (%)</label>
-                    <select class="item-tax-rate" onchange="calculateAll()">
-                        <option value="0">0% (Nil)</option>
-                        <option value="5">5% GST</option>
-                        <option value="12">12% GST</option>
-                        <option value="18">18% GST</option>
-                        <option value="28">28% GST</option>
-                    </select>
-                </div>
-            </div>
-            <div class="item-totals-bar">
-                <span>मूल: <b class="row-base" style="color:var(--text-main);">₹0.00</b></span>
-                <span>GST: <b class="row-tax" style="color:var(--accent-red);">₹0.00</b></span>
-                <span>कुल: <b class="row-total" style="color:var(--primary);">₹0.00</b></span>
-            </div>
-        </div>
-    </div>
-
-    <button class="btn-add" onclick="addItem()"><i class="fa-solid fa-plus-circle"></i> नया आइटम जोड़ें</button>
-
-    <!-- Payment & Summary -->
-    <div class="summary-box">
-        <div class="section-title" style="margin:0 0 6px 0;"><i class="fa-solid fa-wallet"></i> भुगतान का माध्यम</div>
-        <div class="pay-options">
-            <label class="pay-chip"><input type="radio" name="pay" value="UPI / QR" checked> UPI / QR</label>
-            <label class="pay-chip"><input type="radio" name="pay" value="नकद (Cash)"> नकद (Cash)</label>
-            <label class="pay-chip"><input type="radio" name="pay" value="कार्ड (Card)"> कार्ड</label>
-            <label class="pay-chip"><input type="radio" name="pay" value="नेट बैंकिंग"> नेट बैंकिंग</label>
-        </div>
-
-        <div class="calc-row"><span>उप-योग (Subtotal):</span><span id="subTotal">₹0.00</span></div>
-        <div class="calc-row"><span>कुल GST:</span><span id="taxTotal">₹0.00</span></div>
-        <div class="calc-row grand">
-            <span>ग्रैंड टोटल:</span>
-            <span class="grand-val" id="grandTotal">₹0.00</span>
-        </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-        <button class="btn-action wa-btn" onclick="sendWhatsApp()"><i class="fa-brands fa-whatsapp" style="font-size:16px;"></i> शेयर करें</button>
-        <button class="btn-action print-btn" onclick="window.print()"><i class="fa-solid fa-print" style="font-size:15px;"></i> प्रिंट बिल</button>
-    </div>
-
-</div>
-
-<script>
-    document.getElementById('invDate').valueAsDate = new Date();
-
-    // ऑटो-डिटेक्ट जीएसटी फंक्शन (जैसे ही टाइप करेंगे तुरंत पकड़ेगा)
-    function autoProcess(input) {
-        const text = input.value.toLowerCase().trim();
-        const card = input.closest('.item-card');
-        const rateSelect = card.querySelector('.item-tax-rate');
-
-        if (text.includes('jeans') || text.includes('tshirt') || text.includes('t-shirt') || text.includes('shirt') || text.includes('cloth') || text.includes('कपड़ा') || text.includes('शर्ट') || text.includes('जींस') || text.includes('pant') || text.includes('kurti')) {
-            rateSelect.value = "5";
-        } else if (text.includes('shoes') || text.includes('shoe') || text.includes('footwear') || text.includes('जूते')) {
-            rateSelect.value = "12";
-        } else if (text.includes('mobile') || text.includes('phone') || text.includes('मोबाइल') || text.includes('फोन') || text.includes('laptop') || text.includes('watch') || text.includes('charger')) {
-            rateSelect.value = "18";
-        } else if (text.includes('gold') || text.includes('sona') || text.includes('jewelry')) {
-            rateSelect.value = "3";
-        } else if (text.includes('luxury') || text.includes('car') || text.includes('ac')) {
-            rateSelect.value = "28";
-        }
-        
-        calculateAll();
-    }
-
-    function addItem() {
-        const list = document.getElementById('itemsList');
-        const card = document.createElement('div');
-        card.className = 'item-card';
-        card.innerHTML = `
-            <div class="item-top">
-                <input type="text" class="item-name-input" placeholder="आइटम लिखें (उदा. Jeans, Mobile)" oninput="autoProcess(this)" onkeyup="autoProcess(this)">
-                <button class="btn-delete" onclick="removeItem(this)"><i class="fa-solid fa-trash"></i></button>
-            </div>
-            <div class="item-grid-bottom">
-                <div class="input-group">
-                    <label>मात्रा (Qty)</label>
-                    <input type="number" class="item-qty" value="1" min="1" oninput="calculateAll()">
-                </div>
-                <div class="input-group">
-                    <label>मूल्य / MRP (₹)</label>
-                    <input type="number" class="item-price" placeholder="0.00" oninput="calculateAll()">
-                </div>
-                <div class="input-group">
-                    <label>प्राइस टाइप</label>
-                    <select class="item-tax-type" onchange="calculateAll()">
-                        <option value="inclusive" selected>GST शामिल (MRP)</option>
-                        <option value="exclusive">GST एक्स्ट्रा (प्लस)</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>GST दर (%)</label>
-                    <select class="item-tax-rate" onchange="calculateAll()">
+                    <select class="item-tax-rate">
                         <option value="0">0% (Nil)</option>
                         <option value="5">5% GST</option>
                         <option value="12">12% GST</option>
@@ -448,82 +357,160 @@
                     </select>
                 </div>
             </div>
-            <div class="item-totals-bar">
-                <span>मूल: <b class="row-base" style="color:var(--text-main);">₹0.00</b></span>
-                <span>GST: <b class="row-tax" style="color:var(--accent-red);">₹0.00</b></span>
-                <span>कुल: <b class="row-total" style="color:var(--primary);">₹0.00</b></span>
+            <div class="item-calculation-footer">
+                <span>मूल: <b class="row-base" style="color:var(--pro-text);">₹0.00</b></span>
+                <span>GST: <b class="row-tax" style="color:var(--pro-danger);">₹0.00</b></span>
+                <span>कुल: <b class="row-total" style="color:var(--pro-primary);">₹0.00</b></span>
             </div>
-        `;
-        list.appendChild(card);
-        calculateAll();
-    }
+        </div>
+    </div>
 
-    function removeItem(btn) {
-        const list = document.getElementById('itemsList');
-        if (list.children.length > 1) {
-            btn.closest('.item-card').remove();
-            calculateAll();
-        } else {
-            alert("कम से कम एक आइटम होना ज़रूरी है!");
+    <button class="btn-add-new-item" id="btnAddItem" type="button"><i class="fa-solid fa-circle-plus"></i> नया आइटम जोड़ें</button>
+
+    <!-- Summary & Payment -->
+    <div class="summary-box-pro">
+        <div class="section-heading" style="margin:0 0 6px 0;"><i class="fa-solid fa-wallet"></i> भुगतान मोड</div>
+        <div class="payment-methods-grid">
+            <label class="pay-radio-chip"><input type="radio" name="pay" value="UPI / QR" checked> UPI / QR</label>
+            <label class="pay-radio-chip"><input type="radio" name="pay" value="नकद (Cash)"> नकद (Cash)</label>
+            <label class="pay-radio-chip"><input type="radio" name="pay" value="कार्ड (Card)"> कार्ड</label>
+            <label class="pay-radio-chip"><input type="radio" name="pay" value="नेट बैंकिंग"> नेट बैंकिंग</label>
+        </div>
+
+        <div class="summary-row-item"><span>उप-योग (Subtotal):</span><span id="subTotal">₹0.00</span></div>
+        <div class="summary-row-item"><span>कुल GST:</span><span id="taxTotal">₹0.00</span></div>
+        <div class="summary-row-item grand-total-row">
+            <span>ग्रैंड टोटल:</span>
+            <span class="grand-total-value" id="grandTotal">₹0.00</span>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-footer-grid">
+        <button class="pro-btn btn-whatsapp-pro" id="btnWa" type="button"><i class="fa-brands fa-whatsapp" style="font-size:15px;"></i> व्हाट्सएप शेयर</button>
+        <button class="pro-btn btn-print-pro" id="btnPrint" type="button"><i class="fa-solid fa-print" style="font-size:14px;"></i> प्रिंट / PDF</button>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('invDate').valueAsDate = new Date();
+
+        function calculateAll() {
+            let subSum = 0;
+            let taxSum = 0;
+
+            document.querySelectorAll('.item-row-card').forEach(card => {
+                const qtyInput = card.querySelector('.item-qty');
+                const priceInput = card.querySelector('.item-price');
+                const typeSelect = card.querySelector('.item-tax-type');
+                const rateSelect = card.querySelector('.item-tax-rate');
+
+                const qty = parseFloat(qtyInput ? qtyInput.value : 0) || 0;
+                const price = parseFloat(priceInput ? priceInput.value : 0) || 0;
+                const type = typeSelect ? typeSelect.value : 'exclusive';
+                const rate = parseFloat(rateSelect ? rateSelect.value : 0) || 0;
+
+                let base = 0;
+                let tax = 0;
+                let total = 0;
+
+                if (type === 'inclusive') {
+                    const totalAmt = qty * price;
+                    base = totalAmt / (1 + (rate / 100));
+                    tax = totalAmt - base;
+                    total = totalAmt;
+                } else {
+                    base = qty * price;
+                    tax = (base * rate) / 100;
+                    total = base + tax;
+                }
+
+                subSum += base;
+                taxSum += tax;
+
+                const baseDisplay = card.querySelector('.row-base');
+                const taxDisplay = card.querySelector('.row-tax');
+                const totalDisplay = card.querySelector('.row-total');
+
+                if (baseDisplay) baseDisplay.innerText = formatInr(base);
+                if (taxDisplay) taxDisplay.innerText = formatInr(tax);
+                if (totalDisplay) totalDisplay.innerText = formatInr(total);
+            });
+
+            const grand = subSum + taxSum;
+
+            const subTotalElem = document.getElementById('subTotal');
+            const taxTotalElem = document.getElementById('taxTotal');
+            const grandTotalElem = document.getElementById('grandTotal');
+
+            if (subTotalElem) subTotalElem.innerText = formatInr(subSum);
+            if (taxTotalElem) taxTotalElem.innerText = formatInr(taxSum);
+            if (grandTotalElem) grandTotalElem.innerText = formatInr(grand);
         }
-    }
 
-    // एकदम सटीक कैलकुलेशन इंजन
-    function calculateAll() {
-        let subSum = 0;
-        let taxSum = 0;
+        function formatInr(val) {
+            return '₹' + val.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
 
-        document.querySelectorAll('.item-card').forEach(card => {
-            const qty = parseFloat(card.querySelector('.item-qty').value) || 0;
-            const price = parseFloat(card.querySelector('.item-price').value) || 0;
-            const type = card.querySelector('.item-tax-type').value;
-            const rate = parseFloat(card.querySelector('.item-tax-rate').value) || 0;
+        function autoProcess(input) {
+            const text = input.value.toLowerCase().trim();
+            const card = input.closest('.item-row-card');
+            const rateSelect = card.querySelector('.item-tax-rate');
 
-            let base = 0;
-            let tax = 0;
-            let total = 0;
-
-            if (type === 'inclusive') {
-                const totalAmt = qty * price;
-                base = totalAmt / (1 + (rate / 100));
-                tax = totalAmt - base;
-                total = totalAmt;
-            } else {
-                base = qty * price;
-                tax = (base * rate) / 100;
-                total = base + tax;
+            if (rateSelect) {
+                if (text.includes('jeans') || text.includes('tshirt') || text.includes('t-shirt') || text.includes('shirt') || text.includes('cloth') || text.includes('कपड़ा') || text.includes('शर्ट') || text.includes('जींस') || text.includes('pant') || text.includes('kurti')) {
+                    rateSelect.value = "5";
+                } else if (text.includes('shoes') || text.includes('shoe') || text.includes('footwear') || text.includes('जूते')) {
+                    rateSelect.value = "12";
+                } else if (text.includes('mobile') || text.includes('phone') || text.includes('मोबाइल') || text.includes('फोन') || text.includes('laptop') || text.includes('watch') || text.includes('charger')) {
+                    rateSelect.value = "18";
+                } else if (text.includes('gold') || text.includes('sona') || text.includes('jewelry')) {
+                    rateSelect.value = "3";
+                } else if (text.includes('luxury') || text.includes('car') || text.includes('ac')) {
+                    rateSelect.value = "28";
+                }
             }
+            calculateAll();
+        }
 
-            subSum += base;
-            taxSum += tax;
+        function attachRowEvents(card) {
+            const nameInput = card.querySelector('.item-name-input');
+            const qtyInput = card.querySelector('.item-qty');
+            const priceInput = card.querySelector('.item-price');
+            const typeSelect = card.querySelector('.item-tax-type');
+            const rateSelect = card.querySelector('.item-tax-rate');
+            const deleteBtn = card.querySelector('.btn-delete-item');
 
-            card.querySelector('.row-base').innerText = formatInr(base);
-            card.querySelector('.row-tax').innerText = formatInr(tax);
-            card.querySelector('.row-total').innerText = formatInr(total);
+            if (nameInput) {
+                nameInput.addEventListener('input', function() { autoProcess(this); });
+                nameInput.addEventListener('keyup', function() { autoProcess(this); });
+            }
+            if (qtyInput) qtyInput.addEventListener('input', calculateAll);
+            if (priceInput) priceInput.addEventListener('input', calculateAll);
+            if (typeSelect) typeSelect.addEventListener('change', calculateAll);
+            if (rateSelect) rateSelect.addEventListener('change', calculateAll);
+
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    const list = document.getElementById('itemsList');
+                    if (list.children.length > 1) {
+                        card.remove();
+                        calculateAll();
+                    } else {
+                        alert("कम से कम एक आइटम होना ज़रूरी है!");
+                    }
+                });
+            }
+        }
+
+        document.querySelectorAll('.item-row-card').forEach(card => {
+            attachRowEvents(card);
         });
 
-        const grand = subSum + taxSum;
-
-        document.getElementById('subTotal').innerText = formatInr(subSum);
-        document.getElementById('taxTotal').innerText = formatInr(taxSum);
-        document.getElementById('grandTotal').innerText = formatInr(grand);
-    }
-
-    function formatInr(val) {
-        return '₹' + val.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    }
-
-    function sendWhatsApp() {
-        const biz = document.getElementById('bizName').value || 'दुकान';
-        const date = document.getElementById('invDate').value;
-        const invNo = document.getElementById('invNo').value;
-        const cust = document.getElementById('custName').value || 'ग्राहक';
-        const mob = document.getElementById('custMobile').value || '';
-        const pay = document.querySelector('input[name="pay"]:checked').value;
-
-        let itemsStr = "";
-        document.querySelectorAll('.item-card').forEach((card, i) => {
-            const name = card.querySelector('.item-name-input').value || `आइटम ${i+1}`;
-            const qty = card.querySelector('.item-qty').value || '0';
-            const rate = card.querySelector('.item-tax-rate').value;
-            const tot = card.querySelector('.row-total'
+        const btnAddItem = document.getElementById('btnAddItem');
+        if (btnAddItem) {
+            btnAddItem.addEventListener('click', function() {
+                const list = document.getElementById('itemsList');
+                const card = document.createEl
