@@ -65,34 +65,48 @@
             background: #fff;
         }
 
+        /* Business Header Edit Section */
         .biz-header {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 18px;
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px dashed var(--border-color);
         }
 
-        .biz-inputs input {
+        .biz-box-group { display: flex; flex-direction: column; gap: 6px; }
+        .biz-box-group label { font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .biz-name-input {
             width: 100%;
-            border: none;
-            font-size: 22px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 18px;
             font-weight: 800;
             color: var(--primary-dark);
+            background: #fff;
             outline: none;
-            background: transparent;
+            transition: all 0.2s;
         }
+        .biz-name-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
 
-        .biz-inputs textarea {
+        .biz-textarea {
             width: 100%;
-            border: none;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--text-main);
+            background: #fff;
             outline: none;
-            background: transparent;
             resize: none;
+            transition: all 0.2s;
         }
+        .biz-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
 
         .section-label {
             font-size: 11px;
@@ -149,6 +163,22 @@
             gap: 10px;
             align-items: center;
             margin-bottom: 12px;
+        }
+
+        .item-name {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #fff;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .item-name:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
         .item-calc-grid {
@@ -253,7 +283,7 @@
         @media (min-width: 700px) {
             body { padding: 30px; }
             .invoice-wrapper { padding: 40px; }
-            .biz-header { grid-template-columns: 2fr 1fr; }
+            .biz-header { grid-template-columns: 2fr 1fr; align-items: center; }
             .cust-card { grid-template-columns: 1fr 1fr; }
             .cust-card .full-width { grid-column: span 2; }
             .bottom-grid { grid-template-columns: 1.2fr 1fr; }
@@ -275,15 +305,16 @@
         </div>
     </div>
 
-    <!-- Business Header -->
+    <!-- Editable Business Header -->
     <div class="biz-header">
-        <div class="biz-inputs">
-            <input type="text" id="bizName" value="आपकी दुकान / कंपनी का नाम">
-            <textarea id="bizDetails" rows="2">पता: मेन मार्केट, शहर | मोबाइल: +91 9876543210 | GSTIN: 07AAAAA0000A1Z5</textarea>
+        <div class="biz-box-group">
+            <label><i class="fa-solid fa-store"></i> फर्म / दुकान का नाम (यहाँ क्लिक करके बदलें)</label>
+            <input type="text" id="bizName" class="biz-name-input" value="श्री बालाजी गारमेंट्स & टेलीकॉम">
+            <textarea id="bizDetails" class="biz-textarea" rows="2">पता: मेन मार्केट, फतूहीवाला | मोबाइल: +91 9876543210 | GSTIN: 07AAAAA0000A1Z5</textarea>
         </div>
-        <div style="text-align: right;">
-            <label style="font-size:11px; font-weight:700; color:var(--text-muted);">बिल नंबर:</label>
-            <input type="text" id="invNo" value="#INV-1001" style="width: 100px; padding:6px; text-align:center; border:1px solid var(--border-color); border-radius:6px; font-weight:700;">
+        <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; justify-content: center;">
+            <label style="font-size:10px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px;">बिल नंबर:</label>
+            <input type="text" id="invNo" value="#INV-1001" style="width: 110px; padding:8px; text-align:center; border:1px solid var(--border-color); border-radius:8px; font-weight:800; font-size:14px; color:var(--primary-dark);">
         </div>
     </div>
 
@@ -311,7 +342,7 @@
         <div class="item-row">
             <div class="item-main-grid">
                 <span class="sr-no" style="font-weight:800; font-size:13px; color:var(--primary);">1</span>
-                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Mobile, Shirt)" oninput="autoDetectGST(this)">
+                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Tshirt, Mobile, Jeans)" oninput="autoDetectGST(this)">
                 <button class="btn-del" onclick="deleteItemRow(this)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
             <div class="item-calc-grid">
@@ -334,9 +365,9 @@
                     <label>GST दर (%)</label>
                     <select class="item-tax-rate">
                         <option value="0">0% (Nil)</option>
-                        <option value="5">5% GST</option>
+                        <option value="5" selected>5% GST</option>
                         <option value="12">12% GST</option>
-                        <option value="18" selected>18% GST</option>
+                        <option value="18">18% GST</option>
                         <option value="28">28% GST</option>
                     </select>
                 </div>
@@ -390,19 +421,20 @@
 <script>
     document.getElementById('invDate').valueAsDate = new Date();
 
-    // ग्लोबल लिसनर ताकि नया या पुराना कोई भी रो हो, तुरंत कैलकुलेट हो
+    // ग्लोबल लिसनर ताकि किसी भी बॉक्स में कुछ भी टाइप होते ही तुरंत कैलकुलेट हो जाए
     document.addEventListener('input', calculateInvoice);
     document.addEventListener('change', calculateInvoice);
 
+    // एडवांस्ड ऑटो जीएसटी डिटेक्टर (अब Tshirt, T-Shirt, Mobile सब पर काम करेगा)
     function autoDetectGST(inputElem) {
-        const text = inputElem.value.toLowerCase();
+        const text = inputElem.value.toLowerCase().trim();
         const row = inputElem.closest('.item-row');
         const taxRateSelect = row.querySelector('.item-tax-rate');
 
-        if (text.includes('mobile') || text.includes('phone') || text.includes('मोबाइल') || text.includes('फोन') || text.includes('laptop') || text.includes('electronics')) {
-            taxRateSelect.value = "18";
-        } else if (text.includes('shirt') || text.includes('jeans') || text.includes('cloth') || text.includes('कपड़ा') || text.includes('शर्ट') || text.includes('pant') || text.includes('kurti')) {
+        if (text.includes('tshirt') || text.includes('t-shirt') || text.includes('shirt') || text.includes('jeans') || text.includes('cloth') || text.includes('कपड़ा') || text.includes('शर्ट') || text.includes('pant') || text.includes('kurti') || text.includes('top')) {
             taxRateSelect.value = "5";
+        } else if (text.includes('mobile') || text.includes('phone') || text.includes('मोबाइल') || text.includes('फोन') || text.includes('laptop') || text.includes('electronics') || text.includes('watch')) {
+            taxRateSelect.value = "18";
         } else if (text.includes('gold') || text.includes('sona') || text.includes('jewelry')) {
             taxRateSelect.value = "3";
         } else if (text.includes('luxury') || text.includes('car') || text.includes('ac')) {
@@ -420,7 +452,7 @@
         div.innerHTML = `
             <div class="item-main-grid">
                 <span class="sr-no" style="font-weight:800; font-size:13px; color:var(--primary);">${count}</span>
-                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Mobile, Shirt)" oninput="autoDetectGST(this)">
+                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Tshirt, Mobile, Jeans)" oninput="autoDetectGST(this)">
                 <button class="btn-del" onclick="deleteItemRow(this)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
             <div class="item-calc-grid">
@@ -443,9 +475,9 @@
                     <label>GST दर (%)</label>
                     <select class="item-tax-rate">
                         <option value="0">0% (Nil)</option>
-                        <option value="5">5% GST</option>
+                        <option value="5" selected>5% GST</option>
                         <option value="12">12% GST</option>
-                        <option value="18" selected>18% GST</option>
+                        <option value="18">18% GST</option>
                         <option value="28">28% GST</option>
                     </select>
                 </div>
@@ -453,53 +485,4 @@
             <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; font-weight:700; color:var(--text-muted); border-top:1px solid #e2e8f0; padding-top:8px;">
                 <span>मूल मूल्य: <span class="base-display" style="color:var(--text-main);">₹0.00</span></span>
                 <span>GST: <span class="tax-amt-display" style="color:var(--accent-red);">₹0.00</span></span>
-                <span>कुल: <span class="item-total-display" style="color:var(--primary); font-weight:800;">₹0.00</span></span>
-            </div>
-        `;
-        container.appendChild(div);
-        calculateInvoice();
-    }
-
-    function deleteItemRow(btn) {
-        const container = document.getElementById('itemsContainer');
-        if (container.children.length > 1) {
-            btn.closest('.item-row').remove();
-            updateSerialNumbers();
-            calculateInvoice();
-        } else {
-            alert("कम से कम एक आइटम होना ज़रूरी है!");
-        }
-    }
-
-    function updateSerialNumbers() {
-        const rows = document.querySelectorAll('.item-row');
-        rows.forEach((row, index) => {
-            row.querySelector('.sr-no').innerText = index + 1;
-        });
-    }
-
-    function calculateInvoice() {
-        let grandSubtotal = 0;
-        let grandTaxTotal = 0;
-
-        const rows = document.querySelectorAll('.item-row');
-
-        rows.forEach(row => {
-            const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
-            const enteredPrice = parseFloat(row.querySelector('.item-price').value) || 0;
-            const taxType = row.querySelector('.item-tax-type').value;
-            const taxRate = parseFloat(row.querySelector('.item-tax-rate').value) || 0;
-
-            let basePrice = 0;
-            let taxAmount = 0;
-            let totalLineAmount = 0;
-
-            if (taxType === 'inclusive') {
-                const totalEntered = qty * enteredPrice;
-                basePrice = totalEntered / (1 + (taxRate / 100));
-                taxAmount = totalEntered - basePrice;
-                totalLineAmount = totalEntered;
-            } else {
-                basePrice = qty * enteredPrice;
-                taxAmount = (basePrice * taxRate) / 100;
-                totalLineAmount = basePrice + ta
+                <span>कुल: <span 
