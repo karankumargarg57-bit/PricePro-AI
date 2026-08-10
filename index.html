@@ -3,243 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>प्रोफेशनल प्राइस कैलकुलेटर</title>
-    <!-- Google Fonts के माध्यम से 'Poppins' फोंट जोड़ा गया है -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Price Calculator Enterprise Pro</title>
+    <!-- Modern Google Font & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* प्रोफेशनल लुक के लिए CSS */
         :root {
-            --primary-color: #4a90e2; /* प्रोफेशनल ब्लू */
-            --secondary-color: #357abd;
-            --background-color: #f0f4f8;
-            --text-color: #333;
-            --white: #ffffff;
-            --shadow: 0 8px 30px rgba(0,0,0,0.1);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --card-border: rgba(255, 255, 255, 0.6);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --primary-shadow: rgba(99, 102, 241, 0.35);
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --input-bg: #f8fafc;
+            --input-border: #e2e8f0;
+            --glass-card: rgba(255, 255, 255, 0.85);
+            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --radius-lg: 24px;
+            --radius-md: 14px;
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e1029 100%);
+            --card-bg: rgba(30, 41, 59, 0.92);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-gradient: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            --primary-shadow: rgba(129, 140, 248, 0.3);
+            --input-bg: #0f172a;
+            --input-border: #334155;
+            --glass-card: rgba(15, 23, 42, 0.7);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif; /* साफ़ और आधुनिक फोंट */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            background-color: var(--background-color);
+            background: var(--bg-gradient);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 24px;
+            color: var(--text-main);
         }
 
-        .calculator-container {
-            background-color: var(--white);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: var(--shadow);
+        .calculator-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
             width: 100%;
-            max-width: 450px;
-            transition: transform 0.3s ease;
-        }
-
-        .calculator-container:hover {
-            transform: translateY(-5px); /* हल्का होवर इफ़ेक्ट */
-        }
-
-        .calculator-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .calculator-header h2 {
-            color: var(--primary-color);
-            font-weight: 600;
-            font-size: 28px;
-            letter-spacing: 1px;
-        }
-
-        .calculator-header p {
-            color: #777;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
+            max-width: 520px;
+            padding: 36px;
+            box-shadow: var(--shadow-lg);
             position: relative;
+            overflow: hidden;
         }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 400;
-            color: var(--text-color);
-            font-size: 15px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e1e8ed;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            color: var(--text-color);
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 10px rgba(74, 144, 226, 0.2);
-        }
-
-        /* इनपुट बॉक्स में करेंसी सिंबल (₹) */
-        .input-group.currency-input::before {
-            content: '₹';
+        .calculator-card::before {
+            content: '';
             position: absolute;
-            left: 20px;
-            top: 48px;
-            color: #999;
-            font-size: 16px;
+            top: -100px;
+            right: -100px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        .input-group.currency-input input {
-            padding-left: 45px;
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
         }
 
-        button.calculate-btn {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--primary-color);
-            color: var(--white);
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 600;
+        .brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 8px 16px var(--primary-shadow);
+        }
+
+        .brand-title h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-title p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .theme-switch {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
-        }
-
-        button.calculate-btn:hover {
-            background-color: var(--secondary-color);
-        }
-
-        button.calculate-btn:active {
-            transform: scale(0.98); /* क्लिक करने पर बटन दबेगा */
-        }
-
-        .result-display {
-            margin-top: 30px;
-            padding: 25px;
-            background-color: #fbfdff;
-            border: 2px dashed var(--primary-color);
-            border-radius: 15px;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .result-display.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .result-label {
+            color: var(--text-main);
             font-size: 16px;
-            color: #777;
-            margin-bottom: 10px;
         }
 
-        .result-amount {
-            font-size: 36px;
+        .theme-switch:hover {
+            transform: rotate(15deg) scale(1.05);
+            border-color: #6366f1;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-box.full-width {
+            grid-column: span 2;
+        }
+
+        .input-box label {
+            font-size: 13px;
             font-weight: 600;
-            color: var(--primary-color);
-            word-wrap: break-word;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        /* छोटी स्क्रीन के लिए रिस्पॉन्सिव डिज़ाइन */
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 14px 12px 38px;
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px var(--primary-shadow);
+        }
+
+        .summary-card {
+            background: var(--glass-card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .summary-item.discount { color: var(--accent-red); }
+        .summary-item.tax { color: var(--accent-green); }
+
+        .summary-divider {
+            height: 1px;
+            background: var(--input-border);
+            margin: 14px 0;
+        }
+
+        .total-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-item span {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .total-amount {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .action-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 14px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 20px var(--primary-shadow);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: var(--input-bg);
+            border: 1.5px solid var(--input-border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+
+        .history-box {
+            border-top: 1px solid var(--input-border);
+            padding-top: 18px;
+        }
+
+        .history-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .history-list {
+            list-style: none;
+            max-height: 120px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .history-card {
+            background: var(--input-bg);
+            padding: 10px 14px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            border: 1px solid var(--input-border);
+        }
+
+        .history-time { color: var(--text-muted); font-size: 12px; }
+        .history-val { font-weight: 700; color: #10b981; }
+
         @media (max-width: 480px) {
-            .calculator-container {
-                padding: 30px 20px;
-            }
-            .calculator-header h2 {
-                font-size: 24px;
-            }
-            .result-amount {
-                font-size: 28px;
-            }
+            .form-grid { grid-template-columns: 1fr; }
+            .input-box.full-width { grid-column: span 1; }
+            .calculator-card { padding: 24px; }
         }
     </style>
 </head>
 <body>
 
-<div class="calculator-container">
-    <div class="calculator-header">
-        <h2>प्राइस कैलकुलेटर</h2>
-        <p>अपनी कुल लागत का तुरंत अनुमान लगाएं</p>
-    </div>
-    
-    <div class="input-group currency-input">
-        <label for="price">प्रति यूनिट मूल्य (Price per Unit)</label>
-        <input type="number" id="price" placeholder="उदा. 100" min="0">
-    </div>
-
-    <div class="input-group">
-        <label for="quantity">मात्रा (Quantity)</label>
-        <input type="number" id="quantity" placeholder="उदा. 5" min="1" value="1">
-    </div>
-
-    <div class="input-group">
-        <label for="tax">टैक्स % (Tax Percentage)</label>
-        <input type="number" id="tax" placeholder="उदा. 18" min="0" value="0">
+<div class="calculator-card">
+    <!-- Header -->
+    <div class="app-header">
+        <div class="brand-badge">
+            <div class="brand-icon">
+                <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div class="brand-title">
+                <h1>CalcPro Studio</h1>
+                <p>स्मार्ट मूल्य एवं कर कैलकुलेटर</p>
+            </div>
+        </div>
+        <button class="theme-switch" onclick="toggleTheme()" title="थीम बदलें">
+            <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
     </div>
 
-    <button class="calculate-btn" onclick="calculateTotal()">कुल कीमत की गणना करें</button>
+    <!-- Inputs -->
+    <div class="form-grid">
+        <div class="input-box full-width">
+            <label><i class="fa-solid fa-tag"></i> प्रति यूनिट मूल्य (Price / Unit)</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+                <input type="number" id="price" placeholder="0.00" min="0" oninput="calculate()">
+            </div>
+        </div>
 
-    <div class="result-display" id="result-display">
-        <div class="result-label">कुल देय राशि</div>
-        <div class="result-amount" id="result-amount">₹0.00</div>
+        <div class="input-box">
+            <label><i class="fa-solid fa-boxes-stacked"></i> मात्रा (Quantity)</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-layer-group"></i>
+                <input type="number" id="quantity" value="1" min="1" oninput="calculate()">
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label><i class="fa-solid fa-percent"></i> छूट (Discount %)</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-arrow-down-long"></i>
+                <input type="number" id="discount" value="0" min="0" max="100" oninput="calculate()">
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label><i class="fa-solid fa-receipt"></i> टैक्स (GST/Tax %)</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-building-columns"></i>
+                <input type="number" id="tax" value="0" min="0" oninput="calculate()">
+            </div>
+        </div>
+
+        <div class="input-box">
+            <label><i class="fa-solid fa-truck-fast"></i> डिलीवरी (Shipping)</label>
+            <div class="input-wrapper">
+                <i class="fa-solid fa-truck"></i>
+                <input type="number" id="shipping" value="0" min="0" oninput="calculate()">
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-card">
+        <div class="summary-item">
+            <span>मूल मूल्य (Subtotal)</span>
+            <span id="subtotalVal">₹0.00</span>
+        </div>
+        <div class="summary-item discount">
+            <span>कुल छूट (Discount)</span>
+            <span id="discountVal">-₹0.00</span>
+        </div>
+        <div class="summary-item tax">
+            <span>टैक्स राशि (Tax Amount)</span>
+            <span id="taxVal">+₹0.00</span>
+        </div>
+        <div class="summary-item">
+            <span>डिलीवरी शुल्क (Delivery Fee)</span>
+            <span id="shippingVal">+₹0.00</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="total-item">
+            <span>कुल देय राशि (Total Amount)</span>
+            <div class="total-amount" id="totalVal">₹0.00</div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-group">
+        <button class="btn btn-outline" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> प्रिंट/PDF
+        </button>
+        <button class="btn btn-primary" onclick="saveHistory()">
+            <i class="fa-solid fa-bookmark"></i> सेव रिकॉर्ड
+        </button>
+    </div>
+
+    <!-- History -->
+    <div class="history-box">
+        <div class="history-title">
+            <i class="fa-solid fa-clock-rotate-left"></i> हालिया रिकॉर्ड (Saved History)
+        </div>
+        <ul class="history-list" id="historyList">
+            <li class="history-card" style="justify-content: center; color: var(--text-muted); font-size: 12px;">
+                अभी तक कोई रिकॉर्ड सेव नहीं किया गया है
+            </li>
+        </ul>
     </div>
 </div>
 
 <script>
-    function calculateTotal() {
-        // इनपुट वैल्यू प्राप्त करें
-        const price = parseFloat(document.getElementById('price').value);
-        const quantity = parseFloat(document.getElementById('quantity').value);
-        const tax = parseFloat(document.getElementById('tax').value);
+    function calculate() {
+        const price = parseFloat(document.getElementById('price').value) || 0;
+        const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+        const discountPercent = parseFloat(document.getElementById('discount').value) || 0;
+        const taxPercent = parseFloat(document.getElementById('tax').value) || 0;
+        const shipping = parseFloat(document.getElementById('shipping').value) || 0;
 
-        // बेसिक वैलिडेशन
-        if (isNaN(price) || price < 0 || isNaN(quantity) || quantity < 1 || isNaN(tax) || tax < 0) {
-            alert("कृपया सभी फ़ील्ड में सही और सकारात्मक (positive) संख्याएं दर्ज करें।");
-            return;
+        const subtotal = price * quantity;
+        const discountAmount = (subtotal * discountPercent) / 100;
+        const discountedSubtotal = subtotal - discountAmount;
+        const taxAmount = (discountedSubtotal * taxPercent) / 100;
+        const total = discountedSubtotal + taxAmount + shipping;
+
+        document.getElementById('subtotalVal').innerText = formatINR(subtotal);
+        document.getElementById('discountVal').innerText = `-${formatINR(discountAmount)}`;
+        document.getElementById('taxVal').innerText = `+${formatINR(taxAmount)}`;
+        document.getElementById('shippingVal').innerText = `+${formatINR(shipping)}`;
+        document.getElementById('totalVal').innerText = formatINR(total);
+    }
+
+    function formatINR(amount) {
+        return amount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
+    }
+
+    function toggleTheme() {
+        const body = document.documentElement;
+        const icon = document.getElementById('themeIcon');
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.removeAttribute('data-theme');
+            icon.className = 'fa-solid fa-moon';
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            icon.className = 'fa-solid fa-sun';
+        }
+    }
+
+    function saveHistory() {
+        const totalText = document.getElementById('totalVal').innerText;
+        if (totalText === "₹0.00") return;
+
+        const historyList = document.getElementById('historyList');
+        if (historyList.children[0]?.innerText.includes("कोई रिकॉर्ड")) {
+            historyList.innerHTML = '';
         }
 
-        // गणना (Calculations)
-        const subtotal = price * quantity;
-        const taxAmount = (subtotal * tax) / 100;
-        const total = subtotal + taxAmount;
-
-        // परिणाम दिखाएं और एनिमेशन ट्रिगर करें
-        const resultDisplay = document.getElementById('result-display');
-        const resultAmount = document.getElementById('result-amount');
-
-        // भारतीय मुद्रा प्रारूप (Indian Currency Format) में बदलें
-        const formattedTotal = total.toLocaleString('en-IN', {
-            style: 'currency',
-            currency: 'INR',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        });
-
-        // परिणाम सेट करें (सिंबल के साथ)
-        resultAmount.innerText = formattedTotal;
-        
-        // परिणाम बॉक्स दिखाएं
-        resultDisplay.classList.add('show');
+        const date = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const li = document.createElement('li');
+        li.className = 'history-card';
+        li.innerHTML = `
+            <span class="history-time"><i class="fa-regular fa-clock"></i> ${date}</span>
+            <span class="history-val">${totalText}</span>
+        `;
+        historyList.prepend(li);
     }
 </script>
 
