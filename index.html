@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>अल्ट्रा-प्रोफेशनल स्मार्ट जीएसटी इनवॉइस</title>
+    <title>अल्ट्रा-प्रो मैक्स स्मार्ट जीएसटी इनवॉइस</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
             --primary-bg: #e0e7ff;
-            --bg-gradient: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
             --card-bg: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
@@ -130,7 +130,7 @@
         }
         .field-group input:focus, .field-group select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
         /* Item Row Style */
@@ -141,7 +141,6 @@
             padding: 16px;
             margin-bottom: 14px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-            transition: transform 0.2s;
         }
 
         .item-main-grid {
@@ -272,7 +271,7 @@
             <input type="date" id="invDate">
         </div>
         <div style="font-size:14px; font-weight:800; color:var(--primary-dark);">
-            <i class="fa-solid fa-receipt"></i> स्मार्ट टैक्स इनवॉइस
+            <i class="fa-solid fa-receipt"></i> अल्ट्रा प्रो इनवॉइस
         </div>
     </div>
 
@@ -312,7 +311,7 @@
         <div class="item-row">
             <div class="item-main-grid">
                 <span class="sr-no" style="font-weight:800; font-size:13px; color:var(--primary);">1</span>
-                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Mobile, Shirt, Jeans, Shoes)" oninput="autoDetectGST(this)" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:8px; font-size:13px; font-weight:600; background:#fff; outline:none;">
+                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Mobile, Shirt)" oninput="autoDetectGST(this)">
                 <button class="btn-del" onclick="deleteItemRow(this)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
             <div class="item-calc-grid">
@@ -391,10 +390,10 @@
 <script>
     document.getElementById('invDate').valueAsDate = new Date();
 
-    document.getElementById('itemsContainer').addEventListener('input', calculateInvoice);
-    document.getElementById('itemsContainer').addEventListener('change', calculateInvoice);
+    // ग्लोबल लिसनर ताकि नया या पुराना कोई भी रो हो, तुरंत कैलकुलेट हो
+    document.addEventListener('input', calculateInvoice);
+    document.addEventListener('change', calculateInvoice);
 
-    // स्मार्ट ऑटो-जीएसटी डिटेक्टर फंक्शन (नाम पढ़कर ऑटोमैटिक टैक्स सेट करना)
     function autoDetectGST(inputElem) {
         const text = inputElem.value.toLowerCase();
         const row = inputElem.closest('.item-row');
@@ -421,7 +420,7 @@
         div.innerHTML = `
             <div class="item-main-grid">
                 <span class="sr-no" style="font-weight:800; font-size:13px; color:var(--primary);">${count}</span>
-                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Mobile, Shirt)" oninput="autoDetectGST(this)" style="width:100%; padding:10px; border:1px solid var(--border-color); border-radius:8px; font-size:13px; font-weight:600; background:#fff; outline:none;">
+                <input type="text" class="item-name" placeholder="उत्पाद का नाम लिखें (उदा. Mobile, Shirt)" oninput="autoDetectGST(this)">
                 <button class="btn-del" onclick="deleteItemRow(this)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
             <div class="item-calc-grid">
@@ -495,4 +494,12 @@
             let taxAmount = 0;
             let totalLineAmount = 0;
 
-     
+            if (taxType === 'inclusive') {
+                const totalEntered = qty * enteredPrice;
+                basePrice = totalEntered / (1 + (taxRate / 100));
+                taxAmount = totalEntered - basePrice;
+                totalLineAmount = totalEntered;
+            } else {
+                basePrice = qty * enteredPrice;
+                taxAmount = (basePrice * taxRate) / 100;
+                totalLineAmount = basePrice + ta
