@@ -3,191 +3,490 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PricePro AI — Smart GST Calculator India</title>
-<meta name="description" content="Professional Indian GST price calculator with product search, category detection, HSN, GST rules, quantity and instant billing.">
+<meta name="theme-color" content="#5b35e8">
+<title>PricePro AI — Advanced GST Price Calculator</title>
+<meta name="description" content="Advanced Indian GST price calculator with product search, HSN lookup, quantity, discount, CGST/SGST/IGST, GST-inclusive mode, cart and invoice printing.">
 <style>
-:root{--bg:#f4f6fb;--card:#fff;--ink:#111827;--muted:#64748b;--line:#e5e7eb;--primary:#5b35e8;--primary2:#7c3aed;--soft:#f4f1ff;--good:#047857;--danger:#dc2626}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 0,#eeeaff 0,transparent 34%),radial-gradient(circle at 100% 10%,#e6e8ff 0,transparent 30%),var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink)}
-button,input,select{font:inherit}.top{max-width:1180px;margin:auto;padding:22px 18px 8px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center;font-weight:800}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;display:grid;place-items:center;font-weight:900}.pill{font-size:11px;font-weight:800;color:var(--primary);background:#eeeaff;border:1px solid #ddd5ff;padding:8px 11px;border-radius:999px}
-.hero{max-width:980px;margin:35px auto 28px;text-align:center;padding:0 18px}.hero h1{font-size:clamp(32px,6vw,56px);line-height:1.02;margin:0;font-weight:900;letter-spacing:-2px}.hero h1 span{background:linear-gradient(90deg,#4f46e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:720px;margin:16px auto 0;line-height:1.6}
-.wrap{max-width:1180px;margin:auto;padding:0 18px 50px}.card{background:rgba(255,255,255,.94);border:1px solid rgba(226,232,240,.9);border-radius:24px;box-shadow:0 18px 55px rgba(30,41,59,.08);padding:24px;margin-bottom:18px}.sect{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:850;margin-bottom:18px}.num{width:28px;height:28px;border-radius:9px;background:#f0edff;color:var(--primary);display:grid;place-items:center;font-size:12px}
-.grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}.field label{display:block;font-size:11px;font-weight:850;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin:0 0 7px}.field input,.field select{width:100%;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;outline:none;background:#fff}.field input:focus,.field select:focus{border-color:#8b5cf6;box-shadow:0 0 0 4px #ede9fe}
-.searchbox{position:relative}.suggest{position:absolute;z-index:20;left:0;right:0;top:78px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px rgba(15,23,42,.15);overflow:hidden;display:none}.sug{padding:12px 14px;border-bottom:1px solid #f1f5f9;cursor:pointer}.sug:hover{background:#f7f5ff}.sug b{display:block}.sug small{color:var(--muted)}
-.detect{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:15px}.detect .d{padding:13px;background:#f8fafc;border:1px solid #edf0f4;border-radius:13px}.d small{display:block;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;margin-bottom:5px}.d b{font-size:13px}.rate{color:var(--primary)}
-.actions{display:flex;gap:10px;margin-top:16px}.btn{border:0;border-radius:12px;padding:13px 17px;font-weight:850;cursor:pointer}.primary{flex:1;background:linear-gradient(90deg,var(--primary),var(--primary2));color:#fff}.secondary{background:#111827;color:#fff}.light{background:#f1f5f9;color:#334155}.danger{background:#fee2e2;color:#b91c1c}
-.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:850px}.table th{font-size:11px;color:var(--muted);text-transform:uppercase;text-align:left;background:#f8fafc;padding:13px}.table td{padding:13px;border-top:1px solid #eef2f7;font-size:13px}.empty{text-align:center;color:#94a3b8;padding:30px!important}
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.sum{padding:18px;border-radius:16px;background:#f8fafc}.sum small{color:var(--muted);font-weight:700}.sum strong{display:block;font-size:23px;margin-top:6px}.grand{background:linear-gradient(135deg,#5134e7,#7c3aed);color:#fff}.grand small{color:#ddd6fe}
-.options{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.check{display:flex;gap:8px;align-items:center;font-size:12px;color:#475569}.note{font-size:11px;line-height:1.6;color:#64748b;margin-top:14px}.footer{text-align:center;color:#94a3b8;font-size:12px;padding:8px 0 25px}
-@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.detect{grid-template-columns:1fr 1fr}.summary{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.grid,.detect,.summary{grid-template-columns:1fr}.top{padding-top:14px}.hero{margin-top:28px}.card{padding:17px;border-radius:19px}.actions{flex-wrap:wrap}.actions .btn{width:100%}}
-@media print{body{background:#fff}.top,.hero,.addcard,.actions,.note,.footer{display:none!important}.card{box-shadow:none;border:0}.wrap{padding:0}.table{min-width:0}}
+:root{--bg:#f4f6fb;--card:#fff;--ink:#111827;--muted:#64748b;--line:#e5e7eb;--primary:#5b35e8;--primary2:#7c3aed;--soft:#f3f0ff;--good:#047857;--warn:#b45309;--danger:#dc2626}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 8% 0,#eeeaff 0,transparent 32%),radial-gradient(circle at 100% 8%,#e6e8ff 0,transparent 28%),var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink)}
+button,input,select{font:inherit}.top{max-width:1220px;margin:auto;padding:18px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:11px;align-items:center;font-weight:900}.logo{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;display:grid;place-items:center;font-weight:900;box-shadow:0 8px 20px #5b35e833}.pill{font-size:11px;font-weight:900;color:var(--primary);background:#eeeaff;border:1px solid #ddd5ff;padding:8px 11px;border-radius:999px}
+.hero{max-width:1050px;margin:28px auto 25px;text-align:center;padding:0 18px}.hero h1{font-size:clamp(34px,6vw,60px);line-height:1.02;margin:0;font-weight:950;letter-spacing:-2.5px}.hero h1 span{background:linear-gradient(90deg,#4f46e5,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:760px;margin:15px auto;line-height:1.6}.wrap{max-width:1220px;margin:auto;padding:0 18px 55px}.card{background:rgba(255,255,255,.96);border:1px solid rgba(226,232,240,.95);border-radius:24px;box-shadow:0 18px 55px rgba(30,41,59,.08);padding:22px;margin-bottom:18px}.sect{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:900;margin-bottom:18px}.num{width:29px;height:29px;border-radius:9px;background:#f0edff;color:var(--primary);display:grid;place-items:center;font-size:12px}
+.grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}.field label{display:block;font-size:11px;font-weight:900;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin:0 0 7px}.field input,.field select,.control{width:100%;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 13px;outline:none;background:#fff}.field input:focus,.field select:focus,.control:focus{border-color:#8b5cf6;box-shadow:0 0 0 4px #ede9fe}
+.searchbox{position:relative}.suggest{position:absolute;z-index:30;left:0;right:0;top:78px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 40px rgba(15,23,42,.16);overflow:auto;max-height:330px;display:none}.sug{padding:12px 14px;border-bottom:1px solid #f1f5f9;cursor:pointer}.sug:hover{background:#f7f5ff}.sug b{display:block}.sug small{color:var(--muted)}
+.detect{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:15px}.d{padding:13px;background:#f8fafc;border:1px solid #edf0f4;border-radius:13px}.d small{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;margin-bottom:5px}.d b{font-size:13px}.rate{color:var(--primary)}
+.options{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}.opt{padding:12px;border:1px solid var(--line);border-radius:13px;background:#fafbff}.opt label{display:block;font-size:10px;text-transform:uppercase;font-weight:900;color:#64748b;margin-bottom:5px}.opt select,.opt input{width:100%;height:36px;border:1px solid var(--line);border-radius:9px;padding:0 8px;background:#fff}
+.check{display:flex!important;gap:8px;align-items:center!important;font-size:12px!important;text-transform:none!important;letter-spacing:0!important}.check input{width:auto}
+.actions{display:flex;gap:10px;margin-top:16px}.btn{border:0;border-radius:12px;padding:13px 17px;font-weight:900;cursor:pointer;transition:.15s}.btn:active{transform:scale(.98)}.primary{flex:1;background:linear-gradient(90deg,var(--primary),var(--primary2));color:#fff}.secondary{background:#111827;color:#fff}.light{background:#f1f5f9;color:#334155}.danger{background:#fee2e2;color:#b91c1c}.green{background:#dcfce7;color:#166534}
+.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:980px}.table th{font-size:10px;color:var(--muted);text-transform:uppercase;text-align:left;background:#f8fafc;padding:12px}.table td{padding:12px;border-top:1px solid #eef2f7;font-size:13px}.empty{text-align:center;color:#94a3b8;padding:30px!important}.mini{border:0;background:#f1f5f9;border-radius:8px;padding:6px 8px;cursor:pointer}.mini.del{background:#fee2e2;color:#b91c1c}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.sum{padding:17px;border-radius:16px;background:#f8fafc}.sum small{color:var(--muted);font-weight:800}.sum strong{display:block;font-size:22px;margin-top:6px}.grand{background:linear-gradient(135deg,#5134e7,#7c3aed);color:#fff}.grand small{color:#ddd6fe}
+.billgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.notice{padding:12px 14px;border-radius:12px;background:#fff7ed;border:1px solid #fed7aa;color:#92400e;font-size:11px;line-height:1.55;margin-top:15px}.success{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}.footer{text-align:center;color:#94a3b8;font-size:12px;padding:8px 0 25px}.hidden{display:none!important}.badge{display:inline-block;padding:4px 7px;border-radius:999px;background:#f0edff;color:#5b35e8;font-size:10px;font-weight:900}.toast{position:fixed;right:18px;bottom:18px;z-index:100;padding:12px 15px;border-radius:12px;background:#111827;color:#fff;font-size:13px;box-shadow:0 12px 30px #0003;display:none}
+@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.detect{grid-template-columns:1fr 1fr}.options{grid-template-columns:1fr 1fr}.summary{grid-template-columns:1fr 1fr}.billgrid{grid-template-columns:1fr}}
+@media(max-width:540px){.grid,.detect,.options,.summary{grid-template-columns:1fr}.top{padding-top:12px}.hero{margin-top:25px}.card{padding:16px;border-radius:19px}.actions{flex-wrap:wrap}.actions .btn{width:100%}.hero h1{letter-spacing:-1.5px}.pill{display:none}}
+@media print{body{background:#fff}.top,.hero,.addcard,.toolbar,.notice,.footer,.no-print{display:none!important}.card{box-shadow:none;border:0}.wrap{padding:0}.table{min-width:0}.summary{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
-<header class="top"><div class="brand"><div class="logo">₹</div><div>PricePro AI</div></div><div class="pill">SMART GST TOOL</div></header>
-<section class="hero"><h1>Smart <span>GST Price Calculator</span></h1><p>Search a product, detect its category and HSN rule, enter price and quantity, and get an instant GST-inclusive total.</p></section>
+<header class="top">
+  <div class="brand"><div class="logo">₹</div><div>PricePro AI</div></div>
+  <div class="pill">ADVANCED GST TOOL</div>
+</header>
+
+<section class="hero">
+  <h1>Smart <span>GST Price Calculator</span></h1>
+  <p>Search products, detect a GST lookup rule, calculate quantity, discount and tax, and create a printable bill — all directly in your browser.</p>
+</section>
 
 <main class="wrap">
 <section class="card addcard">
-<div class="sect"><span class="num">01</span> Product Details</div>
-<div class="grid">
-<div class="field searchbox"><label>Product name</label><input id="name" placeholder="Try: Jeans, Milk, Paneer, iPhone, Rice..." autocomplete="off"><div id="suggest" class="suggest"></div></div>
-<div class="field"><label>Price per item (₹)</label><input id="price" type="number" min="0" step="0.01" placeholder="Enter price"></div>
-<div class="field"><label>Quantity</label><input id="qty" type="number" min="1" step="1" value="1"></div>
-</div>
-<div class="detect">
-<div class="d"><small>Category</small><b id="cat">—</b></div>
-<div class="d"><small>Subcategory</small><b id="sub">—</b></div>
-<div class="d"><small>HSN</small><b id="hsn">—</b></div>
-<div class="d"><small>GST rule</small><b id="rule">—</b></div>
-<div class="d"><small>GST rate</small><b class="rate" id="gst">—</b></div>
-</div>
-<div class="options">
-<label class="check"><input id="manual" type="checkbox"> Manual GST override</label>
-<select id="gstOverride" style="height:36px;border:1px solid var(--line);border-radius:9px;padding:0 8px;display:none"><option>0</option><option>5</option><option>12</option><option>18</option><option>28</option></select>
-</div>
-<div class="actions"><button class="btn primary" id="add">＋ Add product</button><button class="btn light" id="reset">Reset</button></div>
-<p class="note">Automatic detection is a convenience lookup. Exact GST can depend on HSN, composition, packaging/labelling, transaction conditions and value thresholds. Verify the exact classification for tax filing.</p>
+  <div class="sect"><span class="num">01</span> Product Details</div>
+
+  <div class="grid">
+    <div class="field searchbox">
+      <label>Product / Service Name</label>
+      <input id="name" placeholder="Try: iPhone, jeans, rice, milk, shoes, laptop..." autocomplete="off">
+      <div id="suggest" class="suggest"></div>
+    </div>
+    <div class="field"><label>Price per item (₹)</label><input id="price" type="number" min="0" step="0.01" placeholder="Enter price"></div>
+    <div class="field"><label>Quantity</label><input id="qty" type="number" min="0.001" step="0.001" value="1"></div>
+  </div>
+
+  <div class="detect">
+    <div class="d"><small>Category</small><b id="cat">—</b></div>
+    <div class="d"><small>Subcategory</small><b id="sub">—</b></div>
+    <div class="d"><small>HSN/SAC</small><b id="hsn">—</b></div>
+    <div class="d"><small>GST Rule</small><b id="rule">—</b></div>
+    <div class="d"><small>GST Rate</small><b class="rate" id="gst">—</b></div>
+  </div>
+
+  <div class="options">
+    <div class="opt">
+      <label>Tax mode</label>
+      <select id="taxMode"><option value="exclusive">GST extra</option><option value="inclusive">Price includes GST</option></select>
+    </div>
+    <div class="opt">
+      <label>Supply type</label>
+      <select id="supply"><option value="intra">Intra-state (CGST + SGST)</option><option value="inter">Inter-state (IGST)</option></select>
+    </div>
+    <div class="opt">
+      <label>Discount (%)</label>
+      <input id="discount" type="number" min="0" max="100" step="0.01" value="0">
+    </div>
+    <div class="opt">
+      <label>GST override</label>
+      <select id="override"><option value="">Auto detect</option><option>0</option><option>3</option><option>5</option><option>12</option><option>18</option><option>28</option></select>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn primary" id="add">＋ Add to Bill</button>
+    <button class="btn light" id="reset">Reset</button>
+  </div>
+  <div class="notice">Important: Product-name matching is a convenience lookup, not a legal HSN classification engine. GST can vary by exact HSN, composition, packaging/labelling, value thresholds and transaction conditions. Verify the applicable CBIC/GST entry before tax filing.</div>
 </section>
 
 <section class="card">
-<div class="sect"><span class="num">02</span> Bill Items</div>
-<div class="table-wrap"><table class="table"><thead><tr><th>Product</th><th>Category</th><th>HSN</th><th>Price</th><th>Qty</th><th>GST</th><th>GST Amt</th><th>Total</th><th></th></tr></thead><tbody id="rows"><tr><td colspan="9" class="empty">No products added yet</td></tr></tbody></table></div>
+  <div class="sect"><span class="num">02</span> Bill Items <span id="itemCount" class="badge">0 items</span></div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Product</th><th>Category</th><th>HSN</th><th>Price</th><th>Qty</th><th>Discount</th><th>GST</th><th>GST Amt</th><th>Total</th><th></th></tr></thead>
+      <tbody id="rows"><tr><td colspan="10" class="empty">No products added yet</td></tr></tbody>
+    </table>
+  </div>
 </section>
 
 <section class="card">
-<div class="sect"><span class="num">03</span> Calculation Summary</div>
-<div class="summary">
-<div class="sum"><small>Subtotal</small><strong id="subtotal">₹0.00</strong></div>
-<div class="sum"><small>Total GST</small><strong id="gsttotal">₹0.00</strong></div>
-<div class="sum"><small>Total Quantity</small><strong id="totalqty">0</strong></div>
-<div class="sum grand"><small>Final Amount</small><strong id="grand">₹0.00</strong></div>
-</div>
-<div class="actions"><button class="btn secondary" id="print">🖨 Print / Save PDF</button><button class="btn danger" id="clear">Clear all</button></div>
+  <div class="sect"><span class="num">03</span> Calculation Summary</div>
+  <div class="summary">
+    <div class="sum"><small>Gross Amount</small><strong id="gross">₹0.00</strong></div>
+    <div class="sum"><small>Discount</small><strong id="discountTotal">₹0.00</strong></div>
+    <div class="sum"><small>Total GST</small><strong id="gsttotal">₹0.00</strong></div>
+    <div class="sum grand"><small>Final Amount</small><strong id="grand">₹0.00</strong></div>
+  </div>
+  <div class="summary" style="margin-top:12px">
+    <div class="sum"><small>Taxable Value</small><strong id="taxable">₹0.00</strong></div>
+    <div class="sum"><small>CGST</small><strong id="cgst">₹0.00</strong></div>
+    <div class="sum"><small>SGST</small><strong id="sgst">₹0.00</strong></div>
+    <div class="sum"><small>Total Quantity</small><strong id="totalqty">0</strong></div>
+  </div>
+  <div class="actions toolbar">
+    <button class="btn secondary" id="copy">📋 Copy Result</button>
+    <button class="btn secondary" id="print">🖨 Print / Save PDF</button>
+    <button class="btn danger" id="clear">Clear All</button>
+  </div>
 </section>
-<p class="footer">© 2026 PricePro AI • Smart GST Price Calculator</p>
+
+<section class="card">
+  <div class="sect"><span class="num">04</span> Quick HSN / Product Search</div>
+  <div class="billgrid">
+    <div class="field"><label>Search product, alias or HSN</label><input id="finder" placeholder="Example: 8517, mobile, footwear, milk..."></div>
+    <div class="field"><label>Search result</label><select id="findResults"><option>Start typing above...</option></select></div>
+  </div>
+  <div id="findInfo" class="notice success hidden"></div>
+  <div class="notice">The GST portal provides an official HSN search facility based on HSN or trade/technical description. This tool's embedded master is a convenience dataset and should not be treated as the official classification source.</div>
+</section>
+
+<p class="footer">© 2026 PricePro AI • Advanced GST Price Calculator</p>
 </main>
+<div id="toast" class="toast"></div>
 
 <script>
-/* Expanded product master: broad online-sale categories + common trade aliases. Rates are lookup defaults; exact GST must be verified against the applicable HSN/CBIC entry. */
-const DB=[
-  ["milk|fresh milk|toned milk|full cream milk|double toned milk|cow milk|buffalo milk","Dairy","Milk","0401","0","Fresh/pasteurised milk","fixed"],
-  ["uht milk|tetra pack milk","Dairy","UHT Milk","0401","5","UHT milk","fixed"],
-  ["curd|dahi|yogurt|yoghurt","Dairy","Curd/Yoghurt","0403","5","Curd/yoghurt; exact packaging matters","fixed"],
-  ["lassi","Dairy","Lassi","0403","5","Lassi; packaging matters","fixed"],
-  ["buttermilk|chaas","Dairy","Buttermilk","0403","5","Buttermilk; packaging matters","fixed"],
-  ["paneer|chena","Dairy","Paneer/Chena","0406","5","Paneer/chena; packaging matters","fixed"],
-  ["cheese|processed cheese|mozzarella|cheddar","Dairy","Cheese","0406","12","Cheese","fixed"],
-  ["butter","Dairy","Butter","0405","12","Butter","fixed"],
-  ["ghee","Dairy","Ghee","0405","12","Ghee/milk fat","fixed"],
-  ["milk powder|skimmed milk powder|whole milk powder","Dairy","Milk Powder","0402","5","Milk powder","fixed"],
-  ["condensed milk|khoya|mawa","Dairy","Concentrated Milk","0402","5","Concentrated milk preparation","fixed"],
-  ["cream|fresh cream|whipping cream","Dairy","Milk Cream","0401","5","Exact form/classification matters","fixed"],
-  ["rice|basmati rice|brown rice|sona masuri rice|poha rice","Grocery","Rice","1006","5","Pre-packaged/labelled rice; exact condition matters","fixed"],
-  ["wheat|gehun","Grocery","Wheat","1001","5","Pre-packaged/labelled wheat; exact condition matters","fixed"],
-  ["atta|wheat flour|chakki atta","Grocery","Wheat Flour","1101","5","Pre-packaged/labelled flour","fixed"],
-  ["maida","Grocery","Maida","1101","5","Pre-packaged/labelled flour","fixed"],
-  ["besan|gram flour","Grocery","Gram Flour","1106","5","Flour; exact condition matters","fixed"],
-  ["suji|sooji|rava","Grocery","Suji/Rava","1103","5","Cereal groats","fixed"],
-  ["dalia|broken wheat","Grocery","Dalia","1103","5","Cereal groats","fixed"],
-  ["oats|rolled oats|oatmeal","Grocery","Oats","1004","5","Oats","fixed"],
-  ["corn|maize|makka","Grocery","Maize/Corn","1005","5","Maize","fixed"],
-  ["bajra|pearl millet","Grocery","Millet/Bajra","1008","5","Cereal","fixed"],
-  ["jowar|sorghum","Grocery","Jowar","1008","5","Cereal","fixed"],
-  ["ragi|finger millet","Grocery","Ragi","1008","5","Cereal","fixed"],
-  ["dal|pulses|lentils","Grocery","Pulses/Dal","0713","5","Pulses; exact form matters","fixed"],
-  ["moong dal|mung dal","Grocery","Moong Dal","0713","5","Pulses","fixed"],
-  ["masoor dal|red lentils","Grocery","Masoor Dal","0713","5","Pulses","fixed"],
-  ["chana dal|split chickpeas","Grocery","Chana Dal","0713","5","Pulses","fixed"],
-  ["toor dal|arhar dal|tuvar dal","Grocery","Toor Dal","0713","5","Pulses","fixed"],
-  ["urad dal","Grocery","Urad Dal","0713","5","Pulses","fixed"],
-  ["rajma|kidney beans","Grocery","Kidney Beans","0713","5","Pulses","fixed"],
-  ["kabuli chana|chickpeas|chole","Grocery","Chickpeas","0713","5","Pulses","fixed"],
-  ["sugar|chini|shakkar","Grocery","Sugar","1701","5","Sugar; exact type matters","fixed"],
-  ["salt|namak|rock salt|sendha namak","Grocery","Salt","2501","5","Salt","fixed"],
-  ["tea|chai|green tea|black tea|tea bags","Grocery","Tea","0902","5","Tea","fixed"],
-  ["coffee|instant coffee|coffee powder","Grocery","Coffee","0901","5","Coffee; exact form matters","fixed"],
-  ["pepper|black pepper|kali mirch","Grocery","Pepper","0904","5","Pepper","fixed"],
-  ["jeera|cumin|cumin seeds","Grocery","Cumin","0909","5","Spice","fixed"],
-  ["turmeric|haldi|turmeric powder","Grocery","Turmeric","0910","5","Spice","fixed"],
-  ["mirchi|chilli|red chilli|chilli powder","Grocery","Chilli","0904","5","Spice","fixed"],
-  ["coriander|dhania|coriander powder","Grocery","Coriander","0909","5","Spice","fixed"],
-  ["cardamom|elaichi","Grocery","Cardamom","0908","5","Spice","fixed"],
-  ["clove|laung","Grocery","Cloves","0907","5","Spice","fixed"],
-  ["cinnamon|dalchini","Grocery","Cinnamon","0906","5","Spice","fixed"],
-  ["garam masala|masala powder|mixed spices","Grocery","Spice Mixture","0910","5","Spices; exact formulation matters","fixed"],
-  ["dry fruits|nuts","Grocery","Dried Nuts/Fruits","0802","12","Exact item/classification matters","fixed"],
-  ["almond|badam","Grocery","Almonds","0802","12","Dried nuts","fixed"],
-  ["cashew|kaju","Grocery","Cashew","0801","12","Dried nuts","fixed"],
-  ["pistachio|pista","Grocery","Pistachio","0802","12","Dried nuts","fixed"],
-  ["walnut|akhrot","Grocery","Walnut","0802","12","Dried nuts","fixed"],
-  ["raisins|kishmish","Grocery","Raisins","0806","12","Dried fruit","fixed"],
-  ["dates|khajoor","Grocery","Dates","0804","12","Exact form matters","fixed"],
-  ["cooking oil|edible oil","Grocery","Edible Oil","1512","5","Exact oil matters","fixed"],
-  ["mustard oil|sarson oil","Grocery","Mustard Oil","1514","5","Edible oil","fixed"],
-  ["sunflower oil","Grocery","Sunflower Oil","1512","5","Edible oil","fixed"],
-  ["soybean oil|soya oil","Grocery","Soybean Oil","1507","5","Edible oil","fixed"],
-  ["groundnut oil|peanut oil","Grocery","Groundnut Oil","1508","5","Edible oil","fixed"],
-  ["coconut oil","Grocery","Coconut Oil","1513","5","Exact use/classification matters","fixed"],
-  ["olive oil","Grocery","Olive Oil","1509","5","Edible oil","fixed"],
-  ["biscuit|biscuits|cookies|cream biscuits","Food","Biscuits/Cookies","1905","18","Exact product matters","fixed"],
-  ["bread|bun|pav|bread loaf","Food","Bread","1905","0","Bread; exact product/form matters","fixed"],
-  ["chocolate|cocoa|cocoa powder","Food","Chocolate/Cocoa Preparation","1806","18","Exact product matters","fixed"],
-  ["pasta|macaroni|spaghetti|vermicelli","Food","Pasta","1902","12","Prepared pasta; exact product matters","fixed"],
-  ["noodles|instant noodles","Food","Noodles","1902","12","Prepared pasta/noodles","fixed"],
-  ["jam|fruit jam|jelly","Food","Jam/Jelly","2007","12","Fruit preparation","fixed"],
-  ["tomato sauce|ketchup|sauce","Food","Sauces","2103","12","Sauces","fixed"],
-  ["pickle|achar|achaar","Food","Pickles","2001","12","Prepared vegetables","fixed"],
-  ["honey|shahad","Food","Natural Honey","0409","5","Natural honey; packaging matters","fixed"],
-  ["vinegar","Food","Vinegar","2209","12","Vinegar","fixed"],
-  ["corn flakes|breakfast cereal|muesli","Food","Cereal Preparation","1904","18","Breakfast cereal; exact product matters","fixed"],
-  ["chips|potato chips|namkeen|bhujia","Food","Snack Foods","1905","18","Exact preparation/classification matters","fixed"],
-  ["apple|seb","Fruits & Vegetables","Fresh Apples","0808","0","Fresh fruit","fixed"],
-  ["banana|kela","Fruits & Vegetables","Fresh Bananas","0803","0","Fresh fruit","fixed"],
-  ["mango|aam","Fruits & Vegetables","Fresh Mango","0804","0","Fresh fruit","fixed"],
-  ["orange|santra|mandarin","Fruits & Vegetables","Fresh Citrus Fruit","0805","0","Fresh fruit","fixed"],
-  ["grapes|angoor","Fruits & Vegetables","Fresh Grapes","0806","0","Fresh fruit","fixed"],
-  ["watermelon|tarbooz","Fruits & Vegetables","Fresh Watermelon","0807","0","Fresh fruit","fixed"],
-  ["potato|aloo","Fruits & Vegetables","Potatoes","0701","0","Fresh vegetable","fixed"],
-  ["onion|pyaz","Fruits & Vegetables","Onions","0703","0","Fresh vegetable","fixed"],
-  ["tomato|tamatar","Fruits & Vegetables","Tomatoes","0702","0","Fresh vegetable","fixed"],
-  ["carrot|gajar","Fruits & Vegetables","Carrots","0706","0","Fresh vegetable","fixed"],
-  ["peas|matar","Fruits & Vegetables","Peas","0708","0","Fresh vegetable","fixed"],
-  ["jeans|denim jeans","Garments","Readymade Garment","6203","5","Up to ₹1,000 per piece; above ₹1,000 → 12%","garment"],
-  ["shirt|formal shirt|casual shirt","Garments","Readymade Garment","6205","5","Up to ₹1,000 per piece; above ₹1,000 → 12%","garment"],
-  ["t shirt|t-shirt|tee","Garments","Readymade Garment","6109","5","Up to ₹1,000 per piece; above ₹1,000 → 12%","garment"],
-  ["trouser|pants|track pants|lower","Garments","Readymade Garment","6203","5","Up to ₹1,000 per piece; above ₹1,000 → 12%","garment"],
-  ["kurta|kurti|salwar suit|suit","Garments","Readymade Garment","62/61","5","Up to ₹1,000 per piece; above ₹1,000 → 12%","garment"],
-  ["saree|sari","Garments","Saree","62/54/55/60","5","Textile classification depends on construction","garment"],
-  ["dress|frock|gown","Garments","Dress","6204","5","Up to ₹1,000 per piece; above ₹1,000 → 12%","garment"],
-  ["jacket|hoodie|sweatshirt","Garments","Outerwear","6203/6110","5","Exact HSN/value matters","garment"],
-  ["blazer|coat|overcoat","Garments","Coat/Blazer","6203","5","Exact HSN/value matters","garment"],
-  ["sweater|cardigan","Garments","Sweater","6110","5","Exact HSN/value matters","garment"],
-  ["innerwear|underwear|vest|briefs|bra","Garments","Innerwear","61","5","Exact HSN/value matters","garment"],
-  ["sock|socks|stockings","Garments","Socks/Stockings","61","5","Exact HSN/value matters","garment"],
-  ["tie|neck tie","Garments","Tie","6215","5","Textile classification matters","garment"],
-  ["cap|hat|sun hat","Garments","Headgear","6505","5","Exact material/classification matters","fixed"],
-  ["scarf|stole|dupatta","Garments","Scarf/Stole","62","5","Textile classification/value matters","garment"],
-  ["shoe|shoes|formal shoes|casual shoes","Footwear","Shoes","64","5","Up to ₹500 per pair → 5%; above ₹500 → 18%","footwear"],
-  ["sports shoes|running shoes|sneakers","Footwear","Sports Shoes","64","5","Up to ₹500 per pair → 5%; above ₹500 → 18%","footwear"],
-  ["sandal|sandals","Footwear","Sandals","64","5","Up to ₹500 per pair → 5%; above ₹500 → 18%","footwear"],
-  ["slipper|slippers|chappal","Footwear","Slippers/Chappal","64","5","Up to ₹500 per pair → 5%; above ₹500 → 18%","footwear"],
-  ["boots|safety shoes","Footwear","Boots","64","5","Exact footwear entry/value matters","footwear"],
-  ["mobile|mobile phone|smartphone|iphone|android phone","Electronics","Mobile Phone","8517","18","Telecommunication equipment","fixed"],
-  ["laptop|notebook computer|macbook","Electronics","Laptop/Computer","8471","18","Computing equipment","fixed"],
-  ["computer|desktop pc|desktop","Electronics","Computer","8471","18","Computing equipment","fixed"],
-  ["tablet|ipad|android tablet","Electronics","Tablet","8471","18","Computing equipment","fixed"],
-  ["tv|television|smart tv|led tv|oled tv|qled tv","Electronics","Television","8528","18","Television/monitor apparatus","fixed"],
-  ["monitor|computer monitor","Electronics","Monitor","8528","18","Monitor","fixed"],
-  ["camera|digital camera|dslr|mirrorless camera","Electronics","Camera","8525","18","Camera/video equipment","fixed"],
-  ["webcam|web camera","Electronics","Camera","8525","18","Camera/video equipment","fixed"],
-  ["headphone|headphones|headset","Electronics","Headphones/Headset","8518","18","Audio equipment","fixed"],
-  ["earphone|earphones|earbuds|airpods","Electronics","Earphones/Earbuds","8518","18","Audio equipment","fixed"],
-  ["speaker|bluetooth speaker|soundbar","Electronics","Speaker","8518","18","Audio equipment","fixed"],
-  ["keyboard|gaming keyboard","Electronics","Keyboard","8471","18","Computer accessory","fixed"],
-  ["mouse|gaming mouse","Electronics","Mouse","8471","18","Computer accessory","fixed"],
-  ["printer|laser printer|inkjet printer","Electronics","Printer","8443","18","Printing machine","fixed"],
-  ["scanner|document scanner","Electronics","Scanner","8443","18","Scanning/printing equipment","fixed"],
-  ["router|wifi router|wi-fi router|modem","Electronics","Network Equipment","8517","18","Communication equipment","fixed"],
-  ["power bank|powerbank","Electronics","Power Bank","8507","18","Electric accumulator","fixed"],
-  ["charger|mobile charger|adapter|laptop charger","Electronics"
+/* =========================================================
+   PRICEPRO AI — SELF-CONTAINED, GITHUB PAGES SAFE
+   No external libraries, APIs or modules.
+   ========================================================= */
+
+const P = [
+/* Dairy */
+["milk|fresh milk|toned milk|full cream milk|double toned milk|cow milk|buffalo milk","Dairy","Milk","0401",0,"Fresh/pasteurised milk"],
+["uht milk|tetra pack milk","Dairy","UHT Milk","0401",5,"UHT milk"],
+["curd|dahi|yogurt|yoghurt","Dairy","Curd/Yoghurt","0403",5,"Fermented milk"],
+["lassi","Dairy","Lassi","0403",5,"Lassi"],
+["buttermilk|chaas","Dairy","Buttermilk","0403",5,"Buttermilk"],
+["paneer|chena","Dairy","Paneer/Chena","0406",5,"Paneer"],
+["cheese|processed cheese|mozzarella|cheddar","Dairy","Cheese","0406",12,"Cheese"],
+["butter","Dairy","Butter","0405",12,"Butter"],
+["ghee","Dairy","Ghee","0405",12,"Ghee"],
+["milk powder|skimmed milk powder|whole milk powder","Dairy","Milk Powder","0402",5,"Milk powder"],
+["condensed milk|khoya|mawa","Dairy","Concentrated Milk","0402",5,"Concentrated milk"],
+/* Grocery */
+["rice|basmati rice|brown rice|sona masuri","Grocery","Rice","1006",5,"Pre-packaged/labelled rice"],
+["wheat|gehun","Grocery","Wheat","1001",5,"Pre-packaged/labelled wheat"],
+["atta|wheat flour|chakki atta","Grocery","Wheat Flour","1101",5,"Pre-packaged/labelled flour"],
+["maida","Grocery","Maida","1101",5,"Pre-packaged/labelled flour"],
+["besan|gram flour","Grocery","Gram Flour","1106",5,"Pre-packaged/labelled flour"],
+["suji|sooji|rava","Grocery","Suji/Rava","1103",5,"Cereal groats"],
+["dalia|broken wheat","Grocery","Dalia","1103",5,"Cereal groats"],
+["oats|rolled oats|oatmeal","Grocery","Oats","1004",5,"Oats"],
+["corn|maize|makka","Grocery","Maize/Corn","1005",5,"Maize"],
+["bajra|pearl millet","Grocery","Millet/Bajra","1008",5,"Cereal"],
+["jowar|sorghum","Grocery","Jowar","1008",5,"Cereal"],
+["ragi|finger millet","Grocery","Ragi","1008",5,"Cereal"],
+["dal|pulses|lentils","Grocery","Pulses/Dal","0713",5,"Pulses"],
+["moong dal|mung dal","Grocery","Moong Dal","0713",5,"Pulses"],
+["masoor dal|red lentils","Grocery","Masoor Dal","0713",5,"Pulses"],
+["chana dal|split chickpeas","Grocery","Chana Dal","0713",5,"Pulses"],
+["toor dal|arhar dal|tuvar dal","Grocery","Toor Dal","0713",5,"Pulses"],
+["urad dal","Grocery","Urad Dal","0713",5,"Pulses"],
+["rajma|kidney beans","Grocery","Kidney Beans","0713",5,"Pulses"],
+["kabuli chana|chickpeas|chole","Grocery","Chickpeas","0713",5,"Pulses"],
+["sugar|chini|shakkar","Grocery","Sugar","1701",5,"Sugar"],
+["salt|namak|rock salt|sendha namak","Grocery","Salt","2501",0,"Salt"],
+["tea|chai|green tea|black tea|tea bags","Grocery","Tea","0902",5,"Tea"],
+["coffee|instant coffee|coffee powder","Grocery","Coffee","0901",5,"Coffee"],
+["pepper|black pepper|kali mirch","Grocery","Pepper","0904",5,"Pepper"],
+["jeera|cumin|cumin seeds","Grocery","Cumin","0909",5,"Spice"],
+["turmeric|haldi|turmeric powder","Grocery","Turmeric","0910",5,"Spice"],
+["mirchi|chilli|red chilli|chilli powder","Grocery","Chilli","0904",5,"Spice"],
+["coriander|dhania|coriander powder","Grocery","Coriander","0909",5,"Spice"],
+["cardamom|elaichi","Grocery","Cardamom","0908",5,"Spice"],
+["clove|laung","Grocery","Cloves","0907",5,"Spice"],
+["cinnamon|dalchini","Grocery","Cinnamon","0906",5,"Spice"],
+["garam masala|masala powder|mixed spices","Grocery","Spice Mixture","0910",5,"Spices"],
+["almond|badam","Grocery","Almonds","0802",12,"Dried nuts"],
+["cashew|kaju","Grocery","Cashew","0801",12,"Dried nuts"],
+["pistachio|pista","Grocery","Pistachio","0802",12,"Dried nuts"],
+["walnut|akhrot","Grocery","Walnut","0802",12,"Dried nuts"],
+["raisins|kishmish","Grocery","Raisins","0806",12,"Dried fruit"],
+["dates|khajoor","Grocery","Dates","0804",12,"Dried fruit"],
+["cooking oil|edible oil","Grocery","Edible Oil","1512",5,"Edible oil"],
+["mustard oil|sarson oil","Grocery","Mustard Oil","1514",5,"Edible oil"],
+["sunflower oil","Grocery","Sunflower Oil","1512",5,"Edible oil"],
+["soybean oil|soya oil","Grocery","Soybean Oil","1507",5,"Edible oil"],
+["groundnut oil|peanut oil","Grocery","Groundnut Oil","1508",5,"Edible oil"],
+["coconut oil","Grocery","Coconut Oil","1513",5,"Oil"],
+["olive oil","Grocery","Olive Oil","1509",5,"Edible oil"],
+/* Food */
+["biscuit|biscuits|cookies|cream biscuits","Food","Biscuits/Cookies","1905",18,"Biscuits/cookies"],
+["bread|bun|pav|bread loaf","Food","Bread","1905",0,"Bread"],
+["chocolate|chocolates|cocoa","Food","Chocolate","1806",18,"Chocolate preparation"],
+["pasta|macaroni|spaghetti|vermicelli","Food","Pasta","1902",12,"Prepared pasta"],
+["noodles|instant noodles","Food","Noodles","1902",12,"Prepared noodles"],
+["jam|fruit jam|jelly","Food","Jam/Jelly","2007",12,"Fruit preparation"],
+["tomato sauce|ketchup|sauce","Food","Sauces","2103",12,"Sauces"],
+["pickle|achar|achaar","Food","Pickles","2001",12,"Pickles"],
+["honey|shahad","Food","Natural Honey","0409",5,"Natural honey"],
+["vinegar","Food","Vinegar","2209",12,"Vinegar"],
+["corn flakes|breakfast cereal|muesli","Food","Cereal Preparation","1904",18,"Breakfast cereal"],
+["chips|potato chips|namkeen|bhujia","Food","Snack Foods","1905",18,"Snack foods"],
+/* Fresh produce */
+["apple|seb","Fruits & Vegetables","Fresh Apples","0808",0,"Fresh fruit"],
+["banana|kela","Fruits & Vegetables","Fresh Bananas","0803",0,"Fresh fruit"],
+["mango|aam","Fruits & Vegetables","Fresh Mango","0804",0,"Fresh fruit"],
+["orange|santra|mandarin","Fruits & Vegetables","Fresh Citrus","0805",0,"Fresh fruit"],
+["grapes|angoor","Fruits & Vegetables","Fresh Grapes","0806",0,"Fresh fruit"],
+["watermelon|tarbooz","Fruits & Vegetables","Watermelon","0807",0,"Fresh fruit"],
+["potato|aloo","Fruits & Vegetables","Potatoes","0701",0,"Fresh vegetable"],
+["onion|pyaz","Fruits & Vegetables","Onions","0703",0,"Fresh vegetable"],
+["tomato|tamatar","Fruits & Vegetables","Tomatoes","0702",0,"Fresh vegetable"],
+["carrot|gajar","Fruits & Vegetables","Carrots","0706",0,"Fresh vegetable"],
+["peas|matar","Fruits & Vegetables","Peas","0708",0,"Fresh vegetable"],
+/* Garments */
+["jeans|denim jeans","Garments","Readymade Garment","6203",5,"Up to ₹1,000 per piece; above ₹1,000 → 12%"],
+["shirt|formal shirt|casual shirt","Garments","Readymade Garment","6205",5,"Up to ₹1,000 per piece; above ₹1,000 → 12%"],
+["t shirt|t-shirt|tee","Garments","Readymade Garment","6109",5,"Up to ₹1,000 per piece; above ₹1,000 → 12%"],
+["trouser|pants|track pants|lower","Garments","Readymade Garment","6203",5,"Up to ₹1,000 per piece; above ₹1,000 → 12%"],
+["kurta|kurti|salwar suit|suit","Garments","Readymade Garment","61/62",5,"Value/HSN dependent"],
+["saree|sari","Garments","Saree/Textile","50/52/54",5,"Fibre/construction dependent"],
+["dress|frock|gown","Garments","Dress","6204",5,"Up to ₹1,000 per piece; above ₹1,000 → 12%"],
+["jacket|hoodie|sweatshirt","Garments","Outerwear","6203/6110",5,"Exact HSN/value matters"],
+["blazer|coat|overcoat","Garments","Coat/Blazer","6203",5,"Exact HSN/value matters"],
+["sweater|cardigan","Garments","Sweater","6110",5,"Exact HSN/value matters"],
+["innerwear|underwear|vest|briefs|bra","Garments","Innerwear","61",5,"Exact HSN/value matters"],
+["sock|socks|stockings","Garments","Socks/Stockings","61",5,"Exact HSN/value matters"],
+["tie|neck tie","Garments","Tie","6215",5,"Textile classification"],
+["cap|hat|sun hat","Garments","Headgear","6505",5,"Headgear"],
+["scarf|stole|dupatta","Garments","Scarf/Stole","62",5,"Textile classification"],
+/* Footwear */
+["shoe|shoes|formal shoes|casual shoes","Footwear","Footwear","64",5,"Up to ₹500 per pair → 5%; above ₹500 → 18%"],
+["sports shoes|running shoes|sneakers","Footwear","Sports Footwear","64",5,"Up to ₹500 per pair → 5%; above ₹500 → 18%"],
+["sandal|sandals","Footwear","Sandals","64",5,"Up to ₹500 per pair → 5%; above ₹500 → 18%"],
+["slipper|slippers|chappal","Footwear","Slippers/Chappal","64",5,"Up to ₹500 per pair → 5%; above ₹500 → 18%"],
+["boots|safety shoes","Footwear","Boots","64",5,"Exact footwear entry/value matters"],
+/* Electronics */
+["mobile|mobile phone|smartphone|iphone|android phone","Electronics","Mobile Phone","8517",18,"Telecommunication equipment"],
+["laptop|notebook computer|macbook","Electronics","Laptop/Computer","8471",18,"Computing equipment"],
+["computer|desktop pc|desktop","Electronics","Computer","8471",18,"Computing equipment"],
+["tablet|ipad|android tablet","Electronics","Tablet","8471",18,"Computing equipment"],
+["tv|television|smart tv|led tv|oled tv|qled tv","Electronics","Television","8528",18,"Television"],
+["monitor|computer monitor","Electronics","Monitor","8528",18,"Monitor"],
+["camera|digital camera|dslr|mirrorless camera","Electronics","Camera","8525",18,"Camera/video equipment"],
+["webcam|web camera","Electronics","Webcam","8525",18,"Camera/video equipment"],
+["headphone|headphones|headset","Electronics","Headphones/Headset","8518",18,"Audio equipment"],
+["earphone|earphones|earbuds|airpods","Electronics","Earphones/Earbuds","8518",18,"Audio equipment"],
+["speaker|bluetooth speaker|soundbar","Electronics","Speaker","8518",18,"Audio equipment"],
+["keyboard|gaming keyboard","Electronics","Keyboard","8471",18,"Computer accessory"],
+["mouse|gaming mouse","Electronics","Mouse","8471",18,"Computer accessory"],
+["printer|laser printer|inkjet printer","Electronics","Printer","8443",18,"Printing machine"],
+["scanner|document scanner","Electronics","Scanner","8443",18,"Printing/scanning equipment"],
+["router|wifi router|wi-fi router|modem","Electronics","Network Equipment","8517",18,"Communication equipment"],
+["power bank|powerbank","Electronics","Power Bank","8507",18,"Electric accumulator"],
+["charger|mobile charger|adapter|laptop charger","Electronics","Charger/Adapter","8504",18,"Power supply equipment"],
+["smartwatch|smart watch|fitness band","Electronics","Smart Watch","9102",18,"Watch/electronic device; verify HSN"],
+["ac|air conditioner|split ac|window ac","Electronics","Air Conditioner","8415",28,"Air-conditioning equipment; verify current entry"],
+["refrigerator|fridge","Electronics","Refrigerator","8418",18,"Refrigerating equipment"],
+["washing machine","Electronics","Washing Machine","8450",18,"Laundry machine"],
+["microwave|microwave oven","Electronics","Microwave Oven","8516",18,"Electric oven"],
+["mixer grinder|mixer|grinder","Electronics","Mixer/Grinder","8509",18,"Domestic appliance"],
+["iron|electric iron","Electronics","Electric Iron","8516",18,"Electric appliance"],
+["fan|ceiling fan|table fan","Electronics","Electric Fan","8414",18,"Fan"],
+["air cooler|cooler","Electronics","Air Cooler","8479",18,"Air cooler; verify HSN"],
+/* Home / appliances */
+["sofa|sofa set","Home & Furniture","Sofa","9401",18,"Furniture"],
+["chair|office chair|plastic chair","Home & Furniture","Chair/Seat","9401",18,"Furniture"],
+["table|dining table|office table","Home & Furniture","Table","9403",18,"Furniture"],
+["bed|double bed|single bed","Home & Furniture","Bed","9403",18,"Furniture"],
+["mattress|foam mattress","Home & Furniture","Mattress","9404",18,"Bedding"],
+["curtain|curtains","Home & Furnishing","Curtains","6303",12,"Made-up textile article"],
+["carpet|rug|floor carpet","Home & Furnishing","Carpet/Rug","5705",12,"Floor covering"],
+["bedsheet|bed sheet|sheet","Home & Furnishing","Bed Linen","6302",5,"Textile household article; verify value/entry"],
+["towel|bath towel|hand towel","Home & Furnishing","Towel","6302",5,"Textile household article"],
+["pillow|cushion","Home & Furnishing","Pillow/Cushion","9404",18,"Bedding"],
+/* Personal care */
+["soap|bath soap|toilet soap","Personal Care","Soap","3401",18,"Soap"],
+["shampoo","Personal Care","Shampoo","3305",18,"Hair preparation"],
+["toothpaste|tooth paste","Personal Care","Toothpaste","3306",18,"Dental preparation"],
+["toothbrush|tooth brush","Personal Care","Toothbrush","9603",18,"Personal care article"],
+["face wash|facewash|cleanser","Personal Care","Face Wash","3304",18,"Cosmetic preparation"],
+["perfume|deodorant|body spray","Personal Care","Perfume/Deodorant","3303/3307",18,"Cosmetic preparation"],
+["hair oil","Personal Care","Hair Oil","3305",18,"Hair preparation"],
+["hair colour|hair dye","Personal Care","Hair Colour","3305",18,"Hair preparation"],
+["lipstick|makeup|foundation|compact powder","Personal Care","Cosmetics","3304",18,"Cosmetic preparation"],
+["razor|shaving razor","Personal Care","Razor","8212",18,"Razor"],
+/* Stationery */
+["pen|ball pen|gel pen","Stationery","Pen","9608",18,"Writing instrument"],
+["pencil","Stationery","Pencil","9609",18,"Pencil"],
+["notebook|copy|exercise book","Stationery","Notebook","4820",18,"Paper stationery"],
+["paper|a4 paper|printing paper","Stationery","Paper","4802",18,"Paper"],
+["printer ink|ink cartridge","Stationery","Ink Cartridge","8443",18,"Printing consumable; verify classification"],
+["calculator","Stationery","Calculator","8470",18,"Calculating machine"],
+/* Toys / sports */
+["toy|toys|kids toy|children toy","Toys & Sports","Toys","9503",12,"Toys"],
+["doll|dolls","Toys & Sports","Dolls","9503",12,"Toys"],
+["puzzle|puzzles","Toys & Sports","Puzzle","9503",12,"Toys"],
+["board game|ludo|chess|carrom","Toys & Sports","Board Game","9504",12,"Games"],
+["cricket bat|bat","Toys & Sports","Cricket Bat","9506",12,"Sports equipment"],
+["football|soccer ball","Toys & Sports","Football","9506",12,"Sports equipment"],
+["cricket ball","Toys & Sports","Cricket Ball","9506",12,"Sports equipment"],
+["badminton racket|racket","Toys & Sports","Racket","9506",12,"Sports equipment"],
+["yoga mat|exercise mat","Toys & Sports","Yoga/Exercise Mat","4016",18,"Rubber article; verify HSN"],
+/* Tools / hardware */
+["hammer|hammers","Tools & Hardware","Hammer","8205",18,"Hand tool"],
+["screwdriver|screwdrivers","Tools & Hardware","Screwdriver","8205",18,"Hand tool"],
+["spanner|wrench|spanner set","Tools & Hardware","Spanner/Wrench","8204",18,"Hand tool"],
+["drill machine|power drill|drill","Tools & Hardware","Drilling Machine","8467",18,"Power tool"],
+["grinder machine|angle grinder","Tools & Hardware","Grinding Tool","8467",18,"Power tool"],
+["saw|hand saw","Tools & Hardware","Saw","8202",18,"Hand tool"],
+["pliers|plier","Tools & Hardware","Pliers","8203",18,"Hand tool"],
+["screw|screws|bolt|bolts|nut|nuts","Tools & Hardware","Fasteners","7318",18,"Iron/steel fasteners"],
+/* Automotive */
+["car|motor car","Automotive","Motor Car","8703",28,"Motor vehicle; classification/cess may apply"],
+["motorcycle|bike|scooter","Automotive","Motorcycle","8711",28,"Motor vehicle; classification/cess may apply"],
+["bicycle|cycle","Automotive","Bicycle","8712",12,"Bicycle"],
+["car tyre|tyre|tire","Automotive","Tyre","4011",28,"Tyre; exact type matters"],
+["car battery|automotive battery","Automotive","Battery","8507",28,"Battery; verify exact entry"],
+["engine oil|lubricant","Automotive","Lubricating Oil","2710",18,"Lubricant"],
+/* Electrical */
+["bulb|led bulb|led light","Electrical","LED Lamp","8539",12,"LED/electric lamp"],
+["tube light|led tube","Electrical","Electric Lamp","8539",12,"Electric lamp"],
+["switch|electrical switch","Electrical","Switch","8536",18,"Electrical apparatus"],
+["socket|plug|electrical plug","Electrical","Plug/Socket","8536",18,"Electrical apparatus"],
+["wire|electric wire|cable","Electrical","Wire/Cable","8544",18,"Insulated wire/cable"],
+["extension board|extension cord","Electrical","Extension Board","8536",18,"Electrical apparatus"],
+/* Cleaning */
+["detergent|washing powder|detergent powder","Cleaning","Detergent","3402",18,"Cleaning preparation"],
+["dishwash|dishwashing liquid|dish soap","Cleaning","Dishwashing Preparation","3402",18,"Cleaning preparation"],
+["floor cleaner|phenyl","Cleaning","Floor Cleaner","3402",18,"Cleaning preparation"],
+["toilet cleaner","Cleaning","Toilet Cleaner","3402",18,"Cleaning preparation"],
+["handwash|hand wash","Cleaning","Hand Wash","3401",18,"Cleaning preparation"],
+/* Misc */
+["umbrella","Miscellaneous","Umbrella","6601",12,"Umbrella"],
+["water purifier|ro purifier|ro system","Miscellaneous","Water Purifier","8421",18,"Water purifier"],
+["solar panel|solar module","Miscellaneous","Solar Module","8541",12,"Verify current applicable entry"],
+["battery|dry cell|battery cell","Miscellaneous","Battery","8507",18,"Battery; exact type matters"],
+["gold jewellery|gold jewelry|jewellery|jewelry","Jewellery","Jewellery","7113",3,"Precious metal jewellery; job-work and valuation rules may apply"],
+["silver jewellery|silver jewelry","Jewellery","Silver Jewellery","7113",3,"Precious metal jewellery"],
+["watch|wrist watch","Miscellaneous","Wrist Watch","9102",18,"Watch"],
+["book|books|textbook|school book","Books","Printed Book","4901",0,"Printed book"],
+["newspaper","Books & Print","Newspaper","4902",0,"Newspaper"],
+["medicine|medicines|drug","Pharmaceutical","Medicaments","3004",12,"Exact formulation/entry matters"],
+["mask|face mask","Medical/Protective","Face Mask","6307",5,"Classification varies by type"],
+["surgical gloves|medical gloves","Medical/Protective","Medical Gloves","4015",12,"Exact medical article classification matters"]
+].map((x,i)=>({id:i,keys:x[0].split("|"),category:x[1],sub:x[2],hsn:x[3],rate:x[4],rule:x[5]}));
+
+let items=[];
+
+const $=id=>document.getElementById(id);
+const money=n=>"₹"+Number(n||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2});
+const norm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9\u0900-\u097f]+/g," ").trim();
+
+function dynamicRate(p, price){
+  if(!p) return null;
+  let r=Number(p.rate);
+  const sub=p.sub.toLowerCase();
+  if((p.category==="Garments"||sub.includes("readymade garment")) && price>1000) r=12;
+  if(p.category==="Footwear" && price>500) r=18;
+  return r;
+}
+function score(p,q){
+  const n=norm(q); if(!n)return 0;
+  let best=0;
+  for(const k of p.keys){
+    const a=norm(k);
+    if(a===n) best=Math.max(best,100);
+    else if(a.startsWith(n)) best=Math.max(best,85);
+    else if(a.includes(n)) best=Math.max(best,70);
+    else if(n.includes(a)) best=Math.max(best,65);
+    else {
+      const words=n.split(" ");
+      const hit=words.filter(w=>w.length>2 && a.includes(w)).length;
+      best=Math.max(best,hit*18);
+    }
+  }
+  if(p.hsn.replace(/\D/g,"").startsWith(n.replace(/\D/g,"")) && n.length>=2) best=Math.max(best,95);
+  return best;
+}
+function findProducts(q,limit=8){
+  return P.map(p=>({p,s:score(p,q)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,limit).map(x=>x.p);
+}
+function selectProduct(p){
+  $("name").value=p.keys[0];
+  $("cat").textContent=p.category;$("sub").textContent=p.sub;$("hsn").textContent=p.hsn;
+  $("price").focus();
+  updateDetection();
+  $("suggest").style.display="none";
+}
+function updateDetection(){
+  const q=$("name").value, price=Number($("price").value)||0;
+  const p=findProducts(q,1)[0];
+  if(!p){
+    $("cat").textContent="—";$("sub").textContent="—";$("hsn").textContent="—";$("rule").textContent=q?"Not confidently matched":"—";$("gst").textContent="—";return;
+  }
+  const r=$("override").value!==""?Number($("override").value):dynamicRate(p,price);
+  $("cat").textContent=p.category;$("sub").textContent=p.sub;$("hsn").textContent=p.hsn;$("rule").textContent=p.rule;$("gst").textContent=r+"%";
+}
+$("name").addEventListener("input",()=>{
+  const q=$("name").value.trim(); updateDetection();
+  if(!q){$("suggest").style.display="none";return}
+  const list=findProducts(q,8);
+  $("suggest").innerHTML=list.length?list.map(p=>`<div class="sug" data-id="${p.id}"><b>${p.sub}</b><small>${p.category} • HSN ${p.hsn} • GST ${dynamicRate(p,Number($("price").value)||0)}%</small></div>`).join(""):`<div class="sug"><b>No confident match</b><small>You can still add it using manual GST override.</small></div>`;
+  $("suggest").style.display="block";
+});
+$("suggest").addEventListener("click",e=>{
+  const el=e.target.closest(".sug"); if(!el)return;
+  const p=P.find(x=>x.id==el.dataset.id); if(p)selectProduct(p);
+});
+["price","override","discount","qty","taxMode","supply"].forEach(id=>$(id).addEventListener("input",updateDetection));
+$("taxMode").addEventListener("change",updateDetection);
+document.addEventListener("click",e=>{if(!e.target.closest(".searchbox"))$("suggest").style.display="none"});
+
+function calculateLine(price,qty,disc,rate,mode){
+  const gross=price*qty;
+  const discount=gross*(disc/100);
+  const afterDisc=Math.max(0,gross-discount);
+  if(mode==="inclusive"){
+    const taxable=afterDisc/(1+rate/100);
+    return {gross,discount,taxable,gst:afterDisc-taxable,total:afterDisc};
+  }
+  const gst=afterDisc*rate/100;
+  return {gross,discount,taxable:afterDisc,gst,total:afterDisc+gst};
+}
+function addItem(){
+  const name=$("name").value.trim(), price=Number($("price").value), qty=Number($("qty").value)||1, disc=Number($("discount").value)||0;
+  if(!name)return toast("Enter a product name");
+  if(!Number.isFinite(price)||price<0)return toast("Enter a valid price");
+  if(qty<=0)return toast("Quantity must be greater than 0");
+  if(disc<0||disc>100)return toast("Discount must be 0–100%");
+  const p=findProducts(name,1)[0];
+  let rate=$("override").value!==""?Number($("override").value):(p?dynamicRate(p,price):null);
+  if(rate===null)return toast("Product not matched. Select a GST override first.");
+  const line=calculateLine(price,qty,disc,rate,$("taxMode").value);
+  items.push({id:Date.now()+Math.random(),name,category:p?.category||"Custom",sub:p?.sub||"Custom",hsn:p?.hsn||"—",price,qty,disc,rate,mode:$("taxMode").value,...line});
+  render(); toast("Product added to bill");
+}
+function render(){
+  const rows=$("rows");
+  if(!items.length){rows.innerHTML='<tr><td colspan="10" class="empty">No products added yet</td></tr>';$("itemCount").textContent="0 items";}
+  else{
+    rows.innerHTML=items.map(x=>`<tr>
+      <td><b>${escapeHtml(x.name)}</b><br><small>${x.mode==="inclusive"?"Inclusive":"Exclusive"}</small></td>
+      <td>${escapeHtml(x.category)}</td><td>${escapeHtml(x.hsn)}</td><td>${money(x.price)}</td><td>${x.qty}</td>
+      <td>${x.disc.toFixed(2)}%</td><td>${x.rate}%</td><td>${money(x.gst)}</td><td><b>${money(x.total)}</b></td>
+      <td><button class="mini del" onclick="removeItem('${x.id}')">✕</button></td></tr>`).join("");
+    $("itemCount").textContent=items.length+" item"+(items.length>1?"s":"");
+  }
+  let gross=0,discount=0,taxable=0,gst=0,qty=0;
+  items.forEach(x=>{gross+=x.gross;discount+=x.discount;taxable+=x.taxable;gst+=x.gst;qty+=x.qty});
+  const final=taxable+gst;
+  $("gross").textContent=money(gross);$("discountTotal").textContent=money(discount);$("taxable").textContent=money(taxable);$("gsttotal").textContent=money(gst);$("grand").textContent=money(final);$("totalqty").textContent=qty;
+  $("cgst").textContent=$("supply").value==="intra"?money(gst/2):money(0);
+  $("sgst").textContent=$("supply").value==="intra"?money(gst/2):money(0);
+}
+function removeItem(id){items=items.filter(x=>String(x.id)!==String(id));render();toast("Item removed")}
+function resetForm(){
+  $("name").value="";$("price").value="";$("qty").value=1;$("discount").value=0;$("override").value="";$("taxMode").value="exclusive";
+  ["cat","sub","hsn","rule","gst"].forEach(id=>$(id).textContent="—");$("suggest").style.display="none";toast("Form reset");
+}
+function clearAll(){items=[];render();toast("Bill cleared")}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function toast(msg){const t=$("toast");t.textContent=msg;t.style.display="block";clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.style.display="none",2200)}
+$("add").onclick=addItem;$("reset").onclick=resetForm;$("clear").onclick=clearAll;$("supply").onchange=render;
+$("print").onclick=()=>{if(!items.length)return toast("Add at least one product");window.print()};
+$("copy").onclick=async()=>{
+  if(!items.length)return toast("Add at least one product");
+  const text=`PricePro AI GST Bill\nItems: ${items.length}\nGross: ${$("gross").textContent}\nDiscount: ${$("discountTotal").textContent}\nTaxable: ${$("taxable").textContent}\nGST: ${$("gsttotal").textContent}\nCGST: ${$("cgst").textContent}\nSGST: ${$("sgst").textContent}\nFinal Amount: ${$("grand").textContent}`;
+  try{await navigator.clipboard.writeText(text);toast("Result copied")}catch(e){toast("Copy not available in this browser")}};
+$("finder").addEventListener("input",()=>{
+  const q=$("finder").value.trim(), list=findProducts(q,20), sel=$("findResults");
+  if(!q){sel.innerHTML="<option>Start typing above...</option>";$("findInfo").classList.add("hidden");return}
+  sel.innerHTML=list.length?list.map(p=>`<option value="${p.id}">${p.sub} — HSN ${p.hsn} — ${p.rate}% default</option>`).join(""):"<option>No match</option>";
+  showFind(list[0]);
+});
+$("findResults").addEventListener("change",()=>{const p=P.find(x=>x.id==$("findResults").value);showFind(p)});
+function showFind(p){
+  const box=$("findInfo");if(!p){box.classList.add("hidden");return}
+  box.classList.remove("hidden");box.innerHTML=`<b>${escapeHtml(p.sub)}</b> • ${escapeHtml(p.category)} • HSN/SAC ${escapeHtml(p.hsn)} • Embedded default GST ${p.rate}%<br><small>${escapeHtml(p.rule)}</small>`;
+}
+render();
+</script>
+</body>
+</html>
