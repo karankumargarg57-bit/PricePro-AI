@@ -1,391 +1,1697 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#5b5cf0">
-<meta name="description" content="Smart GST Price Calculator - automatically detects common product categories, GST rates and calculates the final amount.">
-<title>PricePro AI — Smart GST Price Calculator</title>
+<title>India Smart GST Calculator</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-:root{
-  --p:#5b5cf0; --p2:#7c3aed; --ink:#111827; --muted:#6b7280;
-  --line:#e7e9f0; --bg:#f5f7fb; --card:rgba(255,255,255,.94);
-  --green:#10b981; --orange:#f59e0b; --red:#ef4444;
-}
-*{box-sizing:border-box;margin:0;padding:0}
 body{
-  font-family:Inter,Arial,sans-serif;color:var(--ink);min-height:100vh;
-  background:
-    radial-gradient(circle at 5% 5%,rgba(91,92,240,.15),transparent 25%),
-    radial-gradient(circle at 95% 10%,rgba(124,58,237,.12),transparent 25%),
-    var(--bg);
+    background:#f1f5f9;
+    color:#172033;
 }
-.nav{max-width:1100px;margin:auto;padding:20px 18px;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px}
-.logo{width:43px;height:43px;border-radius:14px;color:#fff;display:grid;place-items:center;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 10px 25px rgba(91,92,240,.25)}
-.pill{font-size:11px;font-weight:800;color:#4f46e5;background:#eef2ff;padding:8px 12px;border-radius:30px}
-.hero{text-align:center;padding:35px 18px 28px}
-.hero h1{font-size:clamp(31px,5vw,50px);letter-spacing:-2px;line-height:1.1}
-.grad{background:linear-gradient(90deg,var(--p),var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{max-width:720px;margin:14px auto 0;color:var(--muted);line-height:1.7;font-size:15px}
-.wrap{max-width:1100px;margin:auto;padding:0 18px 55px}
-.app{background:var(--card);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);border-radius:28px;padding:28px;box-shadow:0 25px 80px rgba(15,23,42,.09)}
-.title{display:flex;gap:10px;align-items:center;margin-bottom:20px}
-.num{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#eef2ff;color:#4f46e5;font-weight:800;font-size:12px}
-.title h2{font-size:17px}
-.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:17px}
-label{display:block;font-size:12px;font-weight:800;color:#374151;margin:0 0 8px}
-.field{position:relative}
-input,select{
-  width:100%;height:54px;border:1.5px solid var(--line);border-radius:14px;
-  background:#fff;color:var(--ink);font:500 15px Inter,Arial;padding:0 15px;outline:none;transition:.2s
+
+.header{
+    background:linear-gradient(135deg,#0f172a,#1d4ed8);
+    color:white;
+    padding:32px 18px;
 }
-input:focus,select:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(91,92,240,.1)}
-.item-wrap{position:relative}
-.suggest{
-  display:none;position:absolute;z-index:20;left:0;right:0;top:61px;background:#fff;border:1px solid var(--line);
-  border-radius:14px;box-shadow:0 18px 40px rgba(15,23,42,.14);overflow:hidden;max-height:270px;overflow-y:auto
+
+.header-inner{
+    max-width:1150px;
+    margin:auto;
 }
-.suggest.show{display:block}
-.srow{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #f1f2f5}
-.srow:hover{background:#f7f7ff}
-.srow b{font-size:13px}.srow span{font-size:11px;color:var(--muted)}
-.detect{
-  margin-top:9px;min-height:35px;padding:9px 11px;border-radius:11px;background:#f8fafc;
-  color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:space-between;gap:10px
+
+.header h1{
+    font-size:30px;
+    margin-bottom:8px;
 }
-.detect.ok{background:#ecfdf5;color:#047857}.detect.warn{background:#fff7ed;color:#b45309}
-.rate-line{display:flex;align-items:center;gap:9px;margin-top:10px}
-.rate-line select{height:44px;font-size:13px;flex:1}
-.auto-tag{font-size:10px;font-weight:800;padding:6px 8px;border-radius:8px;background:#eef2ff;color:#4f46e5}
-.divider{height:1px;background:#edf0f4;margin:28px 0}
-.results{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.rc{background:#fafbfc;border:1px solid #edf0f4;border-radius:17px;padding:18px}
-.rl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:7px}
-.rv{font-size:21px;font-weight:800}
-.total{grid-column:1/-1;color:#fff;background:linear-gradient(135deg,#4f46e5,#7c3aed);border:0;padding:24px;position:relative;overflow:hidden}
-.total:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.09);right:-70px;top:-85px}
-.total .rl{color:rgba(255,255,255,.75)}.total .rv{font-size:38px;position:relative;z-index:2}
-.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
-.mini{background:rgba(255,255,255,.12);padding:10px 12px;border-radius:11px;font-size:11px}
-.actions{display:flex;gap:12px;margin-top:18px}
-button{height:50px;border:0;border-radius:13px;font:700 14px Inter;cursor:pointer;transition:.2s}
-button:hover{transform:translateY(-2px)}
-.copy{flex:1;background:#111827;color:#fff}.reset{padding:0 22px;background:#eef2ff;color:#4338ca}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-.feature{text-align:center;padding:19px;border-radius:17px;border:1px solid #e8eaf0;background:rgba(255,255,255,.72)}
-.fi{font-size:22px;margin-bottom:7px}.feature b{display:block;font-size:12px}.feature span{display:block;color:var(--muted);font-size:10px;margin-top:5px}
-.note{margin-top:18px;padding:13px 14px;border-radius:13px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:11px;line-height:1.55}
-footer{text-align:center;color:#9ca3af;font-size:11px;padding:5px 18px 30px}
-@media(max-width:720px){
- .grid,.results,.features{grid-template-columns:1fr}.total{grid-column:auto}.breakdown{grid-template-columns:1fr}
- .app{padding:20px;border-radius:22px}.hero{padding-top:25px}.hero h1{font-size:34px}
- .actions{flex-direction:column}.reset{width:100%}.pill{display:none}
+
+.header p{
+    color:#dbeafe;
+}
+
+.container{
+    max-width:1150px;
+    margin:28px auto;
+    padding:0 15px;
+}
+
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:20px;
+    box-shadow:0 8px 30px rgba(15,23,42,.07);
+}
+
+.title{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr;
+    gap:15px;
+}
+
+label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    color:#475569;
+    margin-bottom:7px;
+}
+
+input{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid #dbe2ea;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,.1);
+}
+
+.detected{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:10px;
+    margin-top:18px;
+}
+
+.detect-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:14px;
+}
+
+.detect-item span{
+    display:block;
+    font-size:11px;
+    color:#64748b;
+    margin-bottom:5px;
+}
+
+.detect-item strong{
+    font-size:14px;
+}
+
+.gst{
+    color:#2563eb;
+}
+
+.add{
+    width:100%;
+    margin-top:18px;
+    background:#2563eb;
+    color:white;
+    padding:14px;
+    border:0;
+    border-radius:10px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.add:hover{
+    background:#1d4ed8;
+}
+
+.search-results{
+    margin-top:5px;
+    border:1px solid #e2e8f0;
+    border-radius:10px;
+    overflow:hidden;
+    display:none;
+}
+
+.result{
+    padding:12px 14px;
+    background:#fff;
+    cursor:pointer;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.result:hover{
+    background:#eff6ff;
+}
+
+.result small{
+    color:#64748b;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:800px;
+}
+
+th{
+    background:#f8fafc;
+    color:#64748b;
+    font-size:12px;
+    padding:14px;
+    text-align:left;
+}
+
+td{
+    padding:14px;
+    border-top:1px solid #edf2f7;
+    font-size:14px;
+}
+
+.delete{
+    background:#fee2e2;
+    color:#dc2626;
+    border:0;
+    border-radius:8px;
+    padding:8px 10px;
+    cursor:pointer;
+}
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.box{
+    background:#f8fafc;
+    border-radius:14px;
+    padding:20px;
+}
+
+.box span{
+    color:#64748b;
+    font-size:13px;
+}
+
+.box strong{
+    display:block;
+    font-size:23px;
+    margin-top:8px;
+}
+
+.grand{
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;
+}
+
+.grand span{
+    color:#dbeafe;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+}
+
+.action{
+    border:0;
+    padding:12px 18px;
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.clear{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.print{
+    background:#111827;
+    color:white;
+}
+
+.note{
+    margin-top:15px;
+    color:#64748b;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#94a3b8;
+}
+
+@media(max-width:800px){
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .detected{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .summary{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:500px){
+    .header h1{
+        font-size:24px;
+    }
+
+    .card{
+        padding:17px;
+    }
+
+    .detected,
+    .summary{
+        grid-template-columns:1fr;
+    }
 }
 </style>
 </head>
 
 <body>
-<nav class="nav">
-  <div class="brand"><div class="logo">₹</div>PricePro AI</div>
-  <div class="pill">SMART GST TOOL</div>
-</nav>
 
-<section class="hero">
-  <h1>Smart <span class="grad">GST Price Calculator</span></h1>
-  <p>Type a product name, enter its price and quantity. The calculator detects a matching product category, applies the built-in GST rule and calculates the final amount instantly.</p>
-</section>
+<header class="header">
+<div class="header-inner">
+<h1>🇮🇳 Smart GST Calculator</h1>
+<p>Search product → Auto category → HSN → GST → Instant total</p>
+</div>
+</header>
 
-<main class="wrap">
-<div class="app">
+<div class="container">
 
-  <div class="title"><div class="num">01</div><h2>Product Details</h2></div>
+<!-- ADD PRODUCT -->
 
-  <div class="grid">
-    <div>
-      <label>PRODUCT NAME</label>
-      <div class="item-wrap">
-        <input id="item" autocomplete="off" placeholder="Try: Jeans, iPhone, Rice, Shoes...">
-        <div id="suggest" class="suggest"></div>
-      </div>
-      <div id="detect" class="detect">🔎 Start typing a product name…</div>
-    </div>
+<div class="card">
 
-    <div>
-      <label>PRICE PER ITEM</label>
-      <input id="price" type="number" min="0" step="0.01" placeholder="Enter price">
-    </div>
+<div class="title">Add Product</div>
 
-    <div>
-      <label>QUANTITY</label>
-      <input id="qty" type="number" min="1" step="1" value="1">
-    </div>
+<div class="form-grid">
 
-    <div>
-      <label>GST RATE</label>
-      <div class="rate-line">
-        <select id="gst">
-          <option value="auto">Auto Detect</option>
-          <option value="0">0%</option>
-          <option value="5">5%</option>
-          <option value="12">12%</option>
-          <option value="18">18%</option>
-          <option value="28">28%</option>
-        </select>
-        <span class="auto-tag" id="autoTag">AUTO</span>
-      </div>
-    </div>
-  </div>
+<div>
+<label>Product Name</label>
 
-  <div class="divider"></div>
+<input
+id="product"
+type="text"
+placeholder="Example: Jeans, Mobile, Rice..."
+autocomplete="off"
+oninput="searchProduct()">
 
-  <div class="title"><div class="num">02</div><h2>Calculation Summary</h2></div>
+<div id="results" class="search-results"></div>
 
-  <div class="results">
-    <div class="rc"><div class="rl">PRODUCT TOTAL</div><div class="rv" id="subtotal">₹0.00</div></div>
-    <div class="rc"><div class="rl">GST RATE</div><div class="rv" id="rateOut">—</div></div>
-    <div class="rc"><div class="rl">GST AMOUNT</div><div class="rv" id="gstAmount">₹0.00</div></div>
-    <div class="rc"><div class="rl">CGST / SGST</div><div class="rv" id="split">—</div></div>
-
-    <div class="rc total">
-      <div class="rl">FINAL AMOUNT</div>
-      <div class="rv" id="final">₹0.00</div>
-      <div class="breakdown">
-        <div class="mini">Base: <b id="baseMini">₹0.00</b></div>
-        <div class="mini">GST: <b id="gstMini">₹0.00</b></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="actions">
-    <button class="copy" onclick="copyResult()">📋 Copy Result</button>
-    <button class="reset" onclick="resetAll()">↻ Reset</button>
-  </div>
-
-  <div class="note">
-    ⚠️ <b>Important:</b> Product-name matching is a convenience feature, not an official HSN classification engine. GST can depend on exact HSN, composition, use, transaction conditions and price/value thresholds. If a product is not confidently matched, the tool marks the rate as an estimate and lets you choose a rate manually.
-  </div>
 </div>
 
-<div class="features">
-  <div class="feature"><div class="fi">⚡</div><b>Live Calculation</b><span>Updates while you type</span></div>
-  <div class="feature"><div class="fi">🧠</div><b>Smart Detection</b><span>Common product database</span></div>
-  <div class="feature"><div class="fi">📱</div><b>Mobile Ready</b><span>Responsive on every screen</span></div>
-</div>
-</main>
+<div>
+<label>Price / Unit (₹)</label>
 
-<footer>© 2026 PricePro AI • Smart GST Price Calculator</footer>
+<input
+id="price"
+type="number"
+min="0"
+placeholder="0"
+oninput="detectProduct()">
+</div>
+
+<div>
+<label>Quantity</label>
+
+<input
+id="qty"
+type="number"
+min="1"
+value="1"
+oninput="calculatePreview()">
+</div>
+
+</div>
+
+
+<div class="detected">
+
+<div class="detect-item">
+<span>Category</span>
+<strong id="category">—</strong>
+</div>
+
+<div class="detect-item">
+<span>Subcategory</span>
+<strong id="subcategory">—</strong>
+</div>
+
+<div class="detect-item">
+<span>HSN</span>
+<strong id="hsn">—</strong>
+</div>
+
+<div class="detect-item">
+<span>GST Rate</span>
+<strong class="gst" id="gst">—</strong>
+</div>
+
+</div>
+
+
+<button class="add" onclick="addProduct()">
+＋ Add Product
+</button>
+
+<p class="note">
+GST shown here is an automatic estimate based on the product rules in this
+calculator. For tax filing/invoicing, verify the exact HSN classification and
+applicable GST rate.
+</p>
+
+</div>
+
+
+<!-- PRODUCTS -->
+
+<div class="card">
+
+<div class="title">Added Products</div>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Product</th>
+<th>Category</th>
+<th>HSN</th>
+<th>Price</th>
+<th>Qty</th>
+<th>GST</th>
+<th>GST Amount</th>
+<th>Total</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody id="items">
+
+<tr>
+<td colspan="9" class="empty">
+No products added
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- SUMMARY -->
+
+<div class="card">
+
+<div class="title">Bill Summary</div>
+
+<div class="summary">
+
+<div class="box">
+<span>Subtotal</span>
+<strong id="subtotal">₹0.00</strong>
+</div>
+
+<div class="box">
+<span>Total GST</span>
+<strong id="gstTotal">₹0.00</strong>
+</div>
+
+<div class="box">
+<span>Total Quantity</span>
+<strong id="quantityTotal">0</strong>
+</div>
+
+<div class="box grand">
+<span>Grand Total</span>
+<strong id="grand">₹0.00</strong>
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="action clear" onclick="clearAll()">
+Clear All
+</button>
+
+<button class="action print" onclick="window.print()">
+Print
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 <script>
+
 /*
-  Product database:
-  rate can be a number, or a function of price for threshold-based categories.
-  This is intentionally a practical/common-product database, not a complete HSN master.
+=========================================================
+PRODUCT DATABASE
+=========================================================
 */
-const DB = [
-  // Apparel / textiles — 2025 threshold rule used by this tool
-  {n:"jeans",c:"Apparel / Clothing",h:"HSN 6203/6204 family",r:p=>p<=2500?5:18},
-  {n:"jean",c:"Apparel / Clothing",h:"HSN 6203/6204 family",r:p=>p<=2500?5:18},
-  {n:"t shirt",c:"Apparel / Clothing",h:"HSN 6109 family",r:p=>p<=2500?5:18},
-  {n:"t-shirt",c:"Apparel / Clothing",h:"HSN 6109 family",r:p=>p<=2500?5:18},
-  {n:"shirt",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"trouser",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
-  {n:"trousers",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
-  {n:"pant",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
-  {n:"pants",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
-  {n:"kurta",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"saree",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"sari",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"dress",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"skirt",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"jacket",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"coat",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"sweater",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"hoodie",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"shorts",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"leggings",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"socks",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"underwear",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"innerwear",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"kids clothes",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
-  {n:"clothes",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
 
-  // Footwear — 2025 threshold rule used by this tool
-  {n:"shoes",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"shoe",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"sandal",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"sandals",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"slippers",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"slipper",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"chappal",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"chapal",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"sneakers",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
-  {n:"boots",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+const productsDB = [
 
-  // Electronics / computers / phones
-  {n:"mobile",c:"Mobile Phone",h:"HSN 8517",r:18},
-  {n:"mobile phone",c:"Mobile Phone",h:"HSN 8517",r:18},
-  {n:"smartphone",c:"Mobile Phone",h:"HSN 8517",r:18},
-  {n:"iphone",c:"Mobile Phone",h:"HSN 8517",r:18},
-  {n:"samsung phone",c:"Mobile Phone",h:"HSN 8517",r:18},
-  {n:"android phone",c:"Mobile Phone",h:"HSN 8517",r:18},
-  {n:"tablet",c:"Computer / Tablet",h:"HSN 8471",r:18},
-  {n:"ipad",c:"Computer / Tablet",h:"HSN 8471",r:18},
-  {n:"laptop",c:"Computer / Laptop",h:"HSN 8471",r:18},
-  {n:"computer",c:"Computer / Laptop",h:"HSN 8471",r:18},
-  {n:"desktop",c:"Computer / Laptop",h:"HSN 8471",r:18},
-  {n:"monitor",c:"Computer Monitor",h:"Electronics",r:18},
-  {n:"keyboard",c:"Computer Accessory",h:"Electronics",r:18},
-  {n:"mouse",c:"Computer Accessory",h:"Electronics",r:18},
-  {n:"printer",c:"Printer",h:"Electronics",r:18},
-  {n:"scanner",c:"Scanner",h:"Electronics",r:18},
-  {n:"camera",c:"Camera",h:"HSN 8525 family",r:18},
-  {n:"cctv",c:"CCTV / Security",h:"Electronics",r:18},
-  {n:"tv",c:"Television",h:"Electronics",r:18},
-  {n:"television",c:"Television",h:"Electronics",r:18},
-  {n:"led tv",c:"Television",h:"Electronics",r:18},
-  {n:"smart tv",c:"Television",h:"Electronics",r:18},
-  {n:"speaker",c:"Speaker",h:"Electronics",r:18},
-  {n:"headphone",c:"Headphones",h:"Electronics",r:18},
-  {n:"headphones",c:"Headphones",h:"Electronics",r:18},
-  {n:"earphone",c:"Earphones",h:"Electronics",r:18},
-  {n:"earbuds",c:"Earbuds",h:"Electronics",r:18},
-  {n:"smartwatch",c:"Smartwatch",h:"Electronics",r:18},
-  {n:"watch",c:"Watch",h:"Accessories",r:18},
-  {n:"power bank",c:"Power Bank",h:"Electronics",r:18},
-  {n:"charger",c:"Charger",h:"Electronics",r:18},
-  {n:"mobile charger",c:"Mobile Charger",h:"Electronics",r:18},
-  {n:"cable",c:"Electronic Cable",h:"Electronics",r:18},
-  {n:"usb cable",c:"USB Cable",h:"Electronics",r:18},
-  {n:"pendrive",c:"Storage Device",h:"Electronics",r:18},
-  {n:"pen drive",c:"Storage Device",h:"Electronics",r:18},
-  {n:"hard disk",c:"Storage Device",h:"Electronics",r:18},
-  {n:"ssd",c:"Storage Device",h:"Electronics",r:18},
-  {n:"router",c:"Networking Equipment",h:"Electronics",r:18},
+/* CLOTHING */
 
-  // Appliances
-  {n:"refrigerator",c:"Refrigerator",h:"Household Appliance",r:18},
-  {n:"fridge",c:"Refrigerator",h:"Household Appliance",r:18},
-  {n:"washing machine",c:"Washing Machine",h:"HSN 8450",r:18},
-  {n:"ac",c:"Air Conditioner",h:"Household Appliance",r:28},
-  {n:"air conditioner",c:"Air Conditioner",h:"Household Appliance",r:28},
-  {n:"cooler",c:"Air Cooler",h:"Household Appliance",r:18},
-  {n:"microwave",c:"Microwave Oven",h:"Household Appliance",r:18},
-  {n:"oven",c:"Oven",h:"Household Appliance",r:18},
-  {n:"mixer",c:"Mixer / Grinder",h:"Household Appliance",r:18},
-  {n:"mixer grinder",c:"Mixer / Grinder",h:"Household Appliance",r:18},
-  {n:"grinder",c:"Mixer / Grinder",h:"Household Appliance",r:18},
-  {n:"vacuum cleaner",c:"Vacuum Cleaner",h:"Household Appliance",r:18},
-  {n:"iron",c:"Electric Iron",h:"Household Appliance",r:18},
-  {n:"water heater",c:"Water Heater",h:"Household Appliance",r:18},
-  {n:"geyser",c:"Water Heater",h:"Household Appliance",r:18},
-  {n:"fan",c:"Electric Fan",h:"Electrical Appliance",r:18},
-  {n:"ceiling fan",c:"Electric Fan",h:"Electrical Appliance",r:18},
+{
+names:["jeans","denim jeans"],
+category:"Clothing",
+subcategory:"Readymade Garment",
+hsn:"6203",
+rule:"garment"
+},
 
-  // Grocery / food common items
-  {n:"rice",c:"Rice / Cereals",h:"Food",r:5},
-  {n:"basmati rice",c:"Rice / Cereals",h:"Food",r:5},
-  {n:"wheat",c:"Wheat / Cereals",h:"Food",r:5},
-  {n:"atta",c:"Wheat Flour",h:"Food",r:5},
-  {n:"flour",c:"Flour",h:"Food",r:5},
-  {n:"dal",c:"Pulses",h:"Food",r:5},
-  {n:"pulses",c:"Pulses",h:"Food",r:5},
-  {n:"lentils",c:"Pulses",h:"Food",r:5},
-  {n:"sugar",c:"Sugar",h:"Food",r:5},
-  {n:"salt",c:"Salt",h:"Food",r:0},
-  {n:"tea",c:"Tea",h:"Food",r:5},
-  {n:"coffee",c:"Coffee",h:"Food",r:5},
-  {n:"milk",c:"Milk",h:"Food",r:0},
-  {n:"curd",c:"Curd",h:"Food",r:0},
-  {n:"yogurt",c:"Yogurt",h:"Food",r:0},
-  {n:"paneer",c:"Paneer",h:"Food",r:5},
-  {n:"butter",c:"Butter",h:"Food",r:5},
-  {n:"ghee",c:"Ghee",h:"Food",r:5},
-  {n:"cheese",c:"Cheese",h:"Food",r:12},
-  {n:"bread",c:"Bread",h:"Food",r:0},
-  {n:"biscuit",c:"Biscuits",h:"Food",r:5},
-  {n:"biscuits",c:"Biscuits",h:"Food",r:5},
-  {n:"chocolate",c:"Chocolate",h:"Food",r:18},
-  {n:"namkeen",c:"Namkeen",h:"Food",r:5},
-  {n:"chips",c:"Snack Food",h:"Food",r:12},
-  {n:"noodles",c:"Prepared Food",h:"Food",r:12},
-  {n:"pasta",c:"Prepared Food",h:"Food",r:12},
-  {n:"honey",c:"Honey",h:"Food",r:5},
-  {n:"pickle",c:"Pickles",h:"Food",r:12},
-  {n:"juice",c:"Fruit Juice",h:"Food",r:12},
-  {n:"soft drink",c:"Beverage",h:"Food / Beverage",r:28},
-  {n:"cold drink",c:"Beverage",h:"Food / Beverage",r:28},
-  {n:"mineral water",c:"Packaged Water",h:"Food / Beverage",r:18},
-  {n:"water bottle",c:"Packaged Water",h:"Food / Beverage",r:18},
+{
+names:["shirt","shirts","formal shirt","casual shirt"],
+category:"Clothing",
+subcategory:"Readymade Garment",
+hsn:"6205",
+rule:"garment"
+},
 
-  // Personal care / cosmetics
-  {n:"shampoo",c:"Personal Care",h:"Cosmetics",r:18},
-  {n:"soap",c:"Soap",h:"Personal Care",r:18},
-  {n:"face wash",c:"Personal Care",h:"Cosmetics",r:18},
-  {n:"toothpaste",c:"Oral Care",h:"Personal Care",r:18},
-  {n:"toothbrush",c:"Oral Care",h:"Personal Care",r:12},
-  {n:"perfume",c:"Perfume",h:"Cosmetics",r:18},
-  {n:"deodorant",c:"Deodorant",h:"Cosmetics",r:18},
-  {n:"lipstick",c:"Cosmetics",h:"Cosmetics",r:18},
-  {n:"cream",c:"Cosmetics",h:"Cosmetics",r:18},
-  {n:"lotion",c:"Cosmetics",h:"Cosmetics",r:18},
-  {n:"sunscreen",c:"Cosmetics",h:"Cosmetics",r:18},
-  {n:"hair oil",c:"Hair Care",h:"Personal Care",r:18},
+{
+names:["t shirt","t-shirt","tshirt"],
+category:"Clothing",
+subcategory:"Readymade Garment",
+hsn:"6109",
+rule:"garment"
+},
 
-  // Household
-  {n:"detergent",c:"Cleaning Product",h:"Household",r:18},
-  {n:"washing powder",c:"Cleaning Product",h:"Household",r:18},
-  {n:"dishwash",c:"Cleaning Product",h:"Household",r:18},
-  {n:"dishwasher liquid",c:"Cleaning Product",h:"Household",r:18},
-  {n:"floor cleaner",c:"Cleaning Product",h:"Household",r:18},
-  {n:"toilet cleaner",c:"Cleaning Product",h:"Household",r:18},
-  {n:"broom",c:"Broom",h:"Household",r:5},
-  {n:"mop",c:"Cleaning Tool",h:"Household",r:18},
-  {n:"bucket",c:"Plastic Household",h:"Household",r:18},
-  {n:"plastic chair",c:"Plastic Furniture",h:"Furniture",r:18},
-  {n:"chair",c:"Furniture",h:"Furniture",r:18},
-  {n:"table",c:"Furniture",h:"Furniture",r:18},
-  {n:"sofa",c:"Furniture",h:"Furniture",r:18},
-  {n:"bed",c:"Furniture",h:"Furniture",r:18},
-  {n:"mattress",c:"Mattress",h:"Furniture",r:18},
+{
+names:["trouser","trousers","pants"],
+category:"Clothing",
+subcategory:"Readymade Garment",
+hsn:"6203",
+rule:"garment"
+},
 
-  // Stationery
-  {n:"pen",c:"Stationery",h:"Stationery",r:18},
-  {n:"pencil",c:"Stationery",h:"Stationery",r:18},
-  {n:"notebook",c:"Stationery",h:"Stationery",r:12},
-  {n:"notepad",c:"Stationery",h:"Stationery",r:12},
-  {n:"book",c:"Printed Book",h:"Stationery",r:0},
-  {n:"school bag",c:"Bag",h:"HSN 4202 family",r:18},
-  {n:"bag",c:"Bag",h:"HSN 4202 family",r:18},
-  {n:"backpack",c:"Bag",h:"HSN 4202 family",r:18},
+{
+names:["kurta","kurti"],
+category:"Clothing",
+subcategory:"Readymade Garment",
+hsn:"6211",
+rule:"garment"
+},
 
-  // Automotive
-  {n:"car",c:"Motor Vehicle",h:"Automotive",r:28},
-  {n:"bike",c:"Motorcycle",h:"Automotive",r:28},
-  {n:"motorcycle",c:"Motorcycle",h:"Automotive",r:28},
-  {n:"scooter",c:"Motorcycle / Scooter",h:"Automotive",r:28},
-  {n:"tyre",c:"Tyre",h:"Automotive",r:28},
-  {n:"tire",c:"Tyre",h:"Automotive",r:28},
-  {n:"car battery",c:"Battery",h:"Automotive",r:28},
-  {n:"engine oil",c:"Lubricant",h:"Automotive",r:18},
-  {n:"motor oil",c:"Lubricant",h:"Automotive",r:18},
+{
+names:["saree","sari"],
+category:"Clothing",
+subcategory:"Saree",
+hsn:"5208",
+rule:"garment"
+},
 
-  // Construction / hardware
-  {n:"cement",c:"Cement",h:"Construction",r:28},
-  {n:"paint",c:"Paint",h:"Construction",r:18},
-  {n:"wall paint",c:"Paint",h:"Construction",r:18},
-  {n:"tiles",c:"Tiles",h:"Construction",r:18},
-  {n:"tile",c:"Tiles",h:"Construction",r:18},
-  {n:"bricks",c:"Bricks",h:"Construction",r:12},
-  {n:"brick",c:"Bricks",h:"Construction",r:12},
-  {n:"steel",c:"Steel",h:"Construction",r:18},
-  {n:"iron",c:"Iron / Steel",h:"Construction",r:18},
-  {n:"pipe",c:"Pipes",h:"Construction",r:18},
-  {n:"pvc pipe",c:"PVC Pipe",h:"Construction",r:18},
-  {n:"hardware",c:"Hardware",h:"Hardware",r:18},
+{
+names:["dress","frock","gown"],
+category:"Clothing",
+subcategory:"Readymade Garment",
+hsn:"6204",
+rule:"garment"
+},
 
-  // Other
-  {n:"toy",c:"Toy",h:"To
+{
+names:["jacket","coat","blazer"],
+category:"Clothing",
+subcategory:"Outerwear",
+hsn:"6203",
+rule:"garment"
+},
+
+{
+names:["sweater","pullover"],
+category:"Clothing",
+subcategory:"Knitwear",
+hsn:"6110",
+rule:"garment"
+},
+
+{
+names:["underwear","brief","panty"],
+category:"Clothing",
+subcategory:"Innerwear",
+hsn:"6107",
+rule:"garment"
+},
+
+
+/* FOOTWEAR */
+
+{
+names:["shoe","shoes","sports shoes","running shoes"],
+category:"Footwear",
+subcategory:"Shoes",
+hsn:"6403",
+rule:"footwear"
+},
+
+{
+names:["sandal","sandals"],
+category:"Footwear",
+subcategory:"Sandals",
+hsn:"6402",
+rule:"footwear"
+},
+
+{
+names:["slipper","slippers","chappal","flip flop"],
+category:"Footwear",
+subcategory:"Slippers",
+hsn:"6402",
+rule:"footwear"
+},
+
+{
+names:["boots","boot"],
+category:"Footwear",
+subcategory:"Boots",
+hsn:"6403",
+rule:"footwear"
+},
+
+
+/* ELECTRONICS */
+
+{
+names:["mobile","mobile phone","smartphone","phone"],
+category:"Electronics",
+subcategory:"Mobile Phone",
+hsn:"8517",
+gst:18
+},
+
+{
+names:["iphone"],
+category:"Electronics",
+subcategory:"Mobile Phone",
+hsn:"8517",
+gst:18
+},
+
+{
+names:["laptop","notebook computer"],
+category:"Electronics",
+subcategory:"Computer",
+hsn:"8471",
+gst:18
+},
+
+{
+names:["computer","desktop","pc"],
+category:"Electronics",
+subcategory:"Computer",
+hsn:"8471",
+gst:18
+},
+
+{
+names:["tablet","ipad"],
+category:"Electronics",
+subcategory:"Tablet Computer",
+hsn:"8471",
+gst:18
+},
+
+{
+names:["television","tv","smart tv","led tv"],
+category:"Electronics",
+subcategory:"Television",
+hsn:"8528",
+gst:18
+},
+
+{
+names:["monitor","computer monitor"],
+category:"Electronics",
+subcategory:"Monitor",
+hsn:"8528",
+gst:18
+},
+
+{
+names:["headphone","headphones"],
+category:"Electronics",
+subcategory:"Audio",
+hsn:"8518",
+gst:18
+},
+
+{
+names:["earphone","earphones","earbuds"],
+category:"Electronics",
+subcategory:"Audio",
+hsn:"8518",
+gst:18
+},
+
+{
+names:["speaker","bluetooth speaker"],
+category:"Electronics",
+subcategory:"Audio",
+hsn:"8518",
+gst:18
+},
+
+{
+names:["keyboard","mouse"],
+category:"Electronics",
+subcategory:"Computer Accessories",
+hsn:"8471",
+gst:18
+},
+
+
+/* FOOD */
+
+{
+names:["rice","basmati rice","basmati"],
+category:"Food & Grocery",
+subcategory:"Rice",
+hsn:"1006",
+rule:"rice"
+},
+
+{
+names:["wheat","gehun"],
+category:"Food & Grocery",
+subcategory:"Wheat",
+hsn:"1001",
+rule:"grain"
+},
+
+{
+names:["atta","wheat flour","flour"],
+category:"Food & Grocery",
+subcategory:"Flour",
+hsn:"1101",
+rule:"flour"
+},
+
+{
+names:["maida"],
+category:"Food & Grocery",
+subcategory:"Flour",
+hsn:"1101",
+rule:"flour"
+},
+
+{
+names:["sugar","cheeni"],
+category:"Food & Grocery",
+subcategory:"Sugar",
+hsn:"1701",
+rule:"sugar"
+},
+
+{
+names:["salt","namak"],
+category:"Food & Grocery",
+subcategory:"Salt",
+hsn:"2501",
+gst:5
+},
+
+{
+names:["tea","chai"],
+category:"Food & Grocery",
+subcategory:"Tea",
+hsn:"0902",
+gst:5
+},
+
+{
+names:["coffee"],
+category:"Food & Grocery",
+subcategory:"Coffee",
+hsn:"0901",
+gst:5
+},
+
+{
+names:["biscuit","biscuits"],
+category:"Food & Grocery",
+subcategory:"Biscuits",
+hsn:"1905",
+gst:18
+},
+
+{
+names:["chocolate","chocolates"],
+category:"Food & Grocery",
+subcategory:"Chocolate",
+hsn:"1806",
+gst:18
+},
+
+{
+names:["spices","masala","turmeric","haldi","chilli powder","mirchi"],
+category:"Food & Grocery",
+subcategory:"Spices",
+hsn:"0910",
+gst:5
+},
+
+{
+names:["cooking oil","edible oil","mustard oil","sunflower oil"],
+category:"Food & Grocery",
+subcategory:"Edible Oil",
+hsn:"1512",
+gst:5
+},
+
+
+/* PERSONAL CARE */
+
+{
+names:["soap","bathing soap"],
+category:"Personal Care",
+subcategory:"Soap",
+hsn:"3401",
+gst:18
+},
+
+{
+names:["shampoo"],
+category:"Personal Care",
+subcategory:"Hair Care",
+hsn:"3305",
+gst:18
+},
+
+{
+names:["toothpaste","tooth paste"],
+category:"Personal Care",
+subcategory:"Oral Care",
+hsn:"3306",
+gst:18
+},
+
+{
+names:["toothbrush"],
+category:"Personal Care",
+subcategory:"Oral Care",
+hsn:"9603",
+gst:18
+},
+
+{
+names:["perfume","deodorant","deodorants"],
+category:"Personal Care",
+subcategory:"Fragrance",
+hsn:"3303",
+gst:18
+},
+
+{
+names:["face wash","facewash","cream","lotion"],
+category:"Personal Care",
+subcategory:"Skin Care",
+hsn:"3304",
+gst:18
+},
+
+
+/* STATIONERY */
+
+{
+names:["pen","pens"],
+category:"Stationery",
+subcategory:"Writing Instrument",
+hsn:"9608",
+gst:18
+},
+
+{
+names:["pencil","pencils"],
+category:"Stationery",
+subcategory:"Writing Instrument",
+hsn:"9609",
+gst:18
+},
+
+{
+names:["notebook","notebooks","copy","copies"],
+category:"Stationery",
+subcategory:"Notebook",
+hsn:"4820",
+gst:12
+},
+
+{
+names:["book","books"],
+category:"Stationery",
+subcategory:"Printed Book",
+hsn:"4901",
+gst:0
+},
+
+{
+names:["eraser","erasers"],
+category:"Stationery",
+subcategory:"Stationery",
+hsn:"4016",
+gst:5
+},
+
+
+/* BAGS */
+
+{
+names:["bag","bags","handbag","handbags"],
+category:"Bags & Accessories",
+subcategory:"Bags",
+hsn:"4202",
+gst:18
+},
+
+{
+names:["wallet","wallets"],
+category:"Bags & Accessories",
+subcategory:"Wallet",
+hsn:"4202",
+gst:18
+},
+
+{
+names:["school bag","school bags","backpack","rucksack"],
+category:"Bags & Accessories",
+subcategory:"Bags",
+hsn:"4202",
+gst:18
+},
+
+
+/* FURNITURE */
+
+{
+names:["chair","chairs"],
+category:"Furniture",
+subcategory:"Chair",
+hsn:"9401",
+gst:18
+},
+
+{
+names:["table","tables"],
+category:"Furniture",
+subcategory:"Table",
+hsn:"9403",
+gst:18
+},
+
+{
+names:["sofa","sofas"],
+category:"Furniture",
+subcategory:"Sofa",
+hsn:"9401",
+gst:18
+},
+
+{
+names:["bed","beds"],
+category:"Furniture",
+subcategory:"Bed",
+hsn:"9403",
+gst:18
+},
+
+{
+names:["mattress","mattresses"],
+category:"Furniture",
+subcategory:"Mattress",
+hsn:"9404",
+gst:18
+},
+
+
+/* HOME */
+
+{
+names:["curtain","curtains"],
+category:"Home Furnishing",
+subcategory:"Curtains",
+hsn:"6303",
+gst:12
+},
+
+{
+names:["carpet","carpets","rug","rugs"],
+category:"Home Furnishing",
+subcategory:"Floor Covering",
+hsn:"5703",
+gst:12
+},
+
+{
+names:["bedsheet","bed sheet","bedsheets"],
+category:"Home Furnishing",
+subcategory:"Bed Linen",
+hsn:"6302",
+gst:12
+},
+
+
+/* TOYS */
+
+{
+names:["toy","toys","toy car","teddy bear"],
+category:"Toys",
+subcategory:"Toys",
+hsn:"9503",
+gst:12
+},
+
+
+/* SPORTS */
+
+{
+names:["cricket bat","bat"],
+category:"Sports",
+subcategory:"Cricket Equipment",
+hsn:"9506",
+gst:12
+},
+
+{
+names:["football","volleyball","basketball"],
+category:"Sports",
+subcategory:"Ball",
+hsn:"9506",
+gst:12
+},
+
+
+/* AUTOMOBILE */
+
+{
+names:["car","cars"],
+category:"Automobile",
+subcategory:"Motor Car",
+hsn:"8703",
+gst:28
+},
+
+{
+names:["bike","motorcycle","motorbike"],
+category:"Automobile",
+subcategory:"Two Wheeler",
+hsn:"8711",
+gst:28
+},
+
+{
+names:["scooter","scooters"],
+category:"Automobile",
+subcategory:"Two Wheeler",
+hsn:"8711",
+gst:28
+},
+
+{
+names:["tyre","tyres"],
+category:"Automobile",
+subcategory:"Tyre",
+hsn:"4011",
+gst:28
+},
+
+
+/* ELECTRICAL */
+
+{
+names:["fan","ceiling fan","table fan"],
+category:"Electrical",
+subcategory:"Electric Fan",
+hsn:"8414",
+gst:18
+},
+
+{
+names:["bulb","led bulb","led light"],
+category:"Electrical",
+subcategory:"Lighting",
+hsn:"8539",
+gst:18
+},
+
+{
+names:["switch","electrical switch"],
+category:"Electrical",
+subcategory:"Electrical Equipment",
+hsn:"8536",
+gst:18
+},
+
+{
+names:["wire","electric wire","cable"],
+category:"Electrical",
+subcategory:"Wire & Cable",
+hsn:"8544",
+gst:18
+},
+
+
+/* HARDWARE */
+
+{
+names:["pipe","pipes","pvc pipe"],
+category:"Hardware",
+subcategory:"Pipes",
+hsn:"3917",
+gst:18
+},
+
+{
+names:["tap","faucet"],
+category:"Hardware",
+subcategory:"Sanitary Fittings",
+hsn:"8481",
+gst:18
+},
+
+{
+names:["hammer","hammers"],
+category:"Hardware",
+subcategory:"Hand Tools",
+hsn:"8205",
+gst:18
+},
+
+{
+names:["screwdriver","screwdrivers"],
+category:"Hardware",
+subcategory:"Hand Tools",
+hsn:"8205",
+gst:18
+}
+
+];
+
+
+/*
+=========================================================
+CURRENT PRODUCT
+=========================================================
+*/
+
+let selectedProduct = null;
+let cart = [];
+
+
+/*
+=========================================================
+SEARCH PRODUCT
+=========================================================
+*/
+
+function searchProduct(){
+
+    let value =
+        document.getElementById("product").value
+        .toLowerCase()
+        .trim();
+
+    let results =
+        document.getElementById("results");
+
+    if(!value){
+
+        results.style.display="none";
+        selectedProduct=null;
+        clearDetection();
+        return;
+    }
+
+    let matches = productsDB.filter(p => {
+
+        return p.names.some(n =>
+            n.includes(value) || value.includes(n)
+        );
+
+    }).slice(0,8);
+
+
+    if(matches.length===0){
+
+        results.innerHTML =
+        `<div class="result">
+        No exact product found.
+        <small>Default GST verification required.</small>
+        </div>`;
+
+        results.style.display="block";
+
+        selectedProduct=null;
+        return;
+    }
+
+
+    results.innerHTML = matches.map((p,index)=>`
+
+        <div class="result"
+        onclick="selectProduct(${productsDB.indexOf(p)})">
+
+        <strong>${p.names[0]}</strong><br>
+
+        <small>
+        ${p.category} → ${p.subcategory}
+        | HSN ${p.hsn}
+        </small>
+
+        </div>
+
+    `).join("");
+
+    results.style.display="block";
+
+}
+
+
+/*
+=========================================================
+SELECT PRODUCT
+=========================================================
+*/
+
+function selectProduct(index){
+
+    selectedProduct = productsDB[index];
+
+    document.getElementById("product").value =
+        selectedProduct.names[0];
+
+    document.getElementById("results").style.display="none";
+
+    detectProduct();
+}
+
+
+/*
+=========================================================
+GET GST
+=========================================================
+*/
+
+function getGST(product,price){
+
+    if(!product){
+        return 18;
+    }
+
+
+    /*
+    Readymade garment
+    */
+
+    if(product.rule === "garment"){
+
+        return price <= 1000 ? 5 : 12;
+
+    }
+
+
+    /*
+    Footwear
+    */
+
+    if(product.rule === "footwear"){
+
+        return price <= 500 ? 5 : 18;
+
+    }
+
+
+    /*
+    Rice / grains / flour
+    */
+
+    if(
+        product.rule === "rice" ||
+        product.rule === "grain" ||
+        product.rule === "flour"
+    ){
+
+        return 5;
+
+    }
+
+
+    /*
+    Sugar
+    */
+
+    if(product.rule === "sugar"){
+
+        return 5;
+
+    }
+
+
+    return product.gst ?? 18;
+}
+
+
+/*
+=========================================================
+DETECT
+=========================================================
+*/
+
+function detectProduct(){
+
+    let name =
+        document.getElementById("product").value
+        .toLowerCase()
+        .trim();
+
+    let price =
+        parseFloat(document.getElementById("price").value) || 0;
+
+
+    if(!selectedProduct){
+
+        selectedProduct =
+        productsDB.find(p =>
+            p.names.some(n =>
+                name === n ||
+                name.includes(n) ||
+                n.includes(name)
+            )
+        );
+
+    }
+
+
+    if(!selectedProduct){
+
+        clearDetection();
+
+        return;
+    }
+
+
+    let rate =
+        getGST(selectedProduct,price);
+
+
+    document.getElementById("category").innerText =
+        selectedProduct.category;
+
+    document.getElementById("subcategory").innerText =
+        selectedProduct.subcategory;
+
+    document.getElementById("hsn").innerText =
+        selectedProduct.hsn;
+
+    document.getElementById("gst").innerText =
+        rate + "%";
+
+
+    calculatePreview();
+}
+
+
+/*
+=========================================================
+PREVIEW
+=========================================================
+*/
+
+function calculatePreview(){
+
+    if(!selectedProduct) return;
+
+    let price =
+        parseFloat(document.getElementById("price").value) || 0;
+
+    let rate =
+        getGST(selectedProduct,price);
+
+    document.getElementById("gst").innerText =
+        rate + "%";
+}
+
+
+/*
+=========================================================
+ADD
+=========================================================
+*/
+
+function addProduct(){
+
+    let name =
+        document.getElementById("product").value.trim();
+
+    let price =
+        parseFloat(document.getElementById("price").value);
+
+    let qty =
+        parseInt(document.getElementById("qty").value);
+
+
+    if(!name){
+
+        alert("Please enter product name.");
+        return;
+    }
+
+    if(!price || price < 0){
+
+        alert("Please enter valid price.");
+        return;
+    }
+
+    if(!qty || qty < 1){
+
+        alert("Please enter quantity.");
+        return;
+    }
+
+
+    /*
+    Try to automatically find product
+    */
+
+    if(!selectedProduct){
+
+        selectedProduct =
+        productsDB.find(p =>
+            p.names.some(n =>
+                name.toLowerCase().includes(n)
+            )
+        );
+
+    }
+
+
+    if(!selectedProduct){
+
+        alert(
+        "Product not found in database. Please select a supported product."
+        );
+
+        return;
+    }
+
+
+    let rate =
+        getGST(selectedProduct,price);
+
+
+    cart.push({
+
+        name:name,
+
+        category:selectedProduct.category,
+
+        subcategory:selectedProduct.subcategory,
+
+        hsn:selectedProduct.hsn,
+
+        price:price,
+
+        qty:qty,
+
+        gst:rate
+
+    });
+
+
+    renderCart();
+
+
+    document.getElementById("product").value="";
+    document.getElementById("price").value="";
+    document.getElementById("qty").value=1;
+
+    selectedProduct=null;
+
+    clearDetection();
+}
+
+
+/*
+=========================================================
+RENDER CART
+=========================================================
+*/
+
+function renderCart(){
+
+    let tbody =
+        document.getElementById("items");
+
+    tbody.innerHTML="";
+
+
+    if(cart.length===0){
+
+        tbody.innerHTML=`
+        <tr>
+        <td colspan="9" class="empty">
+        No products added
+        </td>
+        </tr>`;
+
+        updateSummary();
+
+        return;
+    }
+
+
+    cart.forEach((item,index)=>{
+
+        let base =
+            item.price * item.qty;
+
+        let gstAmount =
+            base * item.gst / 100;
+
+        let total =
+            base + gstAmount;
+
+
+        let row =
+        document.createElement("tr");
+
+
+        row.innerHTML=`
+
+        <td>
+        <strong>${escapeHTML(item.name)}</strong>
+        </td>
+
+        <td>
+        ${item.category}
+        </td>
+
+        <td>
+        ${item.hsn}
+        </td>
+
+        <td>
+        ₹${item.price.toFixed(2)}
+        </td>
+
+        <td>
+        ${item.qty}
+        </td>
+
+        <td>
+        ${item.gst}%
+        </td>
+
+        <td>
+        ₹${gstAmount.toFixed(2)}
+        </td>
+
+        <td>
+        <strong>
+        ₹${total.toFixed(2)}
+        </strong>
+        </td>
+
+        <td>
+
+        <button
+        class="delete"
+        onclick="removeItem(${index})">
+
+        Delete
+
+        </button>
+
+        </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
+
+
+    updateSummary();
+}
+
+
+/*
+=========================================================
+REMOVE
+=========================================================
+*/
+
+function removeItem(index){
+
+    cart.splice(index,1);
+
+    renderCart();
+}
+
+
+/*
+=========================================================
+SUMMARY
+=========================================================
+*/
+
+function updateSummary(){
+
+    let subtotal=0;
+    let gstTotal=0;
+    let quantity=0;
+
+
+    cart.forEach(item=>{
+
+        let amount =
+            item.price * item.qty;
+
+        subtotal += amount;
+
+        gstTotal +=
+            amount * item.gst / 100;
+
+        quantity += item.qty;
+
+    });
+
+
+    let grand =
+        subtotal + gstTotal;
+
+
+    document.getElementById("subtotal").innerText =
+        "₹" + subtotal.toFixed(2);
+
+    document.getElementById("gstTotal").innerText =
+        "₹" + gstTotal.toFixed(2);
+
+    document.getElementById("quantityTotal").innerText =
+        quantity;
+
+    document.getElementById("grand").innerText =
+        "₹" + grand.toFixed(2);
+}
+
+
+/*
+=========================================================
+CLEAR
+=========================================================
+*/
+
+function clearAll(){
+
+    if(!cart.length) return;
+
+    if(confirm("Clear all products?")){
+
+        cart=[];
+
+        renderCart();
+
+    }
+}
+
+
+/*
+=========================================================
+CLEAR DETECTION
+=========================================================
+*/
+
+function clearDetection(){
+
+    document.getElementById("category").innerText="—";
+
+    document.getElementById("subcategory").innerText="—";
+
+    document.getElementById("hsn").innerText="—";
+
+    document.getElementById("gst").innerText="—";
+}
+
+
+/*
+=========================================================
+SECURITY
+=========================================================
+*/
+
+function escapeHTML(text){
+
+    return text
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/*
+=========================================================
+START
+=========================================================
+*/
+
+renderCart();
+
+</script>
+
+</body>
+</html>
+```
