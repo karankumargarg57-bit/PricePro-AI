@@ -1,824 +1,391 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="description" content="Professional online price calculator with automatic discount and GST calculation.">
-<meta name="theme-color" content="#6366f1">
-
-<title>PricePro - Smart Price Calculator</title>
+<meta name="theme-color" content="#5b5cf0">
+<meta name="description" content="Smart GST Price Calculator - automatically detects common product categories, GST rates and calculates the final amount.">
+<title>PricePro AI — Smart GST Price Calculator</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root{
-    --primary:#6366f1;
-    --primary-dark:#4f46e5;
-    --purple:#8b5cf6;
-    --text:#111827;
-    --muted:#6b7280;
-    --border:#e5e7eb;
-    --bg:#f6f7fb;
-    --white:#ffffff;
-    --success:#10b981;
+  --p:#5b5cf0; --p2:#7c3aed; --ink:#111827; --muted:#6b7280;
+  --line:#e7e9f0; --bg:#f5f7fb; --card:rgba(255,255,255,.94);
+  --green:#10b981; --orange:#f59e0b; --red:#ef4444;
 }
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-    font-family:"Inter",sans-serif;
-    background:
-        radial-gradient(circle at 10% 10%,rgba(99,102,241,.13),transparent 28%),
-        radial-gradient(circle at 90% 20%,rgba(139,92,246,.12),transparent 28%),
-        var(--bg);
-    color:var(--text);
-    min-height:100vh;
+  font-family:Inter,Arial,sans-serif;color:var(--ink);min-height:100vh;
+  background:
+    radial-gradient(circle at 5% 5%,rgba(91,92,240,.15),transparent 25%),
+    radial-gradient(circle at 95% 10%,rgba(124,58,237,.12),transparent 25%),
+    var(--bg);
 }
-
-/* HEADER */
-
-.navbar{
-    width:100%;
-    padding:20px 6%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.nav{max-width:1100px;margin:auto;padding:20px 18px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:20px}
+.logo{width:43px;height:43px;border-radius:14px;color:#fff;display:grid;place-items:center;background:linear-gradient(135deg,var(--p),var(--p2));box-shadow:0 10px 25px rgba(91,92,240,.25)}
+.pill{font-size:11px;font-weight:800;color:#4f46e5;background:#eef2ff;padding:8px 12px;border-radius:30px}
+.hero{text-align:center;padding:35px 18px 28px}
+.hero h1{font-size:clamp(31px,5vw,50px);letter-spacing:-2px;line-height:1.1}
+.grad{background:linear-gradient(90deg,var(--p),var(--p2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:720px;margin:14px auto 0;color:var(--muted);line-height:1.7;font-size:15px}
+.wrap{max-width:1100px;margin:auto;padding:0 18px 55px}
+.app{background:var(--card);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);border-radius:28px;padding:28px;box-shadow:0 25px 80px rgba(15,23,42,.09)}
+.title{display:flex;gap:10px;align-items:center;margin-bottom:20px}
+.num{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:#eef2ff;color:#4f46e5;font-weight:800;font-size:12px}
+.title h2{font-size:17px}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:17px}
+label{display:block;font-size:12px;font-weight:800;color:#374151;margin:0 0 8px}
+.field{position:relative}
+input,select{
+  width:100%;height:54px;border:1.5px solid var(--line);border-radius:14px;
+  background:#fff;color:var(--ink);font:500 15px Inter,Arial;padding:0 15px;outline:none;transition:.2s
 }
-
-.brand{
-    display:flex;
-    align-items:center;
-    gap:11px;
-    font-size:20px;
-    font-weight:800;
+input:focus,select:focus{border-color:var(--p);box-shadow:0 0 0 4px rgba(91,92,240,.1)}
+.item-wrap{position:relative}
+.suggest{
+  display:none;position:absolute;z-index:20;left:0;right:0;top:61px;background:#fff;border:1px solid var(--line);
+  border-radius:14px;box-shadow:0 18px 40px rgba(15,23,42,.14);overflow:hidden;max-height:270px;overflow-y:auto
 }
-
-.brand-icon{
-    width:42px;
-    height:42px;
-    border-radius:13px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:white;
-    font-size:20px;
-    background:linear-gradient(135deg,var(--primary),var(--purple));
-    box-shadow:0 8px 20px rgba(99,102,241,.25);
+.suggest.show{display:block}
+.srow{padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #f1f2f5}
+.srow:hover{background:#f7f7ff}
+.srow b{font-size:13px}.srow span{font-size:11px;color:var(--muted)}
+.detect{
+  margin-top:9px;min-height:35px;padding:9px 11px;border-radius:11px;background:#f8fafc;
+  color:var(--muted);font-size:11px;display:flex;align-items:center;justify-content:space-between;gap:10px
 }
-
-.badge{
-    padding:8px 13px;
-    border-radius:30px;
-    background:#eef2ff;
-    color:var(--primary-dark);
-    font-size:12px;
-    font-weight:700;
-}
-
-/* HERO */
-
-.hero{
-    text-align:center;
-    padding:45px 20px 35px;
-}
-
-.hero h1{
-    font-size:clamp(32px,5vw,52px);
-    line-height:1.1;
-    letter-spacing:-1.8px;
-    font-weight:800;
-}
-
-.gradient-text{
-    background:linear-gradient(90deg,var(--primary),var(--purple));
-    -webkit-background-clip:text;
-    background-clip:text;
-    color:transparent;
-}
-
-.hero p{
-    max-width:620px;
-    margin:16px auto 0;
-    color:var(--muted);
-    font-size:16px;
-    line-height:1.7;
-}
-
-/* MAIN */
-
-.wrapper{
-    max-width:1050px;
-    margin:auto;
-    padding:0 18px 60px;
-}
-
-.calculator{
-    background:rgba(255,255,255,.88);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(255,255,255,.8);
-    border-radius:28px;
-    padding:28px;
-    box-shadow:
-        0 25px 70px rgba(15,23,42,.09),
-        0 2px 5px rgba(15,23,42,.04);
-}
-
-/* INPUT SECTION */
-
-.section-title{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:22px;
-}
-
-.section-number{
-    width:32px;
-    height:32px;
-    border-radius:10px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#eef2ff;
-    color:var(--primary-dark);
-    font-weight:800;
-    font-size:13px;
-}
-
-.section-title h2{
-    font-size:17px;
-}
-
-.input-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px;
-}
-
-.input-group label{
-    display:block;
-    margin-bottom:9px;
-    font-size:13px;
-    font-weight:700;
-    color:#374151;
-}
-
-.input-wrapper{
-    position:relative;
-}
-
-.prefix{
-    position:absolute;
-    left:15px;
-    top:50%;
-    transform:translateY(-50%);
-    color:#6b7280;
-    font-weight:700;
-    pointer-events:none;
-}
-
-input{
-    width:100%;
-    height:52px;
-    border:1.5px solid var(--border);
-    border-radius:14px;
-    padding:0 15px 0 40px;
-    font-size:15px;
-    font-family:inherit;
-    color:var(--text);
-    background:#fff;
-    outline:none;
-    transition:.25s;
-}
-
-input:focus{
-    border-color:var(--primary);
-    box-shadow:0 0 0 4px rgba(99,102,241,.10);
-}
-
-/* DIVIDER */
-
-.divider{
-    height:1px;
-    background:#edf0f4;
-    margin:30px 0;
-}
-
-/* RESULTS */
-
-.result-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.result-card{
-    border:1px solid #edf0f4;
-    background:#fafbfc;
-    border-radius:17px;
-    padding:19px;
-    transition:.25s;
-}
-
-.result-card:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 25px rgba(15,23,42,.06);
-}
-
-.result-label{
-    color:var(--muted);
-    font-size:12px;
-    font-weight:600;
-    margin-bottom:8px;
-}
-
-.result-value{
-    font-size:21px;
-    font-weight:800;
-    letter-spacing:-.5px;
-}
-
-.total{
-    grid-column:1/-1;
-    position:relative;
-    overflow:hidden;
-    padding:25px;
-    color:white;
-    border:none;
-    background:linear-gradient(135deg,#4f46e5,#7c3aed);
-    box-shadow:0 15px 35px rgba(99,102,241,.25);
-}
-
-.total:after{
-    content:"";
-    position:absolute;
-    width:180px;
-    height:180px;
-    border-radius:50%;
-    background:rgba(255,255,255,.09);
-    right:-70px;
-    top:-80px;
-}
-
-.total .result-label{
-    color:rgba(255,255,255,.75);
-}
-
-.total .result-value{
-    font-size:36px;
-    position:relative;
-    z-index:2;
-}
-
-/* BUTTONS */
-
-.actions{
-    display:flex;
-    gap:12px;
-    margin-top:20px;
-}
-
-button{
-    height:50px;
-    border:0;
-    border-radius:13px;
-    padding:0 22px;
-    font-family:inherit;
-    font-weight:700;
-    font-size:14px;
-    cursor:pointer;
-    transition:.25s;
-}
-
-.copy-btn{
-    flex:1;
-    color:white;
-    background:#111827;
-}
-
-.reset-btn{
-    color:#4338ca;
-    background:#eef2ff;
-}
-
-button:hover{
-    transform:translateY(-2px);
-}
-
-button:active{
-    transform:scale(.98);
-}
-
-/* FEATURES */
-
-.features{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-top:20px;
-}
-
-.feature{
-    text-align:center;
-    padding:20px 15px;
-    border:1px solid rgba(229,231,235,.8);
-    border-radius:17px;
-    background:rgba(255,255,255,.7);
-}
-
-.feature-icon{
-    font-size:23px;
-    margin-bottom:8px;
-}
-
-.feature strong{
-    display:block;
-    font-size:13px;
-}
-
-.feature span{
-    display:block;
-    margin-top:5px;
-    color:var(--muted);
-    font-size:11px;
-}
-
-/* FOOTER */
-
-footer{
-    text-align:center;
-    padding:10px 20px 35px;
-    color:#9ca3af;
-    font-size:12px;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:700px){
-
-    .navbar{
-        padding:16px 20px;
-    }
-
-    .hero{
-        padding:35px 15px 28px;
-    }
-
-    .hero h1{
-        font-size:35px;
-    }
-
-    .calculator{
-        padding:20px;
-        border-radius:22px;
-    }
-
-    .input-grid,
-    .result-grid,
-    .features{
-        grid-template-columns:1fr;
-    }
-
-    .total{
-        grid-column:auto;
-    }
-
-    .total .result-value{
-        font-size:30px;
-    }
-
-    .actions{
-        flex-direction:column;
-    }
-
-    .copy-btn{
-        width:100%;
-    }
-}
-
-@media(max-width:380px){
-
-    .badge{
-        display:none;
-    }
-
-    .brand{
-        font-size:17px;
-    }
-
-    .brand-icon{
-        width:38px;
-        height:38px;
-    }
+.detect.ok{background:#ecfdf5;color:#047857}.detect.warn{background:#fff7ed;color:#b45309}
+.rate-line{display:flex;align-items:center;gap:9px;margin-top:10px}
+.rate-line select{height:44px;font-size:13px;flex:1}
+.auto-tag{font-size:10px;font-weight:800;padding:6px 8px;border-radius:8px;background:#eef2ff;color:#4f46e5}
+.divider{height:1px;background:#edf0f4;margin:28px 0}
+.results{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.rc{background:#fafbfc;border:1px solid #edf0f4;border-radius:17px;padding:18px}
+.rl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:7px}
+.rv{font-size:21px;font-weight:800}
+.total{grid-column:1/-1;color:#fff;background:linear-gradient(135deg,#4f46e5,#7c3aed);border:0;padding:24px;position:relative;overflow:hidden}
+.total:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.09);right:-70px;top:-85px}
+.total .rl{color:rgba(255,255,255,.75)}.total .rv{font-size:38px;position:relative;z-index:2}
+.breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.mini{background:rgba(255,255,255,.12);padding:10px 12px;border-radius:11px;font-size:11px}
+.actions{display:flex;gap:12px;margin-top:18px}
+button{height:50px;border:0;border-radius:13px;font:700 14px Inter;cursor:pointer;transition:.2s}
+button:hover{transform:translateY(-2px)}
+.copy{flex:1;background:#111827;color:#fff}.reset{padding:0 22px;background:#eef2ff;color:#4338ca}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.feature{text-align:center;padding:19px;border-radius:17px;border:1px solid #e8eaf0;background:rgba(255,255,255,.72)}
+.fi{font-size:22px;margin-bottom:7px}.feature b{display:block;font-size:12px}.feature span{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.note{margin-top:18px;padding:13px 14px;border-radius:13px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:11px;line-height:1.55}
+footer{text-align:center;color:#9ca3af;font-size:11px;padding:5px 18px 30px}
+@media(max-width:720px){
+ .grid,.results,.features{grid-template-columns:1fr}.total{grid-column:auto}.breakdown{grid-template-columns:1fr}
+ .app{padding:20px;border-radius:22px}.hero{padding-top:25px}.hero h1{font-size:34px}
+ .actions{flex-direction:column}.reset{width:100%}.pill{display:none}
 }
 </style>
 </head>
 
 <body>
-
-<!-- NAVBAR -->
-
-<nav class="navbar">
-
-    <div class="brand">
-        <div class="brand-icon">₹</div>
-        PricePro
-    </div>
-
-    <div class="badge">
-        FREE TOOL
-    </div>
-
+<nav class="nav">
+  <div class="brand"><div class="logo">₹</div>PricePro AI</div>
+  <div class="pill">SMART GST TOOL</div>
 </nav>
 
-
-<!-- HERO -->
-
 <section class="hero">
-
-    <h1>
-        Smart <span class="gradient-text">Price Calculator</span>
-    </h1>
-
-    <p>
-        Calculate your product price instantly with automatic
-        discount, GST and final amount calculation.
-    </p>
-
+  <h1>Smart <span class="grad">GST Price Calculator</span></h1>
+  <p>Type a product name, enter its price and quantity. The calculator detects a matching product category, applies the built-in GST rule and calculates the final amount instantly.</p>
 </section>
 
-
-<!-- CALCULATOR -->
-
-<main class="wrapper">
-
-    <div class="calculator">
-
-        <div class="section-title">
-            <div class="section-number">01</div>
-            <h2>Enter Price Details</h2>
-        </div>
-
-
-        <div class="input-grid">
-
-            <div class="input-group">
-
-                <label>Price Per Item</label>
-
-                <div class="input-wrapper">
-
-                    <span class="prefix">₹</span>
-
-                    <input
-                        id="price"
-                        type="number"
-                        min="0"
-                        value="1000"
-                        placeholder="Enter price"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>Quantity</label>
-
-                <div class="input-wrapper">
-
-                    <input
-                        id="quantity"
-                        type="number"
-                        min="1"
-                        value="1"
-                        placeholder="Enter quantity"
-                        style="padding-left:15px"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>Discount</label>
-
-                <div class="input-wrapper">
-
-                    <span class="prefix">%</span>
-
-                    <input
-                        id="discount"
-                        type="number"
-                        min="0"
-                        max="100"
-                        value="10"
-                        placeholder="Discount"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <div class="input-group">
-
-                <label>GST / Tax</label>
-
-                <div class="input-wrapper">
-
-                    <span class="prefix">%</span>
-
-                    <input
-                        id="gst"
-                        type="number"
-                        min="0"
-                        value="18"
-                        placeholder="GST"
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="divider"></div>
-
-
-        <div class="section-title">
-            <div class="section-number">02</div>
-            <h2>Calculation Summary</h2>
-        </div>
-
-
-        <div class="result-grid">
-
-            <div class="result-card">
-
-                <div class="result-label">
-                    SUBTOTAL
-                </div>
-
-                <div class="result-value" id="subtotal">
-                    ₹0.00
-                </div>
-
-            </div>
-
-
-            <div class="result-card">
-
-                <div class="result-label">
-                    DISCOUNT SAVED
-                </div>
-
-                <div class="result-value" id="discountAmount">
-                    ₹0.00
-                </div>
-
-            </div>
-
-
-            <div class="result-card">
-
-                <div class="result-label">
-                    AFTER DISCOUNT
-                </div>
-
-                <div class="result-value" id="afterDiscount">
-                    ₹0.00
-                </div>
-
-            </div>
-
-
-            <div class="result-card">
-
-                <div class="result-label">
-                    GST / TAX
-                </div>
-
-                <div class="result-value" id="gstAmount">
-                    ₹0.00
-                </div>
-
-            </div>
-
-
-            <div class="result-card total">
-
-                <div class="result-label">
-                    FINAL PRICE
-                </div>
-
-                <div class="result-value" id="finalPrice">
-                    ₹0.00
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="actions">
-
-            <button class="copy-btn" onclick="copyResult()">
-                📋 Copy Result
-            </button>
-
-            <button class="reset-btn" onclick="resetCalculator()">
-                ↻ Reset
-            </button>
-
-        </div>
-
+<main class="wrap">
+<div class="app">
+
+  <div class="title"><div class="num">01</div><h2>Product Details</h2></div>
+
+  <div class="grid">
+    <div>
+      <label>PRODUCT NAME</label>
+      <div class="item-wrap">
+        <input id="item" autocomplete="off" placeholder="Try: Jeans, iPhone, Rice, Shoes...">
+        <div id="suggest" class="suggest"></div>
+      </div>
+      <div id="detect" class="detect">🔎 Start typing a product name…</div>
     </div>
 
-
-    <!-- FEATURES -->
-
-    <div class="features">
-
-        <div class="feature">
-            <div class="feature-icon">⚡</div>
-            <strong>Instant Calculation</strong>
-            <span>Results update automatically</span>
-        </div>
-
-        <div class="feature">
-            <div class="feature-icon">📱</div>
-            <strong>Mobile Friendly</strong>
-            <span>Works perfectly on phones</span>
-        </div>
-
-        <div class="feature">
-            <div class="feature-icon">🔒</div>
-            <strong>100% Free</strong>
-            <span>No registration required</span>
-        </div>
-
+    <div>
+      <label>PRICE PER ITEM</label>
+      <input id="price" type="number" min="0" step="0.01" placeholder="Enter price">
     </div>
 
+    <div>
+      <label>QUANTITY</label>
+      <input id="qty" type="number" min="1" step="1" value="1">
+    </div>
+
+    <div>
+      <label>GST RATE</label>
+      <div class="rate-line">
+        <select id="gst">
+          <option value="auto">Auto Detect</option>
+          <option value="0">0%</option>
+          <option value="5">5%</option>
+          <option value="12">12%</option>
+          <option value="18">18%</option>
+          <option value="28">28%</option>
+        </select>
+        <span class="auto-tag" id="autoTag">AUTO</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="title"><div class="num">02</div><h2>Calculation Summary</h2></div>
+
+  <div class="results">
+    <div class="rc"><div class="rl">PRODUCT TOTAL</div><div class="rv" id="subtotal">₹0.00</div></div>
+    <div class="rc"><div class="rl">GST RATE</div><div class="rv" id="rateOut">—</div></div>
+    <div class="rc"><div class="rl">GST AMOUNT</div><div class="rv" id="gstAmount">₹0.00</div></div>
+    <div class="rc"><div class="rl">CGST / SGST</div><div class="rv" id="split">—</div></div>
+
+    <div class="rc total">
+      <div class="rl">FINAL AMOUNT</div>
+      <div class="rv" id="final">₹0.00</div>
+      <div class="breakdown">
+        <div class="mini">Base: <b id="baseMini">₹0.00</b></div>
+        <div class="mini">GST: <b id="gstMini">₹0.00</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="copy" onclick="copyResult()">📋 Copy Result</button>
+    <button class="reset" onclick="resetAll()">↻ Reset</button>
+  </div>
+
+  <div class="note">
+    ⚠️ <b>Important:</b> Product-name matching is a convenience feature, not an official HSN classification engine. GST can depend on exact HSN, composition, use, transaction conditions and price/value thresholds. If a product is not confidently matched, the tool marks the rate as an estimate and lets you choose a rate manually.
+  </div>
+</div>
+
+<div class="features">
+  <div class="feature"><div class="fi">⚡</div><b>Live Calculation</b><span>Updates while you type</span></div>
+  <div class="feature"><div class="fi">🧠</div><b>Smart Detection</b><span>Common product database</span></div>
+  <div class="feature"><div class="fi">📱</div><b>Mobile Ready</b><span>Responsive on every screen</span></div>
+</div>
 </main>
 
-
-<footer>
-    © 2026 PricePro • Free Online Calculator
-</footer>
-
+<footer>© 2026 PricePro AI • Smart GST Price Calculator</footer>
 
 <script>
+/*
+  Product database:
+  rate can be a number, or a function of price for threshold-based categories.
+  This is intentionally a practical/common-product database, not a complete HSN master.
+*/
+const DB = [
+  // Apparel / textiles — 2025 threshold rule used by this tool
+  {n:"jeans",c:"Apparel / Clothing",h:"HSN 6203/6204 family",r:p=>p<=2500?5:18},
+  {n:"jean",c:"Apparel / Clothing",h:"HSN 6203/6204 family",r:p=>p<=2500?5:18},
+  {n:"t shirt",c:"Apparel / Clothing",h:"HSN 6109 family",r:p=>p<=2500?5:18},
+  {n:"t-shirt",c:"Apparel / Clothing",h:"HSN 6109 family",r:p=>p<=2500?5:18},
+  {n:"shirt",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"trouser",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
+  {n:"trousers",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
+  {n:"pant",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
+  {n:"pants",c:"Apparel / Clothing",h:"HSN 62 family",r:p=>p<=2500?5:18},
+  {n:"kurta",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"saree",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"sari",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"dress",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"skirt",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"jacket",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"coat",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"sweater",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"hoodie",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"shorts",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"leggings",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"socks",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"underwear",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"innerwear",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"kids clothes",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
+  {n:"clothes",c:"Apparel / Clothing",h:"HSN 61/62 family",r:p=>p<=2500?5:18},
 
-const priceInput = document.getElementById("price");
-const quantityInput = document.getElementById("quantity");
-const discountInput = document.getElementById("discount");
-const gstInput = document.getElementById("gst");
+  // Footwear — 2025 threshold rule used by this tool
+  {n:"shoes",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"shoe",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"sandal",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"sandals",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"slippers",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"slipper",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"chappal",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"chapal",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"sneakers",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
+  {n:"boots",c:"Footwear",h:"HSN 64",r:p=>p<=2500?5:18},
 
-[
-    priceInput,
-    quantityInput,
-    discountInput,
-    gstInput
-].forEach(input => {
+  // Electronics / computers / phones
+  {n:"mobile",c:"Mobile Phone",h:"HSN 8517",r:18},
+  {n:"mobile phone",c:"Mobile Phone",h:"HSN 8517",r:18},
+  {n:"smartphone",c:"Mobile Phone",h:"HSN 8517",r:18},
+  {n:"iphone",c:"Mobile Phone",h:"HSN 8517",r:18},
+  {n:"samsung phone",c:"Mobile Phone",h:"HSN 8517",r:18},
+  {n:"android phone",c:"Mobile Phone",h:"HSN 8517",r:18},
+  {n:"tablet",c:"Computer / Tablet",h:"HSN 8471",r:18},
+  {n:"ipad",c:"Computer / Tablet",h:"HSN 8471",r:18},
+  {n:"laptop",c:"Computer / Laptop",h:"HSN 8471",r:18},
+  {n:"computer",c:"Computer / Laptop",h:"HSN 8471",r:18},
+  {n:"desktop",c:"Computer / Laptop",h:"HSN 8471",r:18},
+  {n:"monitor",c:"Computer Monitor",h:"Electronics",r:18},
+  {n:"keyboard",c:"Computer Accessory",h:"Electronics",r:18},
+  {n:"mouse",c:"Computer Accessory",h:"Electronics",r:18},
+  {n:"printer",c:"Printer",h:"Electronics",r:18},
+  {n:"scanner",c:"Scanner",h:"Electronics",r:18},
+  {n:"camera",c:"Camera",h:"HSN 8525 family",r:18},
+  {n:"cctv",c:"CCTV / Security",h:"Electronics",r:18},
+  {n:"tv",c:"Television",h:"Electronics",r:18},
+  {n:"television",c:"Television",h:"Electronics",r:18},
+  {n:"led tv",c:"Television",h:"Electronics",r:18},
+  {n:"smart tv",c:"Television",h:"Electronics",r:18},
+  {n:"speaker",c:"Speaker",h:"Electronics",r:18},
+  {n:"headphone",c:"Headphones",h:"Electronics",r:18},
+  {n:"headphones",c:"Headphones",h:"Electronics",r:18},
+  {n:"earphone",c:"Earphones",h:"Electronics",r:18},
+  {n:"earbuds",c:"Earbuds",h:"Electronics",r:18},
+  {n:"smartwatch",c:"Smartwatch",h:"Electronics",r:18},
+  {n:"watch",c:"Watch",h:"Accessories",r:18},
+  {n:"power bank",c:"Power Bank",h:"Electronics",r:18},
+  {n:"charger",c:"Charger",h:"Electronics",r:18},
+  {n:"mobile charger",c:"Mobile Charger",h:"Electronics",r:18},
+  {n:"cable",c:"Electronic Cable",h:"Electronics",r:18},
+  {n:"usb cable",c:"USB Cable",h:"Electronics",r:18},
+  {n:"pendrive",c:"Storage Device",h:"Electronics",r:18},
+  {n:"pen drive",c:"Storage Device",h:"Electronics",r:18},
+  {n:"hard disk",c:"Storage Device",h:"Electronics",r:18},
+  {n:"ssd",c:"Storage Device",h:"Electronics",r:18},
+  {n:"router",c:"Networking Equipment",h:"Electronics",r:18},
 
-    input.addEventListener("input", calculate);
+  // Appliances
+  {n:"refrigerator",c:"Refrigerator",h:"Household Appliance",r:18},
+  {n:"fridge",c:"Refrigerator",h:"Household Appliance",r:18},
+  {n:"washing machine",c:"Washing Machine",h:"HSN 8450",r:18},
+  {n:"ac",c:"Air Conditioner",h:"Household Appliance",r:28},
+  {n:"air conditioner",c:"Air Conditioner",h:"Household Appliance",r:28},
+  {n:"cooler",c:"Air Cooler",h:"Household Appliance",r:18},
+  {n:"microwave",c:"Microwave Oven",h:"Household Appliance",r:18},
+  {n:"oven",c:"Oven",h:"Household Appliance",r:18},
+  {n:"mixer",c:"Mixer / Grinder",h:"Household Appliance",r:18},
+  {n:"mixer grinder",c:"Mixer / Grinder",h:"Household Appliance",r:18},
+  {n:"grinder",c:"Mixer / Grinder",h:"Household Appliance",r:18},
+  {n:"vacuum cleaner",c:"Vacuum Cleaner",h:"Household Appliance",r:18},
+  {n:"iron",c:"Electric Iron",h:"Household Appliance",r:18},
+  {n:"water heater",c:"Water Heater",h:"Household Appliance",r:18},
+  {n:"geyser",c:"Water Heater",h:"Household Appliance",r:18},
+  {n:"fan",c:"Electric Fan",h:"Electrical Appliance",r:18},
+  {n:"ceiling fan",c:"Electric Fan",h:"Electrical Appliance",r:18},
 
-});
+  // Grocery / food common items
+  {n:"rice",c:"Rice / Cereals",h:"Food",r:5},
+  {n:"basmati rice",c:"Rice / Cereals",h:"Food",r:5},
+  {n:"wheat",c:"Wheat / Cereals",h:"Food",r:5},
+  {n:"atta",c:"Wheat Flour",h:"Food",r:5},
+  {n:"flour",c:"Flour",h:"Food",r:5},
+  {n:"dal",c:"Pulses",h:"Food",r:5},
+  {n:"pulses",c:"Pulses",h:"Food",r:5},
+  {n:"lentils",c:"Pulses",h:"Food",r:5},
+  {n:"sugar",c:"Sugar",h:"Food",r:5},
+  {n:"salt",c:"Salt",h:"Food",r:0},
+  {n:"tea",c:"Tea",h:"Food",r:5},
+  {n:"coffee",c:"Coffee",h:"Food",r:5},
+  {n:"milk",c:"Milk",h:"Food",r:0},
+  {n:"curd",c:"Curd",h:"Food",r:0},
+  {n:"yogurt",c:"Yogurt",h:"Food",r:0},
+  {n:"paneer",c:"Paneer",h:"Food",r:5},
+  {n:"butter",c:"Butter",h:"Food",r:5},
+  {n:"ghee",c:"Ghee",h:"Food",r:5},
+  {n:"cheese",c:"Cheese",h:"Food",r:12},
+  {n:"bread",c:"Bread",h:"Food",r:0},
+  {n:"biscuit",c:"Biscuits",h:"Food",r:5},
+  {n:"biscuits",c:"Biscuits",h:"Food",r:5},
+  {n:"chocolate",c:"Chocolate",h:"Food",r:18},
+  {n:"namkeen",c:"Namkeen",h:"Food",r:5},
+  {n:"chips",c:"Snack Food",h:"Food",r:12},
+  {n:"noodles",c:"Prepared Food",h:"Food",r:12},
+  {n:"pasta",c:"Prepared Food",h:"Food",r:12},
+  {n:"honey",c:"Honey",h:"Food",r:5},
+  {n:"pickle",c:"Pickles",h:"Food",r:12},
+  {n:"juice",c:"Fruit Juice",h:"Food",r:12},
+  {n:"soft drink",c:"Beverage",h:"Food / Beverage",r:28},
+  {n:"cold drink",c:"Beverage",h:"Food / Beverage",r:28},
+  {n:"mineral water",c:"Packaged Water",h:"Food / Beverage",r:18},
+  {n:"water bottle",c:"Packaged Water",h:"Food / Beverage",r:18},
 
+  // Personal care / cosmetics
+  {n:"shampoo",c:"Personal Care",h:"Cosmetics",r:18},
+  {n:"soap",c:"Soap",h:"Personal Care",r:18},
+  {n:"face wash",c:"Personal Care",h:"Cosmetics",r:18},
+  {n:"toothpaste",c:"Oral Care",h:"Personal Care",r:18},
+  {n:"toothbrush",c:"Oral Care",h:"Personal Care",r:12},
+  {n:"perfume",c:"Perfume",h:"Cosmetics",r:18},
+  {n:"deodorant",c:"Deodorant",h:"Cosmetics",r:18},
+  {n:"lipstick",c:"Cosmetics",h:"Cosmetics",r:18},
+  {n:"cream",c:"Cosmetics",h:"Cosmetics",r:18},
+  {n:"lotion",c:"Cosmetics",h:"Cosmetics",r:18},
+  {n:"sunscreen",c:"Cosmetics",h:"Cosmetics",r:18},
+  {n:"hair oil",c:"Hair Care",h:"Personal Care",r:18},
 
-function formatMoney(value){
+  // Household
+  {n:"detergent",c:"Cleaning Product",h:"Household",r:18},
+  {n:"washing powder",c:"Cleaning Product",h:"Household",r:18},
+  {n:"dishwash",c:"Cleaning Product",h:"Household",r:18},
+  {n:"dishwasher liquid",c:"Cleaning Product",h:"Household",r:18},
+  {n:"floor cleaner",c:"Cleaning Product",h:"Household",r:18},
+  {n:"toilet cleaner",c:"Cleaning Product",h:"Household",r:18},
+  {n:"broom",c:"Broom",h:"Household",r:5},
+  {n:"mop",c:"Cleaning Tool",h:"Household",r:18},
+  {n:"bucket",c:"Plastic Household",h:"Household",r:18},
+  {n:"plastic chair",c:"Plastic Furniture",h:"Furniture",r:18},
+  {n:"chair",c:"Furniture",h:"Furniture",r:18},
+  {n:"table",c:"Furniture",h:"Furniture",r:18},
+  {n:"sofa",c:"Furniture",h:"Furniture",r:18},
+  {n:"bed",c:"Furniture",h:"Furniture",r:18},
+  {n:"mattress",c:"Mattress",h:"Furniture",r:18},
 
-    return "₹" + value.toLocaleString("en-IN",{
-        minimumFractionDigits:2,
-        maximumFractionDigits:2
-    });
+  // Stationery
+  {n:"pen",c:"Stationery",h:"Stationery",r:18},
+  {n:"pencil",c:"Stationery",h:"Stationery",r:18},
+  {n:"notebook",c:"Stationery",h:"Stationery",r:12},
+  {n:"notepad",c:"Stationery",h:"Stationery",r:12},
+  {n:"book",c:"Printed Book",h:"Stationery",r:0},
+  {n:"school bag",c:"Bag",h:"HSN 4202 family",r:18},
+  {n:"bag",c:"Bag",h:"HSN 4202 family",r:18},
+  {n:"backpack",c:"Bag",h:"HSN 4202 family",r:18},
 
-}
+  // Automotive
+  {n:"car",c:"Motor Vehicle",h:"Automotive",r:28},
+  {n:"bike",c:"Motorcycle",h:"Automotive",r:28},
+  {n:"motorcycle",c:"Motorcycle",h:"Automotive",r:28},
+  {n:"scooter",c:"Motorcycle / Scooter",h:"Automotive",r:28},
+  {n:"tyre",c:"Tyre",h:"Automotive",r:28},
+  {n:"tire",c:"Tyre",h:"Automotive",r:28},
+  {n:"car battery",c:"Battery",h:"Automotive",r:28},
+  {n:"engine oil",c:"Lubricant",h:"Automotive",r:18},
+  {n:"motor oil",c:"Lubricant",h:"Automotive",r:18},
 
+  // Construction / hardware
+  {n:"cement",c:"Cement",h:"Construction",r:28},
+  {n:"paint",c:"Paint",h:"Construction",r:18},
+  {n:"wall paint",c:"Paint",h:"Construction",r:18},
+  {n:"tiles",c:"Tiles",h:"Construction",r:18},
+  {n:"tile",c:"Tiles",h:"Construction",r:18},
+  {n:"bricks",c:"Bricks",h:"Construction",r:12},
+  {n:"brick",c:"Bricks",h:"Construction",r:12},
+  {n:"steel",c:"Steel",h:"Construction",r:18},
+  {n:"iron",c:"Iron / Steel",h:"Construction",r:18},
+  {n:"pipe",c:"Pipes",h:"Construction",r:18},
+  {n:"pvc pipe",c:"PVC Pipe",h:"Construction",r:18},
+  {n:"hardware",c:"Hardware",h:"Hardware",r:18},
 
-function calculate(){
-
-    let price =
-        parseFloat(priceInput.value) || 0;
-
-    let quantity =
-        parseFloat(quantityInput.value) || 0;
-
-    let discount =
-        parseFloat(discountInput.value) || 0;
-
-    let gst =
-        parseFloat(gstInput.value) || 0;
-
-
-    discount = Math.min(Math.max(discount,0),100);
-
-    gst = Math.max(gst,0);
-
-
-    const subtotal =
-        price * quantity;
-
-
-    const discountAmount =
-        subtotal * discount / 100;
-
-
-    const afterDiscount =
-        subtotal - discountAmount;
-
-
-    const gstAmount =
-        afterDiscount * gst / 100;
-
-
-    const finalPrice =
-        afterDiscount + gstAmount;
-
-
-    document.getElementById("subtotal").textContent =
-        formatMoney(subtotal);
-
-
-    document.getElementById("discountAmount").textContent =
-        formatMoney(discountAmount);
-
-
-    document.getElementById("afterDiscount").textContent =
-        formatMoney(afterDiscount);
-
-
-    document.getElementById("gstAmount").textContent =
-        formatMoney(gstAmount);
-
-
-    document.getElementById("finalPrice").textContent =
-        formatMoney(finalPrice);
-
-}
-
-
-function copyResult(){
-
-    const result = `
-PricePro - Price Calculator
-
-Subtotal: ${document.getElementById("subtotal").textContent}
-Discount: ${document.getElementById("discountAmount").textContent}
-After Discount: ${document.getElementById("afterDiscount").textContent}
-GST / Tax: ${document.getElementById("gstAmount").textContent}
-Final Price: ${document.getElementById("finalPrice").textContent}
-`;
-
-    navigator.clipboard.writeText(result);
-
-    const button =
-        document.querySelector(".copy-btn");
-
-    const original =
-        button.innerHTML;
-
-    button.innerHTML =
-        "✓ Result Copied!";
-
-    setTimeout(() => {
-
-        button.innerHTML =
-            original;
-
-    },1500);
-
-}
-
-
-function resetCalculator(){
-
-    priceInput.value = 1000;
-    quantityInput.value = 1;
-    discountInput.value = 10;
-    gstInput.value = 18;
-
-    calculate();
-
-}
-
-
-calculate();
-
-</script>
-
-</body>
-</html>
-```
+  // Other
+  {n:"toy",c:"Toy",h:"To
