@@ -1,25 +1,24 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>अल्ट्रा-प्रो स्मार्ट जीएसटी इनवॉइस</title>
+    <title>प्रोफेशनल जीएसटी बिलिंग सॉफ्टवेयर</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --accent-glow: rgba(99, 102, 241, 0.25);
-            --bg-gradient: radial-gradient(circle at top, #1e1b4b 0%, #0f172a 100%);
-            --card-bg: rgba(255, 255, 255, 0.98);
-            --text-main: #0f172a;
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-dark: #3730a3;
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%);
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
             --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
+            --border-color: #cbd5e1;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
             --radius-lg: 20px;
             --radius-md: 12px;
         }
@@ -29,7 +28,7 @@
         body {
             background: var(--bg-gradient);
             color: var(--text-main);
-            padding: 20px 16px;
+            padding: 16px;
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -37,25 +36,24 @@
 
         .invoice-wrapper {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
             border-radius: var(--radius-lg);
             width: 100%;
             max-width: 850px;
-            padding: 30px;
+            padding: 24px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* Top Bar */
+        /* Top Header Bar */
         .top-bar {
-            background: #f1f5f9;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 12px 18px;
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
         }
 
         .top-bar input {
@@ -68,16 +66,16 @@
             background: #fff;
         }
 
-        /* Business Header Edit Section */
+        /* Business Info Header */
         .biz-header {
-            background: #f8fafc;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
             padding: 20px;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 15px;
-            margin-bottom: 24px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .biz-box-group { display: flex; flex-direction: column; gap: 6px; }
@@ -93,9 +91,8 @@
             color: var(--primary-dark);
             background: #fff;
             outline: none;
-            transition: all 0.2s;
         }
-        .biz-name-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--accent-glow); }
+        .biz-name-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
 
         .biz-textarea {
             width: 100%;
@@ -108,7 +105,7 @@
             outline: none;
             resize: none;
         }
-        .biz-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--accent-glow); }
+        .biz-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
 
         .section-label {
             font-size: 12px;
@@ -116,27 +113,27 @@
             color: var(--primary);
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            margin: 24px 0 12px 0;
+            margin: 20px 0 10px 0;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Customer Card */
+        /* Customer Section */
         .cust-card {
             background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 18px;
+            padding: 16px;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .field-group { display: flex; flex-direction: column; gap: 6px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
         .field-group label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
         .field-group input, .field-group select {
-            padding: 10px 14px;
+            padding: 10px 12px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 13px;
@@ -147,18 +144,17 @@
         }
         .field-group input:focus, .field-group select:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--accent-glow);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
-        /* Item Row */
+        /* Item Row Card */
         .item-row {
             background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 18px;
-            margin-bottom: 16px;
+            padding: 16px;
+            margin-bottom: 14px;
             box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
-            position: relative;
         }
 
         .item-main-grid {
@@ -171,23 +167,19 @@
 
         .item-name {
             width: 100%;
-            padding: 10px 14px;
+            padding: 10px 12px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-size: 14px;
             font-weight: 700;
             background: #fff;
             outline: none;
-            transition: all 0.2s;
         }
-        .item-name:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--accent-glow);
-        }
+        .item-name:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); }
 
         .item-calc-grid {
             display: grid;
-            grid-template-columns: 1fr 1.1fr 1.2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 
@@ -216,31 +208,31 @@
             font-weight: 800;
             font-size: 13px;
             cursor: pointer;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             transition: 0.2s;
         }
-        .btn-add-item:hover { background: #e0e7ff; }
+        .btn-add-item:hover { background: var(--primary-light); }
 
-        /* Bottom Grid */
+        /* Summary & Payment Grid */
         .bottom-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 18px;
-            margin-bottom: 24px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .payment-box, .summary-card {
             background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 18px;
+            padding: 16px;
         }
 
-        .pay-option-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .pay-option-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
         .pay-badge {
             border: 1px solid var(--border-color);
             background: #fff;
@@ -254,20 +246,20 @@
             cursor: pointer;
         }
 
-        .sum-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; }
+        .sum-row { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; }
         .sum-row.grand-total {
             font-size: 18px;
             color: var(--primary-dark);
             border-top: 2px solid var(--border-color);
             padding-top: 12px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
-        .grand-price { color: var(--accent-green); font-size: 24px; font-weight: 800; }
+        .grand-price { color: var(--accent-green); font-size: 22px; font-weight: 800; }
 
-        /* Action Bar */
+        /* Action Buttons */
         .action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
         .btn-act {
-            padding: 16px;
+            padding: 15px;
             border-radius: var(--radius-md);
             font-size: 14px;
             font-weight: 800;
@@ -282,16 +274,17 @@
             transition: transform 0.2s;
         }
         .btn-whatsapp { background: var(--accent-green); }
-        .btn-whatsapp:hover { background: #059669; }
+        .btn-whatsapp:hover { background: #047857; }
         .btn-print { background: var(--primary); }
         .btn-print:hover { background: var(--primary-dark); }
 
         @media (min-width: 700px) {
-            body { padding: 40px; }
-            .invoice-wrapper { padding: 40px; }
+            body { padding: 30px; }
+            .invoice-wrapper { padding: 35px; }
             .biz-header { grid-template-columns: 2fr 1fr; align-items: center; }
             .cust-card { grid-template-columns: 1fr 1fr; }
             .cust-card .full-width { grid-column: span 2; }
+            .item-calc-grid { grid-template-columns: 1fr 1.2fr 1.2fr 1fr; }
             .bottom-grid { grid-template-columns: 1.2fr 1fr; }
         }
     </style>
@@ -307,11 +300,11 @@
             <input type="date" id="invDate">
         </div>
         <div style="font-size:14px; font-weight:800; color:var(--primary);">
-            <i class="fa-solid fa-bolt"></i> स्मार्ट जीएसटी इनवॉइस
+            <i class="fa-solid fa-file-invoice-dollar"></i> प्रो इनवॉइस सिस्टम
         </div>
     </div>
 
-    <!-- Editable Business Header -->
+    <!-- Business Header -->
     <div class="biz-header">
         <div class="biz-box-group">
             <label><i class="fa-solid fa-store"></i> फर्म / दुकान का नाम (यहाँ क्लिक करके बदलें)</label>
@@ -342,13 +335,13 @@
     </div>
 
     <!-- Items List Section -->
-    <div class="section-label"><i class="fa-solid fa-boxes-stacked"></i> उत्पाद सूची & ऑटो-जीएसटी इंजन</div>
+    <div class="section-label"><i class="fa-solid fa-boxes-stacked"></i> उत्पाद सूची & स्मार्ट ऑटो-जीएसटी इंजन</div>
     <div id="itemsContainer">
         <!-- Row 1 -->
         <div class="item-row">
             <div class="item-main-grid">
                 <span class="sr-no" style="font-weight:800; font-size:13px; color:var(--primary);">1</span>
-                <input type="text" class="item-name" placeholder="उत्पाद लिखें (उदा. Jeans, Tshirt, Mobile, Shoes)" oninput="autoDetectAndCalculate(this)" onkeyup="autoDetectAndCalculate(this)">
+                <input type="text" class="item-name" placeholder="उत्पाद लिखें (उदा. Jeans, Tshirt, Mobile, Shoes)" oninput="autoDetectGST(this)" onkeyup="autoDetectGST(this)">
                 <button class="btn-del" onclick="deleteItemRow(this)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
             <div class="item-calc-grid">
@@ -378,7 +371,7 @@
                     </select>
                 </div>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-top:12px; font-size:12px; font-weight:700; color:var(--text-muted); border-top:1px solid #e2e8f0; padding-top:8px;">
+            <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; font-weight:700; color:var(--text-muted); border-top:1px solid #e2e8f0; padding-top:8px;">
                 <span>मूल मूल्य: <span class="base-display" style="color:var(--text-main);">₹0.00</span></span>
                 <span>GST: <span class="tax-amt-display" style="color:var(--accent-red);">₹0.00</span></span>
                 <span>कुल: <span class="item-total-display" style="color:var(--primary); font-weight:800;">₹0.00</span></span>
@@ -393,7 +386,7 @@
     <!-- Payment & Summary -->
     <div class="bottom-grid">
         <div class="payment-box">
-            <div class="section-label" style="margin:0 0 10px 0;"><i class="fa-solid fa-wallet"></i> भुगतान का माध्यम</div>
+            <div class="section-label" style="margin:0 0 8px 0;"><i class="fa-solid fa-wallet"></i> भुगतान का माध्यम</div>
             <div class="pay-option-group">
                 <label class="pay-badge"><input type="radio" name="payMethod" value="UPI / QR" checked> UPI / QR</label>
                 <label class="pay-badge"><input type="radio" name="payMethod" value="नकद (Cash)"> नकद (Cash)</label>
@@ -427,30 +420,21 @@
 <script>
     document.getElementById('invDate').valueAsDate = new Date();
 
-    // अत्यधिक एडवांस ऑटो-जीएसटी डिटेक्शन इंजन
-    function autoDetectAndCalculate(inputElem) {
+    // सुपर-फास्ट ऑटो जीएसटी डिटेक्टर
+    function autoDetectGST(inputElem) {
         const text = inputElem.value.toLowerCase().trim();
         const row = inputElem.closest('.item-row');
         const taxRateSelect = row.querySelector('.item-tax-rate');
 
-        // जींस, टीशर्ट, कपड़े आदि पर ऑटो 5%
-        if (text.includes('jeans') || text.includes('tshirt') || text.includes('t-shirt') || text.includes('shirt') || text.includes('cloth') || text.includes('कपड़ा') || text.includes('शर्ट') || text.includes('जींस') || text.includes('pant') || text.includes('kurti') || text.includes('top') || text.includes('lower') || text.includes('tracksuit')) {
+        if (text.includes('jeans') || text.includes('tshirt') || text.includes('t-shirt') || text.includes('shirt') || text.includes('cloth') || text.includes('कपड़ा') || text.includes('शर्ट') || text.includes('जींस') || text.includes('pant') || text.includes('kurti') || text.includes('top')) {
             taxRateSelect.value = "5";
-        } 
-        // जूते, चप्पल आदि पर 5% या 18% (1000 से कम पर 5%, अधिक पर 18 - यहाँ सामान्यतः 5% या 18% सेट कर सकते हैं, शूज के लिए 12% या 18%)
-        else if (text.includes('shoes') || text.includes('shoe') || text.includes('slipper') || text.includes('जूते') || text.includes('footwear')) {
+        } else if (text.includes('shoes') || text.includes('shoe') || text.includes('slipper') || text.includes('जूते')) {
             taxRateSelect.value = "12";
-        }
-        // मोबाइल, इलेक्ट्रॉनिक्स पर 18%
-        else if (text.includes('mobile') || text.includes('phone') || text.includes('मोबाइल') || text.includes('फोन') || text.includes('laptop') || text.includes('electronics') || text.includes('watch') || text.includes('charger') || text.includes('earphones')) {
+        } else if (text.includes('mobile') || text.includes('phone') || text.includes('मोबाइल') || text.includes('फोन') || text.includes('laptop') || text.includes('watch') || text.includes('charger')) {
             taxRateSelect.value = "18";
-        } 
-        // सोना, ज्वैलरी पर 3%
-        else if (text.includes('gold') || text.includes('sona') || text.includes('jewelry') || text.includes('silver')) {
+        } else if (text.includes('gold') || text.includes('sona') || text.includes('jewelry')) {
             taxRateSelect.value = "3";
-        } 
-        // लग्जरी वस्तुएं 28%
-        else if (text.includes('luxury') || text.includes('car') || text.includes('ac') || text.includes('fridge')) {
+        } else if (text.includes('luxury') || text.includes('car') || text.includes('ac')) {
             taxRateSelect.value = "28";
         }
 
@@ -466,7 +450,7 @@
         div.innerHTML = `
             <div class="item-main-grid">
                 <span class="sr-no" style="font-weight:800; font-size:13px; color:var(--primary);">${count}</span>
-                <input type="text" class="item-name" placeholder="उत्पाद लिखें (उदा. Jeans, Tshirt, Mobile, Shoes)" oninput="autoDetectAndCalculate(this)" onkeyup="autoDetectAndCalculate(this)">
+                <input type="text" class="item-name" placeholder="उत्पाद लिखें (उदा. Jeans, Tshirt, Mobile, Shoes)" oninput="autoDetectGST(this)" onkeyup="autoDetectGST(this)">
                 <button class="btn-del" onclick="deleteItemRow(this)"><i class="fa-solid fa-trash-can"></i></button>
             </div>
             <div class="item-calc-grid">
@@ -485,4 +469,15 @@
                         <option value="exclusive">GST एक्स्ट्रा (प्लस)</option>
                     </select>
                 </div>
-                <div class=
+                <div class="field-group">
+                    <label>GST दर (%)</label>
+                    <select class="item-tax-rate" onchange="calculateInvoice()">
+                        <option value="0">0% (Nil)</option>
+                        <option value="5">5% GST</option>
+                        <option value="12">12% GST</option>
+                        <option value="18" selected>18% GST</option>
+                        <option value="28">28% GST</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:12px; fo
